@@ -1,0 +1,17 @@
+Commentaires fournis et en anglais
+
+en C :
+    accolades à la ligne, même pour les conditions à une ligne.
+    ex :void function(t1 p1, t2 p2)
+        {    
+            int i;
+                //loop used to...
+                for(i = 0; i < lenght; i++)
+                {
+                    if( i = 42)
+                    {
+                        return 0;
+                    }
+                }
+                return 42;
+        }
