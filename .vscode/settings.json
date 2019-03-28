@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "jansson.h": "c",
+        "jansson_config.h": "c"
+    }
+}
