@@ -1,11 +1,12 @@
 # Declaration of variables
 CC = gcc
 CC_FLAGS = -Wall -Wextra -Wno-unused-parameter
-LIBS_FLAGS = $$(pkg-config --cflags --libs jansson libcurl)
+LIBS_FLAGS = $$(pkg-config --cflags --libs jansson libcurl sdl2)
 
 # File names
-EXEC = openfoodfactapi
-SOURCES =	json.c
+EXEC = exe
+SOURCES =	$(wildcard *.c) \
+			 $(wildcard */*.c)
 OBJECTS = $(SOURCES:.c=.o)
 
 # Main target
@@ -20,3 +21,10 @@ $(EXEC): $(OBJECTS)
 .PHONY: clean
 clean:
 	rm	-f $(EXEC) $(OBJECTS)
+
+cleanObj:
+	rm -f $(OBJECTS)
+
+#construct all and clean obj
+build:
+	make && make cleanObj && ./exe 

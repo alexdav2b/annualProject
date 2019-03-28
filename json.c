@@ -77,7 +77,7 @@ get_product(char code[14], char **err)
     return chunk.data;
 }
 
-int main()
+int fromBarcodeToName()
 {
     char code[] = "3029330003533";
     // https://fr.openfoodfacts.org/api/v0/produit/3029330003533.json
