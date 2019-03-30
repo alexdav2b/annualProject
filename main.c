@@ -5,7 +5,9 @@ int main()
     int wait = 1;
     SDL_Event event;
 
-    graphGenerateMenu();
+    // window creation 
+    GraphGenerateMenu();
+
     while(wait != 0)
     {
         SDL_FlushEvent(SDL_WINDOWEVENT_CLOSE);
@@ -27,7 +29,8 @@ int main()
         }
         fprintf(stdout, "\n");
     }
+
     SDL_Quit();
-    fromBarcodeToName();
+    // fromBarcodeToName();
     return 0;
 }
