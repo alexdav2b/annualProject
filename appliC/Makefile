@@ -27,4 +27,4 @@ cleanObj:
 
 #construct all and clean obj
 build:
-	make && make cleanObj && ./exe 
+	make && make cleanObj && ./exe

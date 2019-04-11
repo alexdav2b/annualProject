@@ -5,4 +5,7 @@
 #include <SDL.h>
 
 #include "json.h"
-#include "graphFunctions.h"
+#include "generateWindows.h"
+#include "connexionWindow.h"
+#include "menuWindow.h"
+#include "sendOfferWindow.h"
