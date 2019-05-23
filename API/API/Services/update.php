@@ -12,13 +12,14 @@ $content =  file_get_contents('php://input');
 $json = json_decode($content, true);
 
 if(FieldValidator::validate($json, [
+    'id',
     'name',
     'address'])){
 
-        $m = new Site (NULL,
+        $m = new Site ($json['id'],
                         $json['name'],
                         $json['address']);
-        $new = SiteService::getInstance()->create($m);
+        $new = SiteService::getInstance()->update($m);
         if($new){
             http_response_code(201);
             echo json_encode($new);

@@ -11,18 +11,13 @@ require_once __DIR__ . '/../../Models/Site.php';
 $content =  file_get_contents('php://input');
 $json = json_decode($content, true);
 
-if(FieldValidator::validate($json, [
-    'name',
-    'address'])){
-
-        $m = new Site (NULL,
-                        $json['name'],
-                        $json['address']);
-        $new = SiteService::getInstance()->create($m);
-        if($new){
-            http_response_code(201);
-            echo json_encode($new);
-        }
+if(FieldValidator::validate($json, ['id'])){
+    $m = $json['id'];
+    $new = SiteService::getById($m);
+    if($new){
+        http_response_code(201);
+        echo json_encode($new);
+    }
 }
 
 else{
