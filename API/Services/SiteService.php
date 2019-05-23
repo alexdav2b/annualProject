@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . '/../../Models/Site.php';
-require_once __DIR__ . '/../../Utils/DatabaseManager.php';
+require_once __DIR__ . '/../Models/Site.php';
+require_once __DIR__ . '/../Utils/DatabaseManager.php';
 
 class SiteService {
     // Singleton
@@ -16,17 +16,16 @@ class SiteService {
 		return self::$instance;
 	}
 
-    public function insert(User $user): ?User{
+    public function insert(Site $site): ?Site{
         $db = DatabaseManager::getManager();
-        $sql = 'INSERT INTO USR (`Name`,`Address`) VALUES(?, ?)';
+        $sql = 'INSERT INTO `SITE` (`Name`,`Address`) VALUES(?, ?)';
         $affectedRows = $db ->exec($sql, [
-            $user->getName(),
-            $user->getAddress(),
-            $user->getEligibility(),
+            $site->getName(),
+            $site->getAddress(),
         ]);
         if($affectedRows > 0){
-            $user->setId($db->LastInsertedId());
-            return $user;
+            $site->setId($db->LastInsertedId());
+            return $site;
         }
         return NULL;
     }

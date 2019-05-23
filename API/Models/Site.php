@@ -8,7 +8,7 @@ Class Site implements JsonSerializable{
 
 
     // Constructeur
-    public function __construct(?int $id, string $name, string $adress){
+    public function __construct(?int $id, string $name, string $address){
         $this->id = $id;
         $this->name = $name;
         $this->address = $address;
@@ -16,8 +16,8 @@ Class Site implements JsonSerializable{
 
     // Getter
     public function getId():? int{ return $this->id; }
-    public function getAddress(): string {return $this->address; }
-    public function getName(): string {return $this->name; }
+    public function getAddress(): string { return $this->address; }
+    public function getName(): string { return $this->name; }
 
     // Setter
     public function setId(int $id){ $this->id = $id; }
