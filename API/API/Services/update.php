@@ -14,11 +14,17 @@ $json = json_decode($content, true);
 if(FieldValidator::validate($json, [
     'id',
     'name',
-    'address'])){
+    'numero',
+    'rue',
+    'postcode',
+    'area'])){
 
         $m = new Site ($json['id'],
                         $json['name'],
-                        $json['address']);
+                        $json['numero'],
+                        $json['rue'],
+                        $json['postcode'],
+                        $json['area']);
         $new = SiteService::getInstance()->update($m);
         if($new){
             http_response_code(201);

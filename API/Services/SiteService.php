@@ -18,10 +18,13 @@ class SiteService {
 
     public function create(Site $site): ?Site{
         $db = DatabaseManager::getManager();
-        $sql = 'INSERT INTO `SITE` (`Name`,`Address`) VALUES(?, ?)';
+        $sql = 'INSERT INTO `SITE` (`Name`, `Numero`, `Rue`, `Postcode`, `Area`) VALUES(?, ?, ?, ?, ?)';
         $affectedRows = $db ->exec($sql, [
             $site->getName(),
-            $site->getAddress(),
+            $site->getNumero(),
+            $site->getRue(),
+            $site->getPostcode(),
+            $site->getArea()
         ]);
         if($affectedRows > 0){
             $site->setId($db->LastInsertedId());
@@ -48,7 +51,7 @@ class SiteService {
         if(count($array) > 0){
             $result = array();
             foreach ($array as $value){
-                $site = new Site($value['ID'], $value['Name'], $value['Address']);
+                $site = new Site($value['ID'], $value['Name'], $value['Numero'], $value['Rue'], $value['Postcode'], $value['Area']);
                 array_push($result, $site);
             }
             return $result;
@@ -61,17 +64,20 @@ class SiteService {
         $sql = 'SELECT * FROM `Site` WHERE id = ?';
         $result = $db->getOne($sql, [$siteId]);
         if($result > 0){
-            return new Site($result['ID'], $result['Name'], $result['Address']);
+            return new Site($result['ID'], $result['Name'], $result['Numero'], $result['Rue'], $result['Postcode'], $result['Area']);
         }
         return NULL;
     }
 
     public function update(Site $site): ?Site{
         $db = DatabaseManager::getManager();
-        $sql = 'UPDATE `Site` SET `Name` = ?, `Address` = ? WHERE id = ?';
+        $sql = 'UPDATE `Site` SET `Name` = ?, `Numero` = ?, `Rue` = ?, `Postcode` = ?, `Area` = ? WHERE id = ?'; //
         $affectedRows = $db ->exec($sql, [
             $site->getName(),
-            $site->getAddress(),
+            $site->getNumero(),
+            $site->getRue(),
+            $site->getPostcode(),
+            $site->getArea(),
             $site->getId()
         ]);
         if($affectedRows > 0){
