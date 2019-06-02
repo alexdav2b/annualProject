@@ -59,6 +59,16 @@ class SiteService {
         return NULL;
     }
 
+    public static function getById(int $siteId): ?Site{
+        $db = DatabaseManager::getManager();
+        $sql = 'SELECT * FROM `Site` WHERE id = ?';
+        $result = $db->getOne($sql, [$siteId]);
+        if($result > 0){
+            return new Site($result['ID'], $result['Name'], $result['Numero'], $result['Rue'], $result['Postcode'], $result['Area']);
+        }
+        return NULL;
+    }
+
     public function update(Site $site): ?Site{
         $db = DatabaseManager::getManager();
         $sql = 'UPDATE `Site` SET `Name` = ?, `Numero` = ?, `Rue` = ?, `Postcode` = ?, `Area` = ? WHERE id = ?'; //
@@ -75,18 +85,6 @@ class SiteService {
         }
         return NULL;
     }
-    
-    public static function getById(int $siteId): ?Site{
-        $db = DatabaseManager::getManager();
-        $sql = 'SELECT * FROM `Site` WHERE id = ?';
-        $result = $db->getOne($sql, [$siteId]);
-        if($result > 0){
-            return new Site($result['ID'], $result['Name'], $result['Numero'], $result['Rue'], $result['Postcode'], $result['Area']);
-        }
-        return NULL;
-    }
-
-
 }
 
 ?>
