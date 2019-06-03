@@ -3,12 +3,12 @@
 Class AskType implements JsonSerializable{
     // Properties
     private $id;
-    private $name; // varchar 255
+    private $name; // varchar 80
 
     // Constructor
     public function __construct(?int $id, string $name){
         $this->id = $id;
-        $this->getName($name);
+        $this->setName($name);
     }
 
     // Getter
@@ -19,7 +19,7 @@ Class AskType implements JsonSerializable{
     public function setId(int $id){ $this->id = $id; }
 
     public function setName(string $name) { 
-        if(StringIsNotOver($name, 255)
+        if($this->StringIsNotOver($name, 80))
             $this->name = $name; 
     }
     
@@ -31,5 +31,6 @@ Class AskType implements JsonSerializable{
     private function StringIsNotOver(string $str, int $length){
         return (strlen($str) > 0 && strlen($str) <= $length);
     }
+
 }
 ?>

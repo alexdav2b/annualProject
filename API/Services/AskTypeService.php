@@ -19,9 +19,7 @@ class AskTypeService{
     public function create(AskType $askType): ?AskType{
         $db = DatabaseManager::getManager();
         $sql = 'INSERT INTO `ASKTYPE`(`Name`) VALUES (?)';
-        $affectedRows = $db->exec($sql, [
-            $askType->getName()
-        ]);
+        $affectedRows = $db->exec($sql, [$askType->getName()]);
         if($affectedRows > 0){
             $askType->setId($db->LastInsertedId());
             return $askType;
