@@ -3,12 +3,12 @@
 Class Competence implements JsonSerializable{
     // Properties
     private $id;
-    private $name; // nb varchar
+    private $name; // VARCHAR 80
 
     // Constructor
     public function __construct(?int $id, string $name){
         $this->id = $id;
-        $this->name = $name;
+        $this->setName($name);
     }
 
     // Getter
@@ -17,11 +17,19 @@ Class Competence implements JsonSerializable{
 
     // Setter
     public function setId(int $id) { $this->id = $id; }
-    public function setName(string $name) {$this->name = $name; }
+
+    public function setName(string $name) {
+        if($this->StringIsNotOver($name, 80))
+            $this->name = $name; 
+    }
 
     // Method
     public function jsonSerialize(){
         return get_object_vars($this);
+    }
+
+    private function StringIsNotOver(string $str, int $length){
+        return (strlen($str) > 0 && strlen($str) <= $length);
     }
 }
 
