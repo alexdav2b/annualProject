@@ -18,7 +18,7 @@ class StopProductService{
 
     public function create(StopProduct $StopProduct): ?StopProduct{
         $db = DatabaseManager::getManager();
-        $sql = 'INSERT INTO `StopProduct` (`StopID`, `ProductID`) VALUES(?, ?)';
+        $sql = 'INSERT INTO `Stop_Product` (`StopID`, `ProductID`) VALUES(?, ?)';
         $affectedRows = $db ->exec($sql, [
             $StopProduct->getStopId(),
             $StopProduct->getProductID()
@@ -31,7 +31,7 @@ class StopProductService{
 
     public static function delete(StopProduct $StopProduct): bool{
         $db = DatabaseManager::getManager();
-        $sql = 'DELETE FROM `StopProduct` WHERE `StopID` = ? AND `ProductID` = ?';
+        $sql = 'DELETE FROM `Stop_Product` WHERE `StopID` = ? AND `ProductID` = ?';
         $affectedRows = $db ->exec($sql, [
             $StopProduct->getStopId(),
             $StopProduct->getProductID()
@@ -44,7 +44,7 @@ class StopProductService{
 
     public static function getAll(): array{
         $db = DatabaseManager::getManager();
-        $sql = 'SELECT * FROM `StopProduct`';
+        $sql = 'SELECT * FROM `Stop_Product`';
         $array = $db->getAll($sql);
         $result;
         if(count($array) > 0){
@@ -61,9 +61,9 @@ class StopProductService{
         return NULL;
     }
 
-    public static function getAllByProductId(int $productId): ?StopProduct{
+    public static function getAllByProductId(int $productId): ?array{
         $db = DatabaseManager::getManager();
-        $sql = 'SELECT * FROM `StopProduct` WHERE id = ?';
+        $sql = 'SELECT * FROM `Stop_Product` WHERE productId = ?';
         $array = $db->getAll($sql, [$productId]);
         $result;
         if(count($array) > 0){
@@ -80,9 +80,9 @@ class StopProductService{
         return NULL;
     }
 
-    public static function getAllByStopId(int $stopId): ?StopProduct{
+    public static function getAllByStopId(int $stopId): ?array{
         $db = DatabaseManager::getManager();
-        $sql = 'SELECT * FROM `StopProduct` WHERE id = ?';
+        $sql = 'SELECT * FROM `Stop_Product` WHERE stopId = ?';
         $array = $db->getAll($sql, [$stopId]);
         $result;
         if(count($array) > 0){
@@ -99,18 +99,18 @@ class StopProductService{
         return NULL; 
     }
 
-    public function update(StopProduct $StopProduct): ?StopProduct{
-        $db = DatabaseManager::getManager();
-        $sql = 'UPDATE `StopProduct` SET  `StopID` = ?, `ProductID` = ? WHERE id = ?';
-        $affectedRows = $db ->exec($sql, [
-            $StopProduct->getStopId(),
-            $StopProduct->getProductId()
-        ]);
-        if($affectedRows > 0){
-            return $StopProduct;
-        }
-        return NULL;
-    }
+    // public function update(StopProduct $StopProduct): ?StopProduct{
+    //     $db = DatabaseManager::getManager();
+    //     $sql = 'UPDATE `Stop_Product` SET  `StopID` = ?, `ProductID` = ? WHERE id = ?';
+    //     $affectedRows = $db ->exec($sql, [
+    //         $StopProduct->getStopId(),
+    //         $StopProduct->getProductId()
+    //     ]);
+    //     if($affectedRows > 0){
+    //         return $StopProduct;
+    //     }
+    //     return NULL;
+    // }
 }
 
 ?>

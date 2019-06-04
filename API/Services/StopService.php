@@ -22,8 +22,8 @@ class StopService{
         $affectedRows = $db ->exec($sql, [
             $Stop->getDateHour(),
             $Stop->getDeliveryId(),
-            $Stop->getDonatorId(),
-            $Stop->getReceiverId()
+            $Stop->getDonateId(),
+            $Stop->getReceiveId()
         ]);
         if($affectedRows > 0){
             $Stop->setId($db->LastInsertedId());
@@ -82,12 +82,12 @@ class StopService{
 
     public function update(Stop $Stop): ?Stop{
         $db = DatabaseManager::getManager();
-        $sql = 'UPDATE `Stop` SET `DateHour` = ?, `DeliveryID` = ?, `UsrDonatorID` = ?, `UsrReceiveID` WHERE id = ?';
+        $sql = 'UPDATE `Stop` SET `DateHour` = ?, `DeliveryID` = ?, `UsrDonateID` = ?, `UsrReceiveID` = ? WHERE id = ?';
         $affectedRows = $db ->exec($sql, [
             $Stop->getDateHour(),
             $Stop->getDeliveryId(),
-            $Stop->getDonatorId(),
-            $Stop->getReceiverId(),
+            $Stop->getDonateId(),
+            $Stop->getReceiveId(),
             $Stop->getId()
         ]);
         if($affectedRows > 0){

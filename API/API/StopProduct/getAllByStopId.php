@@ -11,9 +11,8 @@ require_once __DIR__ . '/../../Models/StopProduct.php';
 $content =  file_get_contents('php://input');
 $json = json_decode($content, true);
 
-
-if(FieldValidator::validate($json, ['stopID'])){
-    $m = $json['stopID'];
+if(FieldValidator::validate($json, ['stopId'])){
+    $m = $json['stopId'];
     $new = StopProductService::getAllByStopId($m);
     if($new){
         http_response_code(201);
