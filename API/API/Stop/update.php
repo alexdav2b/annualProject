@@ -11,9 +11,8 @@ require_once __DIR__ . '/../../Models/Stop.php';
 $content =  file_get_contents('php://input');
 $json = json_decode($content, true);
 
-if(FieldValidator::validate($json, ['id', 'name'])){
-
-    $m = new Stop ($json['id'], $json['name']);
+if(FieldValidator::validate($json, ['id', 'dateHour', 'deliveryID', 'usrDonateID', 'usrReceiveID']])){
+    $m = new Stop ($json['id'], $json['dateHour'], $json['deliveryID'], $json['usrDonateID'], $json['usrReceiveID']);
     $new = StopService::getInstance()->update($m);
     if($new){
         http_response_code(201);
