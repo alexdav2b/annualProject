@@ -1,6 +1,6 @@
 <?php
 
-Class DeliveryType implements JsonSerializable{
+Class Service implements JsonSerializable{
     // Properties
     private $id;
     private $name; // VARCHAR 80
@@ -13,14 +13,14 @@ Class DeliveryType implements JsonSerializable{
 
     // Getter
     public function getId(): ?int { return $this->id; }
-    public function getName(): string { return $this->name; }
+    public function getName(): string {return $this->name; }
 
     // Setter
-    public function setId(int $id){ $this->id = $id; }
+    public function setId(int $id) { $this->id = $id; }
 
-    public function setName(string $name){
+    public function setName(string $name) {
         if($this->StringIsNotOver($name, 80))
-            $this->name = $name;
+            $this->name = $name; 
     }
 
     // Method
