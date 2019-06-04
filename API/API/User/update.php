@@ -14,18 +14,14 @@ $json = json_decode($content, true);
 if(FieldValidator::validate($json, [
     'id',
     'siteID',
-    'serviceID',
     'email',
     'name',
-    'surname',
     'password',
     'numero',
     'rue',
     'postcode',
     'area',
     'eligibility',
-    'siret',
-    'salary',
     'discriminator'])){
 
         $m = new User ($json['id'],

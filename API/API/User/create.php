@@ -9,9 +9,8 @@ require_once __DIR__ . '/../../Models/User.php';
 $content =  file_get_contents('php://input');
 $json = json_decode($content, true);
 
-var_dump($json);
 if(FieldValidator::validate($json, [
-    'siteId',
+    'siteID',
     'email',
     'name',
     'password',
@@ -22,10 +21,9 @@ if(FieldValidator::validate($json, [
     'eligibility',
     'discriminator'
     ])){
-
         $m = new User(NULL,
-                            $json['siteId'],
-                            $json['serviceId'],
+                            $json['siteID'],
+                            $json['serviceID'],
                             $json['email'],
                             $json['name'],
                             $json['surname'],

@@ -24,7 +24,7 @@ Class User implements JsonSerializable{
     // Constructor
     public function __construct(?int $id, int $siteId, ?int $serviceId, string $email,
     string $name, ?string $surname, string $password, string $numero, string $rue, string $postcode,
-    string $area, bool $eligibility,  ?string $siret, ?float $salary, string $discriminator){
+    string $area, int $eligibility,  ?string $siret, ?float $salary, string $discriminator){
         $this->id = $id;
         $this->siteId = $siteId; 
         $this->serviceId = $serviceId;
@@ -56,7 +56,7 @@ Class User implements JsonSerializable{
     public function getPostCode(): string { return $this->postcode; }
     public function getArea(): string { return $this->area; }
 
-    public function getEligibility(): bool { return $this->eligibility; }
+    public function getEligibility(): int { return $this->eligibility; }
     public function getSiret(): ?string { return $this->siret; }
     public function getSalary(): ?float { return $this->salary; }
 
@@ -66,14 +66,14 @@ Class User implements JsonSerializable{
     public function setId(int $id){ $this->id = $id; }
     public function setSiteId(int $id){ $this->siteId = $id; }
     public function setServiceId(int $id){ $this->siteId = $id; }
-    public function setEligibility(bool $bool){ $this->eligibility = $eligibility; }
+    public function setEligibility(int $bool){ $this->eligibility = $eligibility; }
     
-    public function setSiret(string $siret){
+    public function setSiret(?string $siret){
         if(strlen($siret) == 14)
             $this->siret = $siret;
     }
     
-    public function setSalary(float $salary){ 
+    public function setSalary(?float $salary){ 
         if($salary > 0)
             $this->salary = $salary; 
     }
@@ -97,7 +97,7 @@ Class User implements JsonSerializable{
             $this->name = $name; 
     }
 
-    public function setSurname(string $surname){
+    public function setSurname(?string $surname){
         if($this->StringIsNotOver($surname, 80))
             $this->surname = $surname; 
     }
@@ -105,7 +105,8 @@ Class User implements JsonSerializable{
     public function setPassword(string $password){
         if($this->StringIsNotOver($password, 20)){
             $salt = bin2hex(random_bytes(5)); // 10 characters
-            $this->password = HashNSalt($salt,  $password); // 50 characters
+            $this->password = $this->HashNSalt($salt,  $password); // 50 characters
+        
         }
     }
 
@@ -120,7 +121,7 @@ Class User implements JsonSerializable{
     }
 
     public function setPostcode(string $postcode){ 
-        if(strlen($postcode == 5))
+        if(strlen($postcode) == 5)
             $this->postcode = $postcode; 
     }
 
@@ -134,10 +135,10 @@ Class User implements JsonSerializable{
     private function HashNSalt(string $salt, string $password): string{
         // in DATABASE :  10st characters = SALT, 40 last = hash (SALT + PASSWORD)
         // ripemd160 => 40 characters
-        $salted = $salt + $password; 
+        $salted = $salt . $password; 
         $algo = 'ripemd160'; 
         $hashed = hash($algo, $salted, FALSE);
-        $password = $hashed + $salt; 
+        $password = $hashed . $salt; 
         return $password;
     }
 

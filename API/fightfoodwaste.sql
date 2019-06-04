@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 04 juin 2019 à 06:08
+-- Généré le :  mar. 04 juin 2019 à 08:14
 -- Version du serveur :  5.7.19
 -- Version de PHP :  7.1.9
 
@@ -119,7 +119,6 @@ CREATE TABLE IF NOT EXISTS `competence` (
 
 INSERT INTO `competence` (`ID`, `Name`) VALUES
 (1, 'Ma demande'),
-(3, 'Competence'),
 (4, 'Plombier'),
 (5, 'Competence'),
 (6, 'Competence');
@@ -379,15 +378,24 @@ INSERT INTO `site` (`ID`, `Name`, `Numero`, `Rue`, `Postcode`, `Area`) VALUES
 DROP TABLE IF EXISTS `stop`;
 CREATE TABLE IF NOT EXISTS `stop` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `DateHour` date DEFAULT NULL,
-  `DeliveryID` int(11) NOT NULL,
-  `UsrDonateID` int(11) DEFAULT NULL,
+  `DateHour` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `DeliveryID` int(11) DEFAULT NULL,
+  `UsrDonateID` int(11) NOT NULL,
   `UsrReceiveID` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `FKStop998604` (`DeliveryID`),
   KEY `FKStop421206` (`UsrReceiveID`),
   KEY `FKStop62007` (`UsrDonateID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Déchargement des données de la table `stop`
+--
+
+INSERT INTO `stop` (`ID`, `DateHour`, `DeliveryID`, `UsrDonateID`, `UsrReceiveID`) VALUES
+(1, '8', NULL, 1, 4),
+(2, '8', NULL, 1, 4),
+(4, '8', NULL, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -450,7 +458,7 @@ CREATE TABLE IF NOT EXISTS `usr` (
   `Rue` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
   `Postcode` char(5) COLLATE utf8_unicode_ci NOT NULL,
   `Area` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
-  `Eligibility` int(11) NOT NULL,
+  `Eligibility` tinyint(1) NOT NULL,
   `Siret` char(14) COLLATE utf8_unicode_ci DEFAULT NULL,
   `Salary` float DEFAULT NULL,
   `Discriminator` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -458,7 +466,16 @@ CREATE TABLE IF NOT EXISTS `usr` (
   UNIQUE KEY `Email` (`Email`),
   KEY `FKUsr710495` (`ServiceID`),
   KEY `FKUsr559775` (`SiteID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Déchargement des données de la table `usr`
+--
+
+INSERT INTO `usr` (`ID`, `SiteID`, `ServiceID`, `Email`, `Name`, `Surname`, `Password`, `Numero`, `Rue`, `Postcode`, `Area`, `Eligibility`, `Siret`, `Salary`, `Discriminator`) VALUES
+(1, 8, 3, 'sophie@gmail.com', 'pelluet', 'sophie', 'b71d44619996de12533f3dfc47fb84f151fdc72f253e344eab', '6b', '9 rue colmet lepinay', '91700', 'MONTREUIL', 0, NULL, 12.3, 'EMPLOYEE'),
+(4, 8, NULL, 'sophie@free.fr', 'pelluet', 'sophie', '7e877ce5a9ed67b6dd4712f31449fe2231990d3c82b6179794', '6b', '9 rue colmet lepinay', '91700', 'MONTREUIL', 1, NULL, 12.3, 'EMPLOYEE'),
+(6, 8, 3, 'spelluet@gmail.fr', 'pelluet', 'sophie', 'b05e2731ffb20092956703a84cee88ca10827b2e3083610631', '6b', '9 rue colmet lepinay', '91700', 'MONTREUIL', 0, NULL, 12.3, 'EMPLOYEE');
 
 -- --------------------------------------------------------
 

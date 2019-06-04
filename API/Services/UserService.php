@@ -33,7 +33,7 @@ class UserService {
             `Siret`,
             `Salary`,
             `Discriminator`) 
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         $affectedRows = $db ->exec($sql, [
             $user->getSiteId(),
             $user->getServiceId(),
