@@ -4,9 +4,9 @@ Class Delivery implements JsonSerializable{
     // Properties
     private $id; 
     private $truckId;
-    private $deliveryTypeId;
-    private $dateStart;
-    private $dateEnd;
+    private $deliveryTypeId; 
+    private $dateStart; // nullable
+    private $dateEnd; // nullable
 
     // Constructor
     public function __construct(?int $id, int $truckId, int $deliveryTypeId, date $dateStart, date $dateEnd){
