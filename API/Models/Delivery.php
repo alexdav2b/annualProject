@@ -2,7 +2,7 @@
 
 Class Delivery implements JsonSerializable{
     // Properties
-    private $id; 
+    private $id;
     private $truckId;
     private $userId;
     private $deliveryTypeId;
@@ -25,7 +25,7 @@ Class Delivery implements JsonSerializable{
     public function getTruckId(): int { return $this->truckId; }
     public function getDeliveryTypeId(): int { return $this->deliveryTypeId; }
     public function getDateStart(): ?string { return $this->dateStart; }
-    public function getDateEnd(): ?string { return $this->dateEnd; } 
+    public function getDateEnd(): ?string { return $this->dateEnd; }
 
     // Setter
     public function setId(int $id){ $this->id = $id; }

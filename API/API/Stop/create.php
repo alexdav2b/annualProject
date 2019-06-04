@@ -10,8 +10,8 @@ $content =  file_get_contents('php://input');
 $json = json_decode($content, true);
 var_dump($json);
 
-if(FieldValidator::validate($json, ['DateHour'], ['DeliveryID'], ['UsrDonateID'], ['UsrReceiveID'])){
-    $m = new Stop(NULL, $json['DateHour'], $json['DeliveryID'], $json['UsrDonateID'], $json['UsrReceiveID']);
+if(FieldValidator::validate($json, ['dateHour', 'deliveryID', 'usrDonateID', 'usrReceiveID'])){
+    $m = new Stop(NULL, $json['dateHour'], $json['deliveryID'], $json['usrDonateID'], $json['usrReceiveID']);
     var_dump($m);
     $new = StopService::getInstance()->create($m);
     if($new){

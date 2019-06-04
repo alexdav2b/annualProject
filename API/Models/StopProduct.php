@@ -2,22 +2,23 @@
 
 Class StopProduct implements JsonSerializable { // Verif BDD
     // Properties
-    private $productId;
     private $stopId;
+    private $productId;
 
     // Constructor
-    public function __construct(int $productId, int $stopId){
-        $this->productId = $productId;
+    public function __construct(int $stopId, int $productId){
         $this->stopId = $stopId;
+        $this->productId = $productId;
     }
 
     // Getter
-    public function getProductId(): int { return $this->productId; }
     public function getStopId(): int {return $this->stopId; }
+    public function getProductId(): int { return $this->productId; }
+
 
     // Setter
-    public function setProductId(int $id){ $this->productId = $id; }
     public function setStopId(int $id){ $this->stopId = $id; }
+    public function setProductId(int $id){ $this->productId = $id; }
 
     // Method
     public function jsonSerialize(){
