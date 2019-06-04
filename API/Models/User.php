@@ -64,9 +64,6 @@ Class User implements JsonSerializable{
 
     // Setter
     public function setId(int $id){ $this->id = $id; }
-    public function setSiteId(int $id){ $this->siteId = $id; }
-    public function setServiceId(int $id){ $this->siteId = $id; }
-    public function setEligibility(int $bool){ $this->eligibility = $eligibility; }
     
     public function setSiret(?string $siret){
         if(strlen($siret) == 14)

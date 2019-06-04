@@ -15,11 +15,6 @@ Class StopProduct implements JsonSerializable { // Verif BDD
     public function getStopId(): int {return $this->stopId; }
     public function getProductId(): int { return $this->productId; }
 
-
-    // Setter
-    public function setStopId(int $id){ $this->stopId = $id; }
-    public function setProductId(int $id){ $this->productId = $id; }
-
     // Method
     public function jsonSerialize(){
         return get_object_vars($this);

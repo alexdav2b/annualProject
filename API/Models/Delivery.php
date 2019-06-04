@@ -29,11 +29,8 @@ Class Delivery implements JsonSerializable{
 
     // Setter
     public function setId(int $id){ $this->id = $id; }
-    public function setUserId(int $id){ $this->userId = $id; }
-    public function setTruckId(int $id){ $this->truckId = $id; }
-    public function setDeliveryTypeId(int $id){ $this->deliveryTypeId = $id; }
-    public function setDateStart(string $date){ $this->dateStart; }
-    public function setDateEnd(string $date){ $this->dateEnd; }
+    // public function setDateStart(string $date){ $this->dateStart; }
+    // public function setDateEnd(string $date){ $this->dateEnd; }
 
     // Method
     public function jsonSerialize(){

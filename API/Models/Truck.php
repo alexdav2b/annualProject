@@ -26,7 +26,6 @@ Class Truck implements JsonSerializable{
 
     // Setter
     public function setId(int $id){ $this->id = $id;  }
-    public function setSiteId(int $id){ $this->siteId = $id; }
 
     public function setName(string $name){ 
         if($this->StringIsNotOver($name, 80))
