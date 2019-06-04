@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  mar. 04 juin 2019 à 08:14
+-- Généré le :  mar. 04 juin 2019 à 20:17
 -- Version du serveur :  5.7.19
 -- Version de PHP :  7.1.9
 
@@ -90,19 +90,6 @@ INSERT INTO `asktype` (`ID`, `Name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `category`
---
-
-DROP TABLE IF EXISTS `category`;
-CREATE TABLE IF NOT EXISTS `category` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `competence`
 --
 
@@ -126,22 +113,6 @@ INSERT INTO `competence` (`ID`, `Name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `content`
---
-
-DROP TABLE IF EXISTS `content`;
-CREATE TABLE IF NOT EXISTS `content` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `CategoryID` int(11) NOT NULL,
-  `Title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `Text` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `FKContent371849` (`CategoryID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `delivery`
 --
 
@@ -149,15 +120,29 @@ DROP TABLE IF EXISTS `delivery`;
 CREATE TABLE IF NOT EXISTS `delivery` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TruckID` int(11) NOT NULL,
-  `UsrID` int(11) NOT NULL,
+  `UsrID` int(11) DEFAULT NULL,
   `DeliveryTypeID` int(11) NOT NULL,
   `DateStart` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `DateEnd` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `FKDelivery401435` (`DeliveryTypeID`),
-  KEY `FKDelivery236924` (`UsrID`),
-  KEY `FKDelivery930104` (`TruckID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  KEY `FK_DeliveryTruck` (`TruckID`),
+  KEY `FK_DeliveryUsr` (`UsrID`),
+  KEY `FK_DeliveryDeliveryType` (`DeliveryTypeID`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Déchargement des données de la table `delivery`
+--
+
+INSERT INTO `delivery` (`ID`, `TruckID`, `UsrID`, `DeliveryTypeID`, `DateStart`, `DateEnd`) VALUES
+(25, 2, 4, 4, '25-03-2019', '25-03-2019'),
+(37, 1, 6, 4, '25-03-2019', '25-03-2019'),
+(38, 2, 4, 4, '25-03-2019', '25-03-2019'),
+(39, 2, 4, 4, '25-03-2019', '25-03-2019'),
+(40, 2, 4, 4, '25-03-2019', '25-03-2019'),
+(41, 2, 4, 4, '25-03-2019', '25-03-2019'),
+(42, 2, 4, 4, '25-03-2019', '25-03-2019'),
+(43, 2, 4, 4, '25-03-2019', '25-03-2019');
 
 -- --------------------------------------------------------
 
@@ -386,16 +371,20 @@ CREATE TABLE IF NOT EXISTS `stop` (
   KEY `FKStop998604` (`DeliveryID`),
   KEY `FKStop421206` (`UsrReceiveID`),
   KEY `FKStop62007` (`UsrDonateID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Déchargement des données de la table `stop`
 --
 
 INSERT INTO `stop` (`ID`, `DateHour`, `DeliveryID`, `UsrDonateID`, `UsrReceiveID`) VALUES
-(1, '8', NULL, 1, 4),
+(1, NULL, 38, 1, NULL),
 (2, '8', NULL, 1, 4),
-(4, '8', NULL, 1, 4);
+(4, '8', NULL, 1, 4),
+(5, NULL, 38, 1, NULL),
+(6, NULL, 38, 1, NULL),
+(7, NULL, 38, 1, NULL),
+(8, NULL, 38, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -409,7 +398,14 @@ CREATE TABLE IF NOT EXISTS `stop_product` (
   `ProductID` int(11) NOT NULL,
   PRIMARY KEY (`StopID`,`ProductID`),
   KEY `FKStop_Produ160082` (`ProductID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Déchargement des données de la table `stop_product`
+--
+
+INSERT INTO `stop_product` (`StopID`, `ProductID`) VALUES
+(1, 3);
 
 -- --------------------------------------------------------
 
@@ -510,18 +506,14 @@ ALTER TABLE `ask`
   ADD CONSTRAINT `FKAsk600256` FOREIGN KEY (`UsrAnswerID`) REFERENCES `usr` (`ID`);
 
 --
--- Contraintes pour la table `content`
---
-ALTER TABLE `content`
-  ADD CONSTRAINT `FKContent371849` FOREIGN KEY (`CategoryID`) REFERENCES `category` (`ID`);
-
---
 -- Contraintes pour la table `delivery`
 --
 ALTER TABLE `delivery`
-  ADD CONSTRAINT `FKDelivery236924` FOREIGN KEY (`UsrID`) REFERENCES `usr` (`ID`),
   ADD CONSTRAINT `FKDelivery401435` FOREIGN KEY (`DeliveryTypeID`) REFERENCES `deliverytype` (`ID`),
-  ADD CONSTRAINT `FKDelivery930104` FOREIGN KEY (`TruckID`) REFERENCES `truck` (`ID`);
+  ADD CONSTRAINT `FK_DeliveryDeliveryType` FOREIGN KEY (`DeliveryTypeID`) REFERENCES `deliverytype` (`ID`),
+  ADD CONSTRAINT `FK_DeliveryTruck` FOREIGN KEY (`TruckID`) REFERENCES `truck` (`ID`),
+  ADD CONSTRAINT `FK_DeliveryUsr` FOREIGN KEY (`UsrID`) REFERENCES `usr` (`ID`),
+  ADD CONSTRAINT `delivery_ibfk_3` FOREIGN KEY (`DeliveryTypeID`) REFERENCES `deliverytype` (`ID`);
 
 --
 -- Contraintes pour la table `depositery`
