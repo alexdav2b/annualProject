@@ -4,9 +4,9 @@
 // sortie content type = json
 header("Content-Type: application/json");
 
-require_once __DIR__ . '/../../Services/CompetenceService.php';
+require_once __DIR__ . '/../../Services/DeliveryService.php';
 require_once __DIR__ . '/../../Utils/FieldValidator.php';
-require_once __DIR__ . '/../../Models/Competence.php';
+require_once __DIR__ . '/../../Models/Delivery.php';
 
 $content =  file_get_contents('php://input');
 $json = json_decode($content, true);
@@ -14,7 +14,7 @@ $json = json_decode($content, true);
 
 if(FieldValidator::validate($json, ['id'])){
     $m = $json['id'];
-    $new = CompetenceService::getById($m);
+    $new = DeliveryService::getById($m);
     if($new){
         http_response_code(201);
         echo json_encode($new);

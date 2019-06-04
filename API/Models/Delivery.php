@@ -10,9 +10,9 @@ Class Delivery implements JsonSerializable{
     private $dateEnd; // nullable
 
     // Constructor
-    public function __construct(?int $id, int $userId, int $truckId, int $deliveryTypeId, ?string $dateStart, ?string $dateEnd){
+    public function __construct(?int $id, int $truckId, int $userId, int $deliveryTypeId, ?string $dateStart, ?string $dateEnd){
         $this->id = $id;
-        $this->userId = $id;
+        $this->userId = $userId;
         $this->truckId = $truckId;
         $this->deliveryTypeId = $deliveryTypeId;
         $this->dateStart = $dateStart;
@@ -29,7 +29,7 @@ Class Delivery implements JsonSerializable{
 
     // Setter
     public function setId(int $id){ $this->id = $id; }
-    public function setUserId(int $id){ $this->userId = $userId; }
+    public function setUserId(int $id){ $this->userId = $id; }
     public function setTruckId(int $id){ $this->truckId = $id; }
     public function setDeliveryTypeId(int $id){ $this->deliveryTypeId = $id; }
     public function setDateStart(string $date){ $this->dateStart; }

@@ -53,7 +53,11 @@ class DeliveryService{
             foreach($array as $value){
                 $Delivery = new Delivery(
                     $value['ID'],
-                    $value['Name']
+                    $value['TruckID'],
+                    $value['UsrID'],
+                    $value['DeliveryTypeID'],
+                    $value['DateStart'],
+                    $value['DateEnd']
                 );
                 array_push($result, $Delivery);
             }
@@ -69,7 +73,11 @@ class DeliveryService{
         if($result > 0){
             return new Delivery(
                 $result['ID'],
-                $result['Name']
+                $result['TruckID'],
+                $result['UsrID'],
+                $result['DeliveryTypeID'],
+                $result['DateStart'],
+                $result['DateEnd']
             );
         }
         return NULL;
@@ -77,10 +85,14 @@ class DeliveryService{
 
     public function update(Delivery $Delivery): ?Delivery{
         $db = DatabaseManager::getManager();
-        $sql = 'UPDATE `Delivery` SET `Name` = ? WHERE id = ?';
+        $sql = 'UPDATE `Delivery` SET `TruckID` = ?, `UsrID` = ?, `DeliveryTypeID` = ?, `DateStart` = ?, `DateEnd` = ? WHERE id = ?';
         $affectedRows = $db ->exec($sql, [
-            $Delivery->getName(),
-            $Delivery->getId()
+            $Delivery->getTruckId(),
+            $Delivery->getUserId(),
+            $Delivery->getDeliveryTypeId(),
+            $Delivery->getDateStart(),
+            $Delivery->getDateEnd(),
+            $Delivery->getId(),
         ]);
         if($affectedRows > 0){
             return $Delivery;
