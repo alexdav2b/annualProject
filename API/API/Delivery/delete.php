@@ -4,17 +4,17 @@
 // sortie content type = json
 header("Content-Type: application/json");
 
-require_once __DIR__ . '/../../Services/StopProductService.php';
+require_once __DIR__ . '/../../Services/DeliveryService.php';
 require_once __DIR__ . '/../../Utils/FieldValidator.php';
-require_once __DIR__ . '/../../Models/StopProduct.php';
+require_once __DIR__ . '/../../Models/Delivery.php';
 
 $content =  file_get_contents('php://input');
 $json = json_decode($content, true);
 
-if(FieldValidator::validate($json, ['stopId'])){
-    $m = $json['stopId'];
-    $new = StopProductService::getAllByStopId($m);
-    if($new){
+if(FieldValidator::validate($json, ['id'])){
+    $m = $json['id'];
+    $new = DeliveryService::delete($m);
+    if($new == true){
         http_response_code(201);
         echo json_encode($new);
     }

@@ -1,17 +1,20 @@
 <?php
+// Objectif : repondre a une requete http
 
+// sortie content type = json
 header("Content-Type: application/json");
 
-require_once __DIR__ . '/../../Services/StopProductService.php';
+require_once __DIR__ . '/../../Services/JustificatifService.php';
 require_once __DIR__ . '/../../Utils/FieldValidator.php';
-require_once __DIR__ . '/../../Models/StopProduct.php';
+require_once __DIR__ . '/../../Models/Justificatif.php';
 
 $content =  file_get_contents('php://input');
 $json = json_decode($content, true);
 
-if(FieldValidator::validate($json, ['stopId', 'productId'])){
-    $m = new StopProduct($json['stopId'], $json['productId']);
-    $new = StopProductService::getInstance()->create($m);
+
+if(FieldValidator::validate($json, ['id'])){
+    $m = $json['id'];
+    $new = JustificatifService::getById($m);
     if($new){
         http_response_code(201);
         echo json_encode($new);

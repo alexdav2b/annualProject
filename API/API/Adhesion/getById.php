@@ -4,17 +4,17 @@
 // sortie content type = json
 header("Content-Type: application/json");
 
-require_once __DIR__ . '/../../Services/StopProductService.php';
+require_once __DIR__ . '/../../Services/AdhesionService.php';
 require_once __DIR__ . '/../../Utils/FieldValidator.php';
-require_once __DIR__ . '/../../Models/StopProduct.php';
+require_once __DIR__ . '/../../Models/Adhesion.php';
 
 $content =  file_get_contents('php://input');
 $json = json_decode($content, true);
 
-if(FieldValidator::validate($json, ['stopID', 'productID'])){
 
-    $m = new StopProduct ($json['stopID'], $json['productID']);
-    $new = StopProductService::getInstance()->update($m);
+if(FieldValidator::validate($json, ['id'])){
+    $m = $json['id'];
+    $new = AdhesionService::getById($m);
     if($new){
         http_response_code(201);
         echo json_encode($new);

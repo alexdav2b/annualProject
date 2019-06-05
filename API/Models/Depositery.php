@@ -32,7 +32,6 @@ Class Depositery implements JsonSerializable{
 
     // Setter
     public function setId(int $id){ $this->id = $id; }
-    public function setSiteId(int $id){ $this->siteId = $id; }
 
     public function setCapacity(int $capacity){ 
         if($capacity > 0)

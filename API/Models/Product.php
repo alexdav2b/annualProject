@@ -12,8 +12,8 @@ Class Product  implements JsonSerializable{
     public function __construct(?int $id, ?int $depositeryId, string $name, string $barcode, string $validDate){
         $this->id = $id;
         $this->depositeryId = $depositeryId;
-        $this->name = $name;
-        $this->barcode = $barcode;
+        $this->setName($name);
+        $this->setBarcode($barcode);
         $this->validDate = $validDate;
     }
 
@@ -26,16 +26,15 @@ Class Product  implements JsonSerializable{
 
     // Setter
     public function setId(int $id){ $this->id = $id; }
-    public function setDepositeryId(int $id) { $this->depositeryId; }
-    public function setValidDate(string $date){ $this->validDate = $date; }
+    // public function setValidDate(string $date){ $this->validDate = $date; }
 
     public function setName(string $name){ 
-        if(StringIsNotOver($name, 80))
+        if($this->StringIsNotOver($name, 80))
             $this->name = $name; 
         }
 
     public function setBarcode(string $barcode){
-        if(StringIsNotOver($barcode, 13))
+        if($this->StringIsNotOver($barcode, 13))
             $this->barcode = $barcode;
     }
 
