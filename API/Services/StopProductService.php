@@ -29,13 +29,18 @@ class StopProductService{
         return NULL;
     }
 
-    public static function delete(StopProduct $StopProduct): bool{
+    public static function delete(int $stopId, ?int $productId): bool{
         $db = DatabaseManager::getManager();
-        $sql = 'DELETE FROM `StopProduct` WHERE `StopID` = ? AND `ProductID` = ?';
-        $affectedRows = $db ->exec($sql, [
-            $StopProduct->getStopId(),
-            $StopProduct->getProductID()
-        ]);
+        if($productId == null){
+            $sql = 'DELETE FROM `StopProduct` WHERE `StopID` = ?';
+            $affectedRows = $db ->exec($sql, [$stopId]);
+        }else{
+            $sql = 'DELETE FROM `StopProduct` WHERE `StopID` = ? AND `ProductID` = ?';
+            $affectedRows = $db ->exec($sql, [
+                $stopId,
+                $productId
+            ]);
+        }
         if($affectedRows > 0){
             return true;
         }
