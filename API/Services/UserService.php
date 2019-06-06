@@ -125,6 +125,32 @@ class UserService {
         return NULL;
     }
 
+    public static function getByEMail($email) : ?User{
+        $db = DatabaseManager::getManager();
+        $sql = 'SELECT * FROM `USR` WHERE `Email` = ?';
+        $result = $db->getOne($sql, [$email]);
+        if($result > 0){
+            return new User(
+                $result['ID'],
+                $result['SiteID'],
+                $result['ServiceID'],
+                $result['Email'],
+                $result['Name'],
+                $result['Surname'],
+                $result['Password'],
+                $result['Numero'],
+                $result['Rue'],
+                $result['Postcode'],
+                $result['Area'],
+                $result['Eligibility'],
+                $result['Siret'],
+                $result['Salary'],
+                $result['Discriminator']
+            );
+        }
+        return NULL;
+    }
+
     public function update(User $user): ?User{
         $db = DatabaseManager::getManager();
         $sql = 'UPDATE `USR` SET `SiteID` = ?, `ServiceID` = ?, `Email` = ?, `Name` = ?, `Surname` = ?, 
