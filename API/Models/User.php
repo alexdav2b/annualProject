@@ -135,33 +135,12 @@ Class User implements JsonSerializable{
         $salted = $salt . $password; 
         $algo = 'ripemd160'; 
         $hashed = hash($algo, $salted, FALSE);
-        $password = $hashed . $salt; 
+        $password = $salt . $hashed; 
         return $password;
-    }
-
-    public function Connexion(){
-        session_start();
-        session_regenerate_id();
-        if (!isset($_SESSION['userId'])) {
-            $_SESSION['userId'] = 0;
-        } else {
-            $_SESSION['userId']++;
-        }
-    }
-
-    public function Deconnnexion(){
-        session_start();
-        session_destroy ();
     }
 
     protected function StringIsNotOver(string $str, int $length){
         return (strlen($str) > 0 && strlen($str) <= $length);
-    }
-
-    public function PasswordIsValid(string $password, string $hashedPassword): bool{
-        $salt = substr($hashedPassword, 0, 10);
-        $password = HashNSalt($password, $salt);
-        return ($password == $hashedPassword);
     }
 
     public function jsonSerialize(){
