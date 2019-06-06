@@ -11,7 +11,6 @@ require_once __DIR__ . '/../../Models/Adhesion.php';
 $content =  file_get_contents('php://input');
 $json = json_decode($content, true);
 
-
 if(FieldValidator::validate($json, ['id'])){
     $m = $json['id'];
     $new = AdhesionService::getById($m);

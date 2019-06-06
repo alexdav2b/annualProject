@@ -18,9 +18,12 @@ class AdhesionService{
 
     public function create(Adhesion $Adhesion): ?Adhesion{
         $db = DatabaseManager::getManager();
-        $sql = 'INSERT INTO `Adhesion` (`UserId`, `DateAdhesion`, `Cb`, `Code`) VALUES(?, ?, ?, ?)';
+        $sql = 'INSERT INTO `Adhesion` (`UsrId`, `DateAdhesion`, `Cb`, `Code`) VALUES(?, ?, ?, ?)';
         $affectedRows = $db ->exec($sql, [
-            $Adhesion->getName()
+            $Adhesion->getUserId(),
+            $Adhesion->getDateAdhesion(),
+            $Adhesion->getCb(),
+            $Adhesion->getCode()
         ]);
         if($affectedRows > 0){
             $Adhesion->setId($db->LastInsertedId());
@@ -49,7 +52,7 @@ class AdhesionService{
             foreach($array as $value){
                 $Adhesion = new Adhesion(
                     $value['ID'],
-                    $value['UserId'],
+                    $value['UsrID'],
                     $value['DateAdhesion'],
                     $value['Cb'],
                     $value['Code']
@@ -67,11 +70,11 @@ class AdhesionService{
         $result = $db->getOne($sql, [$id]);
         if($result > 0){
             return new Adhesion(
-                $value['ID'],
-                $value['UserId'],
-                $value['DateAdhesion'],
-                $value['Cb'],
-                $value['Code']
+                $result['ID'],
+                $result['UsrID'],
+                $result['DateAdhesion'],
+                $result['Cb'],
+                $result['Code']
             );
         }
         return NULL;
@@ -79,9 +82,12 @@ class AdhesionService{
 
     public function update(Adhesion $Adhesion): ?Adhesion{
         $db = DatabaseManager::getManager();
-        $sql = 'UPDATE `Adhesion` SET `Name` = ? WHERE id = ?';
+        $sql = 'UPDATE `Adhesion` SET `UsrId` = ?, `DateAdhesion` = ?, `Cb` = ?, `Code` = ? WHERE id = ?';
         $affectedRows = $db ->exec($sql, [
-            $Adhesion->getName(),
+            $Adhesion->getUserId(),
+            $Adhesion->getDateAdhesion(),
+            $Adhesion->getCb(),
+            $Adhesion->getCode(),
             $Adhesion->getId()
         ]);
         if($affectedRows > 0){
