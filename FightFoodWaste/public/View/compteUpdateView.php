@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../Model/UserManager.php';
 
-$title = "Modification du compte";
+$title = "FightFoodWaste - Compte";
 ob_start(); 
 
 $userManager = new UserManager();

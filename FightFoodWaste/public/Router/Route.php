@@ -1,8 +1,20 @@
 <?php
 
-require __DIR__ . '/../../Control/PagesController.php';
-require __DIR__ . '/../../Control/UserController.php';
+require_once __DIR__ . '/../../Control/PagesController.php';
 
+require_once __DIR__ . '/../../Control/AdhesionController.php';
+require_once __DIR__ . '/../../Control/DeliveryController.php';
+require_once __DIR__ . '/../../Control/DeliveryTypeController.php';
+require_once __DIR__ . '/../../Control/DepositeryController.php';
+require_once __DIR__ . '/../../Control/EmployeeController.php';
+require_once __DIR__ . '/../../Control/IndividualController.php';
+require_once __DIR__ . '/../../Control/ProductController.php';
+require_once __DIR__ . '/../../Control/SalemanController.php';
+require_once __DIR__ . '/../../Control/SiteController.php';
+require_once __DIR__ . '/../../Control/StatutController.php';
+require_once __DIR__ . '/../../Control/StopController.php';
+require_once __DIR__ . '/../../Control/TruckController.php';
+require_once __DIR__ . '/../../Control/UserController.php';
 
 class Route{
 

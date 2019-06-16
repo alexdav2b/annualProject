@@ -10,14 +10,14 @@ require_once __DIR__ . '/../Model/User.php';
     private $user;
 
     public function __construct(?int $id, $date, string $cb, string $code, User $user){
+        if(strlen($cb) != 16 && strlen($code) != 16){
+            throw new Exception();
+        }
         $this->id = $id;
         $this->date = $date;
-        if(strlen($cb) == 16)
-            $this->cb = $cb; 
-        if(strlen($code) == 16)
-            $this->code = $code;
+        $this->cb = $cb; 
+        $this->code = $code;
         $this->user = $user;
-        
     }
 
     // Getter
@@ -43,8 +43,8 @@ require_once __DIR__ . '/../Model/User.php';
     }
 
     public function setUser(User $userId){
-        $user = new UserManager();
-        $user->getById($userId);
+        $controller = new UserController();
+        $user = $controller->getById($userId);
         $this->user = $user;
     }
     
@@ -55,13 +55,13 @@ require_once __DIR__ . '/../Model/User.php';
 		if($this->id != null){
 			return false;
 		}
-		$json = array(
+		$array = array(
 			'ID' => NULL,
 			'UserID' => $this->user->getId(),
 			'DateAdhesion' => $this->date,
 			'Cb' => $this->cb,
 			'Code' => $this->$code);
-		$json = json_encode($this);
+		$json = json_encode($array);
 		$json = $api->create($json);
 		if ($json != NULL){
 			$this->id = $json['ID'];
@@ -72,7 +72,13 @@ require_once __DIR__ . '/../Model/User.php';
 
 	public function delete(): bool{
 		$api = new ApiManager('Adhesion');
-		$json = json_encode($this);
+        $array = array(
+			'ID' => $this->id,
+			'UserID' => $this->user->getId(),
+			'DateAdhesion' => $this->date,
+			'Cb' => $this->cb,
+			'Code' => $this->$code);
+		$json = json_encode($array);
 		$json = $api->delete($json);
 		if ($json != NULL){
 			return true;
@@ -81,12 +87,13 @@ require_once __DIR__ . '/../Model/User.php';
 	}
 	public function update(string $discriminator): bool{
         $api = new ApiManager('Adhesion');
-        $json = array(
+        $array = array(
 			'ID' => $this->id,
 			'UserID' => $this->user->getId(),
 			'DateAdhesion' => $this->date,
 			'Cb' => $this->cb,
 			'Code' => $this->$code);
+		$json = json_encode($array);
 		$json = $api->update($json);
 		if ($json != NULL){
 			return true;		

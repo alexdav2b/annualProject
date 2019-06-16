@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../Model/Site.php';
-require_once __DIR__ . '/../Model/SiteManager.php';
+// require_once __DIR__ . '/../Control/SiteController.php';
 Class User{
 	// Propriety
 	private $id;  
@@ -42,9 +42,14 @@ Class User{
 	public function getEligibility(): bool{ return $this->eligibility; }
 	public function getSite(): Site { return $this->site; }
 
+	public function getDiscriminator() : string{
+		$api = new ApiManager('Usr');
+		$json = $api->getById($this->id);
+		return $json['Discriminator'];
+	}
+
 	// Set
 	public function setId($id){ $this->id = $id; }
-
 
 	public function setNumero(string $numero){
         if($this->StringIsNotOver($numero, 5))
@@ -67,8 +72,8 @@ Class User{
 	}
 	
 	public function setSite(int $siteId){
-		$site = new SiteManager();
-		$site->getById($siteId);
+		$controller = new SiteController();
+		$site = $controller->getById($siteId);
 		$this->site = $site;
 	}
 
@@ -78,7 +83,7 @@ Class User{
 		if($this->id != null){
 			return false;
 		}
-		$json = array(
+		$array = array(
 			'ID' => NULL,
 			'SiteID' => $this->site->getId(),
 			'Email' => $this->email,
@@ -93,7 +98,7 @@ Class User{
 			'SIRET' => isset($this->siret) ? $this->siret : NULL, 
 			'Salary' => isset($this->salary) ? $this->salary : NULL,
 			'Discriminator' => $discriminator);
-		$json = json_encode($this);
+		$json = json_encode($array);
 		$json = $api->create($json);
 		if ($json != NULL){
 			$this->id = $json['ID'];
@@ -104,16 +109,7 @@ Class User{
 
 	public function delete(): bool{
 		$api = new ApiManager('Usr');
-		$json = json_encode($this);
-		$json = $api->delete($json);
-		if ($json != NULL){
-			return true;
-		}
-		return false;
-	}
-	public function update(string $discriminator): bool{
-		$api = new ApiManager('Usr');
-		$json = array(
+		$array = array(
 			'ID' => $this->id,
 			'SiteID' => $this->site->getId(),
 			'Email' => $this->email,
@@ -128,6 +124,32 @@ Class User{
 			'SIRET' => isset($this->siret) ? $this->siret : NULL, 
 			'Salary' => isset($this->salary) ? $this->salary : NULL,
 			'Discriminator' => $discriminator);
+		$json = json_encode($array);
+		$json = $api->delete($json);
+		if ($json != NULL){
+			return true;
+		}
+		return false;
+	}
+
+	public function update(string $discriminator): bool{
+		$api = new ApiManager('Usr');
+		$array = array(
+			'ID' => $this->id,
+			'SiteID' => $this->site->getId(),
+			'Email' => $this->email,
+			'Name' => $this->name,
+			'Surname' => isset($this->surname) ? $this->surname : NULL,
+			'Password' => $this->password,
+			'Numero' => $this->numero,
+			'Rue' => $this->rue,
+			'Postcode' => $this->postcode,
+			'Area' => $this->area,
+			'Eligibility' => $this->eligibility,
+			'SIRET' => isset($this->siret) ? $this->siret : NULL, 
+			'Salary' => isset($this->salary) ? $this->salary : NULL,
+			'Discriminator' => $discriminator);
+		$json = json_encode($array);
 		$json = $api->update($json);
 		if ($json != NULL){
 			return true;		
@@ -155,7 +177,8 @@ Class User{
     public function Deconnnexion(){
         session_start();
         session_destroy ();
-    }
+	}
+	
 	public function PasswordIsValid(string $password, string $hashedPassword): bool{
         $salt = substr($hashedPassword, 0, 10);
         $password = HashNSalt($password, $salt);

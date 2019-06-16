@@ -14,15 +14,49 @@ $router->get('/about', "Pages#about");
 
 // User
 
-$router->get('/compte/:id', "User#view");
+$router->get('/compte/:id', "User#viewUser");
 
-$router->get('/comptes', "Comptes#show");
+$router->get('/comptes', "User#viewAll");
+
+// $router->post('/compte/:id', function($id){echo 'Poster pour le compte' . $id; });
+
+// $router->get('/users', "Individual#viewAll");
+
+// Adhesion
+
+$router->get('/adhesion/:id', "Adhesion#viewUser");
+
+$router->get('/adhesions', "Adhesion#viewAll");
+
+// Truck
+
+$router->get('/trucks', "Truck#viewAll");
+
+$router->get('/trucks/:site', "Truck#viewBySite");
+
+$router->get('/truck/:id', "Truck#view");
 
 
+// Delivery
 
-$router->post('/compte/:id', function($id){echo 'Poster pour le compte' . $id; });
+$router->get('/deliveries', "Delivery#viewAll");
+$router->get('/delivery/:id', "Delivery#view");
 
 
+// Product
+
+
+// Stop
+
+
+// Site
+
+$router->get('/sites', "Site#viewAll");
+
+$router->get('/site/:id', "Site#view");
+
+
+// Run
 
 $router->run();
 

@@ -1,25 +1,30 @@
 <?php
 
 require_once __DIR__ . '/../Model/ApiManager.php';
-require_once __DIR__ . '/../Model/User.php';
+require_once __DIR__ . '/../Model/Employee.php';
 
-Class UserController{
+Class EmployeeController{
 
     // Parse
-    private function parseOne($json) : User{
-        $siteController = new SiteController();
-        $site = $siteController->getById(intval($json['SiteID']));
-        return  new User($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Eligibility'], $site);
+    private function parseOne() : Employee{
+        if($json['Discriminator'] == 'Employer'){
+            $siteController = new SiteController();
+            $site = $siteController->getById(intval($json['SiteID']));
+
+            $user = new Employee($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Eligibility'], $json['Salary'], $json['Surname'], $site);
+            return $user;
+        }
     }
 
     private function parseAll($json) : array{
         $result = [];
         foreach($json as $line){
-            $siteController = new SiteController();
-            $site = $siteController->getById(intval($line['SiteID']));
-
-            $user = new User($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Eligibility'], $site);
-            array_push($result, $user);
+            if($line['Discriminator'] == 'Employer'){
+                $siteController = new SiteController();
+                $site = $siteController->getById(intval($line['SiteID']));
+                $user = new Employee($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Eligibility'], $line['Salary'], $line['Surname'], $site);
+                array_push($result, $user);
+            }
         }
         return $result;
     }
@@ -46,6 +51,12 @@ Class UserController{
     public function getByName(string $name){
         $api = new ApiManager('Usr');
         $json = $api->getByString('Name', $email);
+        return $this->parseAll($json);
+    }
+
+    public function getBySurname(string $surname){
+        $api = new ApiManager('Usr');
+        $json = $api->getByString('Surname', $surname);
         return $this->parseAll($json);
     }
 
@@ -91,19 +102,10 @@ Class UserController{
         return $this->parseAll($json);
     }
 
+    // getbySalary
+    
     // Views
 
-    public function view(int $id){
-        $user = $this->getById($id);
-        require_once __DIR__ . '/../public/View/userGestionView.php';
-    }
-
-    public function viewAll(){
-        $users = $this->getAll();
-        if($users != NULl){
-            require_once __DIR__ . '/../public/View/userGestionView.php';
-        }
-    }
 }
 
 ?>

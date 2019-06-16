@@ -1,20 +1,20 @@
 <?php
 
-Class Site{
+require_once __DIR__ . '/../Model/Site.php';
 
+Class Depositery{
     private $id;
-    private $name;
+    private $site;
     private $numero;
     private $rue;
     private $postcode;
     private $area;
     private $capacity;
 
-
-    public function __construct(?int $id, string $name, string $numero, string $rue, string $postcode, string $area, int $capacity){
+    public function __construct(?int $id, Site $site, string $numero, string $rue, string $postcode, string $area, int $capacity){
         $this->id = $id;
-        $this->name = $name; 
-        $this->numero = $numero; 
+        $this->site = $site;
+        $this->numero = $numero;
         $this->rue = $rue;
         $this->postcode = $postcode;
         $this->area = $area;
@@ -22,41 +22,41 @@ Class Site{
     }
 
     public function getId(): ?int{ return $this->id; }
-    public function getName(): string { return $this->name; }
+    public function getSite(): Site{ return $this->site; }
     public function getNumero(): string { return $this->numero; }
     public function getRue(): string { return $this->rue; }
     public function getPostcode() : string { return $this->postcode; }
     public function getArea() : string { return $this->area; }
     public function getCapacity() : int { return $this->capacity; }
 
-
-    public function setId(int $id){ 
+    public function setId(int $id){
         if($id > 0)
-            $this->id = $id; 
+            $this->id = $id;
     }
 
-    public function setName(string $name){
-        if($this->StringIsNotOver($name, 80))
-            $this->name = $name; 
+    public function setSite(int $siteId){
+        $site = new SiteController();
+        $site->getById($siteId);
+        $this->site = $site;
     }
-        
+
     public function setNumero(string $numero){
-        if($this->StringIsNotOver($numero, 5))
+        if(strlen($numero) > 0 && strlen($numero <= 5))
             $this->numero = $numero; 
     }
 
     public function setRue(string $rue){
-        if($this->StringIsNotOver($rue, 80))
+        if(strlen($rue) > 0 && strlen($rue) <= 80)
             $this->rue = $rue;   
     }
 
     public function setPostcode(string $postcode){
-        if($this->StringIsNotOver($postcode, 80))
+        if(strlen($postcode) == 5)
             $this->postcode = $postcode; 
     }
 
     public function setArea(string $area){
-        if($this->StringIsNotOver($area, 80))
+        if(strlen($area) > 0 && strlen($area) <= 80)
             $this->area = $area; 
     }
 
@@ -65,20 +65,14 @@ Class Site{
             $this->capacity;
     }
 
-    // Method
-
-    private function StringIsNotOver(string $str, int $length){
-        return (strlen($str) > 0 && strlen($str) <= $length);
-    }
-
-    public function create(string $discriminator) : bool{
-		$api = new ApiManager('Site');
+    public function create(){
+        $api = new ApiManager('Depositery');
 		if($this->id != null){
 			return false;
 		}
 		$array = array(
 			'ID' => NULL,
-			'Name' => $this->name,
+			'SiteID' => $this->site->getId(),
 			'Numero' => $this->numero,
 			'Rue' => $this->rue,
 			'Postcode' => $this->postcode,
@@ -91,13 +85,13 @@ Class Site{
 			return true;
 		}
 		return false;
-	}
+    }
 
 	public function delete(): bool{
-		$api = new ApiManager('Site');
+		$api = new ApiManager('Depositery');
 		$array = array(
 			'ID' => $this->id,
-			'Name' => $this->name,
+			'SiteID' => $this->site->getId(),
 			'Numero' => $this->numero,
 			'Rue' => $this->rue,
 			'Postcode' => $this->postcode,
@@ -109,12 +103,13 @@ Class Site{
 			return true;
 		}
 		return false;
-	}
+    }
+    
 	public function update(string $discriminator): bool{
-		$api = new ApiManager('Site');
+		$api = new ApiManager('Depositery');
 		$array = array(
 			'ID' => $this->id,
-			'Name' => $this->name,
+			'SiteID' => $this->site->getId(),
 			'Numero' => $this->numero,
 			'Rue' => $this->rue,
 			'Postcode' => $this->postcode,
@@ -127,5 +122,6 @@ Class Site{
 		}
 		return false;
 	}
-
 }
+
+?>

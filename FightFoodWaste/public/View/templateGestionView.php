@@ -1,14 +1,14 @@
 <?php
 
-require_once __DIR__ . '/../Model/UserManager.php';
-require_once __DIR__ . '/../Model/EmployeeManager.php';
-require_once __DIR__ . '/../Model/IndividualManager.php';
-require_once __DIR__ . '/../Model/SalemanManager.php';
+// require_once __DIR__ . '/../Model/UserManager.php';
+// require_once __DIR__ . '/../Model/EmployeeManager.php';
+// require_once __DIR__ . '/../Model/IndividualManager.php';
+// require_once __DIR__ . '/../Model/SalemanManager.php';
 
-require_once __DIR__ . '/../Model/TruckManager.php';
+// require_once __DIR__ . '/../Model/TruckManager.php';
 
 
-// $title = "Administration";
+$title = "FightFoodWaste - Administration";
 ob_start();
 ?>
 

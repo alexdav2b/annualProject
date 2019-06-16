@@ -18,6 +18,11 @@ Class PagesController {
 
         ob_start();
 
+        $json = array(
+			'ID' => 8,
+			'Name' => 'Mon Nom');
+		var_dump($json);
+
         echo ('About us');
 
         $content = ob_get_clean();
@@ -29,6 +34,5 @@ Class PagesController {
     public function log(){
         require_once __DIR__ . '/../public/View/connexionView.php';     
     }
-
 
 }
