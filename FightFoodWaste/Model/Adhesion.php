@@ -56,7 +56,6 @@ require_once __DIR__ . '/../Model/User.php';
 			return false;
 		}
 		$array = array(
-			'ID' => NULL,
 			'UserID' => $this->user->getId(),
 			'DateAdhesion' => $this->date,
 			'Cb' => $this->cb,

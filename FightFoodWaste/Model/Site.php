@@ -77,7 +77,6 @@ Class Site{
 			return false;
 		}
 		$array = array(
-			'ID' => NULL,
 			'Name' => $this->name,
 			'Numero' => $this->numero,
 			'Rue' => $this->rue,

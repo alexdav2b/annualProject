@@ -71,7 +71,6 @@ Class Depositery{
 			return false;
 		}
 		$array = array(
-			'ID' => NULL,
 			'SiteID' => $this->site->getId(),
 			'Numero' => $this->numero,
 			'Rue' => $this->rue,

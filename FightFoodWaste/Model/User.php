@@ -14,7 +14,6 @@ Class User{
 	private $area; 
 	private $eligibility;
 	private $site;
-	// private $adhesions =[];
 
 	// Constructor
 	public function __construct(?int $id, string $email, string $name, string $password, string $numero, string $rue, string $postcode, string $area, bool $eligibility, Site $site){
@@ -83,20 +82,23 @@ Class User{
 		if($this->id != null){
 			return false;
 		}
+		$surname = ($discriminator == 'Individual' || $discriminator == 'Employer' || $discriminator == 'Admin' || $discriminator == 'Volunteer') ? $this->getSurname() : NULL;
+		$siret = ($discriminator == 'Saleman') ? $this->getSiret() : null;
+		$salary = ($discriminator == 'Employer') ? $this->getSalary() : null;
+		
 		$array = array(
-			'ID' => NULL,
 			'SiteID' => $this->site->getId(),
 			'Email' => $this->email,
 			'Name' => $this->name,
-			'Surname' => isset($this->surname) ? $this->surname : NULL,
+			'Surname' => $surname,
 			'Password' => $this->password,
 			'Numero' => $this->numero,
 			'Rue' => $this->rue,
 			'Postcode' => $this->postcode,
 			'Area' => $this->area,
 			'Eligibility' => $this->eligibility,
-			'SIRET' => isset($this->siret) ? $this->siret : NULL, 
-			'Salary' => isset($this->salary) ? $this->salary : NULL,
+			'SIRET' => $siret, 
+			'Salary' => $salary,
 			'Discriminator' => $discriminator);
 		$json = json_encode($array);
 		$json = $api->create($json);
@@ -109,20 +111,23 @@ Class User{
 
 	public function delete(): bool{
 		$api = new ApiManager('Usr');
+		$surname = ($discriminator == 'Individual' || $discriminator == 'Employer' || $discriminator == 'Admin' || $discriminator == 'Volunteer') ? $this->getSurname() : NULL;
+		$siret = ($discriminator == 'Saleman') ? $this->getSiret() : null;
+		$salary = ($discriminator == 'Employer') ? $this->getSalary() : null;
 		$array = array(
 			'ID' => $this->id,
 			'SiteID' => $this->site->getId(),
 			'Email' => $this->email,
 			'Name' => $this->name,
-			'Surname' => isset($this->surname) ? $this->surname : NULL,
+			'Surname' => $surname,
 			'Password' => $this->password,
 			'Numero' => $this->numero,
 			'Rue' => $this->rue,
 			'Postcode' => $this->postcode,
 			'Area' => $this->area,
 			'Eligibility' => $this->eligibility,
-			'SIRET' => isset($this->siret) ? $this->siret : NULL, 
-			'Salary' => isset($this->salary) ? $this->salary : NULL,
+			'SIRET' => $siret, 
+			'Salary' => $salary,
 			'Discriminator' => $discriminator);
 		$json = json_encode($array);
 		$json = $api->delete($json);
@@ -134,20 +139,23 @@ Class User{
 
 	public function update(string $discriminator): bool{
 		$api = new ApiManager('Usr');
+		$surname = ($discriminator == 'Individual' || $discriminator == 'Employer' || $discriminator == 'Admin' || $discriminator == 'Volunteer') ? $this->getSurname() : NULL;
+		$siret = ($discriminator == 'Saleman') ? $this->getSiret() : null;
+		$salary = ($discriminator == 'Employer') ? $this->getSalary() : null;
 		$array = array(
 			'ID' => $this->id,
 			'SiteID' => $this->site->getId(),
 			'Email' => $this->email,
 			'Name' => $this->name,
-			'Surname' => isset($this->surname) ? $this->surname : NULL,
+			'Surname' => $surname,
 			'Password' => $this->password,
 			'Numero' => $this->numero,
 			'Rue' => $this->rue,
 			'Postcode' => $this->postcode,
 			'Area' => $this->area,
 			'Eligibility' => $this->eligibility,
-			'SIRET' => isset($this->siret) ? $this->siret : NULL, 
-			'Salary' => isset($this->salary) ? $this->salary : NULL,
+			'SIRET' => $siret, 
+			'Salary' => $salary,
 			'Discriminator' => $discriminator);
 		$json = json_encode($array);
 		$json = $api->update($json);

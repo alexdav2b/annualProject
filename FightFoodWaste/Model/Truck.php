@@ -60,7 +60,6 @@ Class Truck{
 			return false;
 		}
 		$array = array(
-			'ID' => NULL, 
             'SiteID' => $this->site->getId(),
 			'Plate' => $this->plate,
 			'Name' => $this->name,

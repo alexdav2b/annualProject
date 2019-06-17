@@ -34,7 +34,6 @@ Class DeliveryType{
 			return false;
 		}
 		$array = array(
-			'ID' => NULL, 
             'Name' => $this->name());
 		$json = json_encode($array);
 		$json = $api->create($json);

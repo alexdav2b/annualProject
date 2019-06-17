@@ -4,7 +4,7 @@ Class ApiManager{
     private $url;
 
     public function __construct(string $table){
-        $this->url = 'http://fightfoodwasteapi/' . $table;
+        $this->url = 'http://fightfoodwasteapi/' . strtolower($table);
     }
 
     private function getUrl(): string { return $this->url; }

@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../Model/ApiManager.php';
 require_once __DIR__ . '/../Model/Saleman.php';
 
-Class SalemanManager{
+Class SalemanController{
 
     // Parse
     private function parseOne($json){
@@ -178,6 +178,27 @@ Class SalemanManager{
             }
         ?> </tbody> <?php
         }
+    }
+
+    public function Inscription(){
+        $controller = new SiteController();
+        $site = $controller->GetById($_POST['Site']);
+        $form = array(
+            htmlspecialchars($_POST['Email']),
+            htmlspecialchars($_POST['Name']),
+            htmlspecialchars($_POST['Password']),
+            htmlspecialchars($_POST['Numero']),
+            htmlspecialchars($_POST['Rue']),
+            htmlspecialchars($_POST['Postcode']),
+            htmlspecialchars($_POST['Area']),
+            $_POST['Eligibility'], 
+            htmlspecialchars($_POST['Siret']), 
+            $site
+        );
+        $user = new Saleman(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
+        $user->createIndividual();
+        $id = $user->getId();
+        header("Location: /compte/$id"); 
     }
 }
 

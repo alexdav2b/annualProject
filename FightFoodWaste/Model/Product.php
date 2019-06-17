@@ -83,7 +83,6 @@ Class Product{
 			return false;
 		}
 		$array = array(
-			'ID' => NULL,
             'Name' => $this->name,
             'Barcode' => $this->barcode,
             'ValidDate' => $this->validDate,

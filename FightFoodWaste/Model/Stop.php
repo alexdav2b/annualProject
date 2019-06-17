@@ -49,7 +49,6 @@ Class Stop{
 			return false;
 		}
 		$array = array(
-			'ID' => NULL,
 			'DateHour' => $this->date,
 			'DeliveryID' => $this->delivery->getId(),
 			'UsrID' => $this->user->getId());

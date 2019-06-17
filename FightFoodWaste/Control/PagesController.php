@@ -32,6 +32,8 @@ Class PagesController {
     }
 
     public function log(){
+        $controller = new SiteController();
+        $sites = $controller->getAll();
         require_once __DIR__ . '/../public/View/connexionView.php';     
     }
 

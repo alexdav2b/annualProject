@@ -6,7 +6,7 @@ Class Employee extends User{
     private $salary;
     private $surname;
 
-    public function __construct(int $id, string $email, string $name, string $password, string $numero, string $rue, string $postcode, string $area, bool $eligibility, float $salary, string $surname, Site $site){
+    public function __construct(?int $id, string $email, string $name, string $password, string $numero, string $rue, string $postcode, string $area, bool $eligibility, float $salary, string $surname, Site $site){
         parent::__construct($id, $email, $name, $password, $numero, $rue, $postcode, $area, $eligibility, $site);
         $this->salary = $salary;
         $this->surname = $surname;

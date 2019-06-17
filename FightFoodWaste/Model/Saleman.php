@@ -6,7 +6,7 @@ Class Saleman extends User{
 
     private $siret;
 
-    public function __construct(int $id, string $email, string $name, string $password, string $numero, string $rue, string $postcode, string $area, bool $eligibility, string $siret, Site $site){
+    public function __construct(?int $id, string $email, string $name, string $password, string $numero, string $rue, string $postcode, string $area, bool $eligibility, string $siret, Site $site){
         parent::__construct($id, $email, $name, $password, $numero, $rue, $postcode, $area, $eligibility, $site);
         if(strlen($siret) == 14){
             $this->siret = $siret;

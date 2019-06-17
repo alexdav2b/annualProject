@@ -14,7 +14,7 @@ $router->get('/about', "Pages#about");
 
 // User
 
-$router->get('/compte/:id', "User#viewUser");
+$router->get('/compte/:id', "User#view");
 
 $router->get('/comptes', "User#viewAll");
 
@@ -54,6 +54,13 @@ $router->get('/delivery/:id', "Delivery#view");
 $router->get('/sites', "Site#viewAll");
 
 $router->get('/site/:id', "Site#view");
+
+
+// Test
+
+$router->post('/log/Individual', "Individual#Inscription");
+
+$router->post('/log/Saleman', "Saleman#Inscription");
 
 
 // Run

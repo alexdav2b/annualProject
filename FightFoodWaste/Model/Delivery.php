@@ -69,7 +69,6 @@ Class Delivery{
 			return false;
 		}
 		$array = array(
-			'ID' => NULL,
 			'TruckID' => $this->truck->getId(),
 			'UsrID' => $this->user->getId(),
 			'DeliveryTypeID' => $this->type->getId(),
