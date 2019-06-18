@@ -104,8 +104,13 @@ Class IndividualController{
 
     // Views
 
-    public function view(){
-        require_once __DIR__ . '/../public/View/userView.php';
+    public function view(int $id){
+        $user = $this->getById($id);
+        $controller = new SiteController();
+        $sites = $controller->getAll();
+        if($user != NULL && $sites != null){
+            require_once __DIR__ . '/../public/View/userView.php';
+        }
     }
     // public function view(int $id){
     //     $user = $this->getById($id);

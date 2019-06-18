@@ -58,11 +58,13 @@ $router->get('/site/:id', "Site#view");
 
 // Test
 
-$router->post('/log/Individual', "Individual#Inscription");
+$router->post('/log/particulier', "Individual#Inscription");
 
-$router->post('/log/Saleman', "Saleman#Inscription");
+$router->post('/log/particulier', "Saleman#Inscription");
 
-$router->get('/indi', "Individual#view");
+$router->get('/particulier/:id', "Individual#view");
+
+// $router->put('/particulier/:id', "Individual#view");
 // Run
 
 $router->run();
