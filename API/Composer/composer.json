@@ -1,0 +1,21 @@
+{
+    "name": "fightfoodwaste/api",
+    "autoload": {
+        "psr-4": {
+            "App\\": "../app/",
+            "App\\Controller\\": "../app/Controllers",
+            "App\\Middleware\\": "../app/Middlewares",
+            "App\\Utils\\": "../app/Utils"	 
+        }
+    },
+    "require": {
+        "slim/slim": "^3.12",
+        "slim/twig-view": "^2.5"
+    },
+    "authors": [
+        {
+            "name": "Pelluet Sophie",
+            "email": "s_pelluet@hotmail.fr"
+        }
+    ]
+}

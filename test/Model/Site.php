@@ -1,0 +1,118 @@
+<?php
+
+Class Site{
+
+    private $id;
+    private $name;
+    private $numero;
+    private $rue;
+    private $postcode;
+    private $area;
+
+
+    public function __construct(?int $id, string $name, string $numero, string $rue, string $postcode, string $area){
+        if($id > 0)
+            $this->id = $id;
+        if($this->StringIsNotOver($name, 80))
+            $this->name = $name; 
+        if($this->StringIsNotOver($numero, 5))
+            $this->numero = $numero; 
+        if($this->StringIsNotOver($rue, 80))
+            $this->rue = $rue;
+        if($this->StringIsNotOver($postcode, 80))   
+            $this->postcode = $postcode;
+        if($this->StringIsNotOver($area, 80))
+            $this->area = $area;
+    }
+
+    public function getId(): ?int{ return $this->id; }
+    public function getName(): string { return $this->name; }
+    public function getNumero(): string { return $this->numero; }
+    public function getRue(): string { return $this->rue; }
+    public function getPostcode() : string { return $this->postcode; }
+    public function getArea() : string { return $this->area; }
+
+
+    public function setId(int $id){ 
+        if($id > 0)
+            $this->id = $id; 
+    }
+
+    public function setName(string $name){
+        if($this->StringIsNotOver($name, 80))
+            $this->name = $name; 
+    }
+        
+    public function setNumero(string $numero){
+        if($this->StringIsNotOver($numero, 5))
+            $this->numero = $numero; 
+    }
+
+    public function setRue(string $rue){
+        if($this->StringIsNotOver($rue, 80))
+            $this->rue = $rue;   
+    }
+
+    public function setPostcode(string $postcode){
+        if($this->StringIsNotOver($postcode, 80))
+            $this->postcode = $postcode; 
+    }
+
+    public function setArea(string $area){
+        if($this->StringIsNotOver($area, 80))
+            $this->area = $area; 
+    }
+
+    // Method
+
+    private function StringIsNotOver(string $str, int $length){
+        return (strlen($str) > 0 && strlen($str) <= $length);
+    }
+
+    public function create(string $discriminator) : bool{
+		$api = new ApiManager('Site');
+		if($this->id != null){
+			return false;
+		}
+		$json = array(
+			'ID' => NULL,
+			'Name' => $this->name,
+			'Numero' => $this->numero,
+			'Rue' => $this->rue,
+			'Postcode' => $this->postcode,
+			'Area' => $this->area);
+		$json = json_encode($this);
+		$json = $api->create($json);
+		if ($json != NULL){
+			$this->id = $json['ID'];
+			return true;
+		}
+		return false;
+	}
+
+	public function delete(): bool{
+		$api = new ApiManager('Site');
+		$json = json_encode($this);
+		$json = $api->delete($json);
+		if ($json != NULL){
+			return true;
+		}
+		return false;
+	}
+	public function update(string $discriminator): bool{
+		$api = new ApiManager('Site');
+		$json = array(
+			'ID' => $this->id,
+			'Name' => $this->name,
+			'Numero' => $this->numero,
+			'Rue' => $this->rue,
+			'Postcode' => $this->postcode,
+			'Area' => $this->area);
+		$json = $api->update($json);
+		if ($json != NULL){
+			return true;		
+		}
+		return false;
+	}
+
+}

@@ -1,0 +1,12 @@
+$(document).ready(function(){
+    $("#Individual").hide();
+    $("#Saleman").hide();
+    $("#optionIndividual").click(function(){
+        $("#Individual").show();
+        $("#Saleman").hide();
+    });
+    $("#optionSaleman").click(function(){
+        $("#Saleman").show();
+        $("#Individual").hide();
+    });
+});
