@@ -109,8 +109,6 @@ class PagesController{
         $db = DatabaseManager::getManager();
         $sql = 'SELECT * FROM '. $args['table'].' WHERE ' . $args['column'] .' = ?';
 
-        var_dump($args['value']);
-
         $value = array($args['value']);
         $result = $db->getAll($sql, $value);
         if($result > 0){
