@@ -100,9 +100,13 @@ Class IndividualController{
         $json = $api->getByInt('Site', $siteId);
         return $this->parseAll($json);
     }
+    
 
     // Views
 
+    public function view(){
+        require_once __DIR__ . '/../public/View/userView.php';
+    }
     // public function view(int $id){
     //     $user = $this->getById($id);
     //     if($user != NULL){

@@ -27,8 +27,8 @@ ob_start();
         <a class="nav-link" href="#">Stocks</a>
     </li>
 </ul>
-
 <div class = 'col-md-10 container-fluid'>
+    <?php if(isset($boolDivFilter)) { ?>
     <h2>Users</h2>
     <form class = 'form-group col-md-12 row'>
         <select class="form-control col-md-4 " >
@@ -39,6 +39,7 @@ ob_start();
         </select>
         <button class = "btn btn-success col-md-1 offset-md-1">Go</button>
     </form>
+    <?php } ?>
     <?= $gestionViewContent ?>
 </div>
 <?php

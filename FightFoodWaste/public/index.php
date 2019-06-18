@@ -62,7 +62,7 @@ $router->post('/log/Individual', "Individual#Inscription");
 
 $router->post('/log/Saleman', "Saleman#Inscription");
 
-
+$router->get('/indi', "Individual#view");
 // Run
 
 $router->run();

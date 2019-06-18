@@ -2,6 +2,7 @@
 ob_start();
 
 ?>
+<h2>User</h2>
 <table class="table table-striped">
     <thead>
         <tr>
