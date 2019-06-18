@@ -28,23 +28,22 @@ Class ApiManager{
     public function getById(int $id){
         $options = array(
             'http' => array( 
-                'method'  => 'GET',
-                'header'=>  "Content-Type: application/json\r\n" . "Accept: application/json\r\n")
+                'method' => 'GET',
+                'header' => "Content-Type: application/json\r\n" . "Accept: application/json\r\n")
             );
         $url = $this->getUrl() . '/' . $id;
 
         $context  = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
         $json = json_decode($result, true);
-        
         return $json;        
     }
 
     public function getByString(string $column, string $value){
         $options = array(
             'http' => array( 
-                'method'  => 'GET',
-                'header'=>  "Content-Type: application/json\r\n" . "Accept: application/json\r\n")
+                'method' => 'GET',
+                'header' => "Content-Type: application/json\r\n" . "Accept: application/json\r\n")
             );
         $url = $this->getUrl() . '/' . $column . '/' . $value . '/' . 'getByString';
 
@@ -85,15 +84,14 @@ Class ApiManager{
         return $json;
     }
     
-    public function delete($data){
+    public function delete(int $id){
         $options = array(
             'http' => array( 
                 'method'  => 'DELETE',
-                'content' => $data,
                 'header'=>  "Content-Type: application/json\r\n" . "Accept: application/json\r\n")
             );
         
-        $url = $this->getUrl() . '/delete';
+        $url = $this->getUrl() . '/delete/' . $id;
 
         $context  = stream_context_create( $options );
         $result = file_get_contents( $url, false, $context );

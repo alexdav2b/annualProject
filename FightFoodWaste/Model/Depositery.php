@@ -88,20 +88,8 @@ Class Depositery{
 
 	public function delete(): bool{
 		$api = new ApiManager('Depositery');
-		$array = array(
-			'ID' => $this->id,
-			'SiteID' => $this->site->getId(),
-			'Numero' => $this->numero,
-			'Rue' => $this->rue,
-			'Postcode' => $this->postcode,
-            'Area' => $this->area,
-            'Capacity' => $this->capacity);
-		$json = json_encode($array);
-		$json = $api->delete($json);
-		if ($json != NULL){
-			return true;
-		}
-		return false;
+		$json = $api->delete($this->id);
+		return $json['Success'];
     }
     
 	public function update(string $discriminator): bool{

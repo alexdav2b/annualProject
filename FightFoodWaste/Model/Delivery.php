@@ -85,19 +85,8 @@ Class Delivery{
 
 	public function delete(): bool{
 		$api = new ApiManager('Delivery');
-        $array = array(
-            'ID' => $this->id, 
-			'TruckID' => $this->truck->getId(),
-			'UsrID' => $this->user->getId(),
-			'DeliveryTypeID' => $this->type->getId(),
-			'DateStart' => $this->dateStart,
-			'DateEnd' => $this->dateEnd);
-		$json = json_encode($array);
-		$json = $api->delete($json);
-		if ($json != NULL){
-			return true;
-		}
-		return false;
+		$json = $api->delete($this->id);
+		return $json['Success'];
     }
     
 	public function update(string $discriminator): bool{

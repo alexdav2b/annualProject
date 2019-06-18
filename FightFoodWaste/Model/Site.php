@@ -94,20 +94,8 @@ Class Site{
 
 	public function delete(): bool{
 		$api = new ApiManager('Site');
-		$array = array(
-			'ID' => $this->id,
-			'Name' => $this->name,
-			'Numero' => $this->numero,
-			'Rue' => $this->rue,
-			'Postcode' => $this->postcode,
-            'Area' => $this->area,
-            'Capacity' => $this->capacity);
-		$json = json_encode($array);
-		$json = $api->delete($json);
-		if ($json != NULL){
-			return true;
-		}
-		return false;
+		$json = $api->delete($this->id);
+		return $json['Success'];
 	}
 	public function update(string $discriminator): bool{
 		$api = new ApiManager('Site');

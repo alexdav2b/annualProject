@@ -75,18 +75,8 @@ Class Truck{
 
 	public function delete(): bool{
 		$api = new ApiManager('Truck');
-        $array = array(
-			'ID' => $this->id, 
-            'SiteID' => $this->site->getId(),
-			'Plate' => $this->plate,
-			'Name' => $this->name,
-            'Capacity' => $this->capacity);
-		$json = json_encode($array);
-		$json = $api->delete($json);
-		if ($json != NULL){
-			return true;
-		}
-		return false;
+		$json = $api->delete($this->id);
+		return $json['Success'];
 	}
 	public function update(string $discriminator): bool{
 		$api = new ApiManager('Truck');

@@ -6,7 +6,7 @@ require_once __DIR__ . '/../Model/Individual.php';
 Class IndividualController{
 
     // Parse
-    private function parseOne(){
+    private function parseOne($json){
         if($json['Discriminator'] == 'Individual'){
             $siteController = new SiteController();
             $site = $siteController->getById(intval($json['SiteID']));
@@ -195,7 +195,7 @@ Class IndividualController{
             $site
         );
         $user = new Individual(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
-        $user->createIndividual();
+        $user->createIndividual();        
         $id = $user->getId();
         header("Location: /compte/$id"); 
     }

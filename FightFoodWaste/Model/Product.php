@@ -110,21 +110,8 @@ Class Product{
 
 	public function delete(): bool{
 		$api = new ApiManager('Stop');
-		$array = array(
-			'ID' => $this->id,
-            'Name' => $this->name,
-            'Barcode' => $this->barcode,
-            'ValidDate' => $this->validDate,
-            'DepositeryID' => $this->depositery->getId(),
-            'UsrID_Donated' => $this->donator->getId(),
-            'UsrID_Received' => $this->receiver->getId(),
-            'StatutID' => $this->statut->getId());
-		$json = json_encode($array);
-		$json = $api->delete($json);
-		if ($json != NULL){
-			return true;
-		}
-		return false;
+		$json = $api->delete($this->id);
+		return $json['Success'];
     }
     
 	public function update(string $discriminator): bool{

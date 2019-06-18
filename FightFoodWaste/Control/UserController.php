@@ -25,6 +25,7 @@ Class UserController{
     }
 
     // Get
+    
     public function getById(int $id){
         $api = new ApiManager('Usr');
         $json = $api->getById($id);

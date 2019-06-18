@@ -111,30 +111,8 @@ Class User{
 
 	public function delete(): bool{
 		$api = new ApiManager('Usr');
-		$surname = ($discriminator == 'Individual' || $discriminator == 'Employer' || $discriminator == 'Admin' || $discriminator == 'Volunteer') ? $this->getSurname() : NULL;
-		$siret = ($discriminator == 'Saleman') ? $this->getSiret() : null;
-		$salary = ($discriminator == 'Employer') ? $this->getSalary() : null;
-		$array = array(
-			'ID' => $this->id,
-			'SiteID' => $this->site->getId(),
-			'Email' => $this->email,
-			'Name' => $this->name,
-			'Surname' => $surname,
-			'Password' => $this->password,
-			'Numero' => $this->numero,
-			'Rue' => $this->rue,
-			'Postcode' => $this->postcode,
-			'Area' => $this->area,
-			'Eligibility' => $this->eligibility,
-			'SIRET' => $siret, 
-			'Salary' => $salary,
-			'Discriminator' => $discriminator);
-		$json = json_encode($array);
-		$json = $api->delete($json);
-		if ($json != NULL){
-			return true;
-		}
-		return false;
+		$json = $api->delete($this->id);
+		return $json['Success'];
 	}
 
 	public function update(string $discriminator): bool{
@@ -166,7 +144,10 @@ Class User{
 	}
 
 	// Methodes
-
+    private function StringIsNotOver(string $str, int $length){
+        return (strlen($str) > 0 && strlen($str) <= $length);
+	}
+	
 	public function Connexion($fields): User{
 		session_start();
 		session_regenerate_id();

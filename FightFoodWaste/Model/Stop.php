@@ -68,24 +68,13 @@ Class Stop{
 		$apiStopProduct = new ApiManager('Stop_Product');
 		$allStopProduct = $apiStopProduct->getByInt('Stop_Product', $this->id);
 		foreach($allStopProduct as $object){
-			$json = json_encode($object);
-			$json-> $apiStopProduct->delete($json);
-			if($json == NULL)
+			$json = $apiStopProduct->delete($json['ID']);
+			if($json['Success'] != true)
 				return false;
 		}
 
-		// Supprimer le Stop
-		$array = array(
-			'ID' => $this->id,
-			'DateHour' => $this->date,
-			'DeliveryID' => $this->delivery->getId(),
-			'UsrID' => $this->user->getId());
-		$json = json_encode($array);
-		$json = $api->delete($json);
-		if ($json != NULL){
-			return true;
-		}
-		return false;
+		$json = $api->delete($this->id);
+		return $json['Success'];
 	}
 	
 	public function update(string $discriminator): bool{

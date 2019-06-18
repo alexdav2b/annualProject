@@ -71,18 +71,8 @@ require_once __DIR__ . '/../Model/User.php';
 
 	public function delete(): bool{
 		$api = new ApiManager('Adhesion');
-        $array = array(
-			'ID' => $this->id,
-			'UserID' => $this->user->getId(),
-			'DateAdhesion' => $this->date,
-			'Cb' => $this->cb,
-			'Code' => $this->$code);
-		$json = json_encode($array);
-		$json = $api->delete($json);
-		if ($json != NULL){
-			return true;
-		}
-		return false;
+		$json = $api->delete($this->id);
+		return $json['Success'];
 	}
 	public function update(string $discriminator): bool{
         $api = new ApiManager('Adhesion');

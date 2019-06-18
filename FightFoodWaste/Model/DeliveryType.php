@@ -46,15 +46,8 @@ Class DeliveryType{
 
 	public function delete(): bool{
 		$api = new ApiManager('DeliveryType');
-        $array = array(
-            'ID' => $this->id, 
-			'Name' => $this->name);
-		$json = json_encode($array);
-		$json = $api->delete($json);
-		if ($json != NULL){
-			return true;
-		}
-		return false;
+		$json = $api->delete($this->id);
+		return $json['Success'];
     }
     
 	public function update(string $discriminator): bool{
