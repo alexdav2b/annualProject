@@ -26,8 +26,7 @@ int sendOfferWindow()
             //Send Offer
             else if(pKeyStates[SDL_SCANCODE_RETURN]) 
             {
-                wait = 0;
-                deleteSendOfferWindow(pWindowSendOffer);
+                printf("papillons");
             }
             //go to website
             else

@@ -1,11 +1,10 @@
 #include "headers/headers.h"
 
-int fromBarcodeToName()
+int fromBarcodeToName(char * code)
 {
-    char code[] = "3029330003533";
     // https://fr.openfoodfacts.org/api/v0/produit/3029330003533.json
     char *err;
-    char *data = get_product(code, &err);
+    char *data = getProduct(code, &err);
 
     json_t *root;
     json_error_t error;
@@ -16,6 +15,7 @@ int fromBarcodeToName()
         fprintf(stderr, "error: on line %d: %s\n", error.line, error.text);
         return 1;
     }
+    free(data);
 
     const char *key;
     json_t *value;
@@ -33,57 +33,10 @@ int fromBarcodeToName()
 
     json_decref(root);
 
-    // json_t *root;
-    // json_error_t error;
-
-    // root = json_loads(data, 0, &error);
-    // if (!root)
-    // {
-    //     fprintf(stderr, "error: on line %d: %s\n", error.line, error.text);
-    //     return 1;
-    // }
-
-    // const char *key;
-    // json_t *value;
-
-    // void *iter = json_object_iter(root);
-    // while (iter)
-    // {
-    //     key = json_object_iter_key(iter);
-    //     value = json_object_iter_value(iter);
-
-    //     if (strcmp(key, "product"))
-    //     {
-    //         // json_t *product = json_object_val(value);
-    //         void *product_iter = json_object_iter(value);
-
-    //         const char *product_key;
-    //         json_t *product_value;
-    //             puts("e");
-
-    //         while (product_iter)
-    //         {
-    //             product_key = json_object_iter_key(iter);
-    //             product_value = json_object_iter_value(iter);
-
-    //             if (strcmp(product_key, "origins"))
-    //             {
-    //                 puts(json_string_value(product_value));
-    //             }
-
-    //             product_iter = json_object_iter_next(value, product_iter);
-    //         }
-    //     }
-
-    //     iter = json_object_iter_next(root, iter);
-    // }
-
-    // json_decref(root);
-
     return 0;
 }
 
-char * get_product(char code[14], char **err)
+char * getProduct(char *code, char **err)
 {
     const char url_model[] = "https://fr.openfoodfacts.org/api/v0/produit/%s.json";
 
@@ -101,9 +54,9 @@ char * get_product(char code[14], char **err)
     curl_handle = curl_easy_init();
 
     url = calloc(sizeof(char), strlen(url_model) + strlen(code) + 1);
-    //comme printf 2e parm das le code format du premier
+    //comme printf 2e parm dans le code format du premier
     sprintf(url, url_model, code);
-
+    printf("\n%s\n", url);
     curl_easy_setopt(curl_handle, CURLOPT_URL, url);
 
     curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, write_memory);
