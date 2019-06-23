@@ -10,8 +10,14 @@ $(document).ready(function(){
     });
     $("#Abort").click(Abort);
     $("#Update").click(function(){
-        if($("#SurnameID").val() == ''){
+        var userType = '<?= $userType ?>'; 
+
+        if((userType == 'Individual' || userType == 'Employer' || userType == 'Admin' || userType == 'Volunteer') && $("#SurnameID").val() == ''){
             $("#SurnameID").val($('#Surname').text());
+        }
+
+        if(userType == 'Saleman' && $("#SiretID").val() == ''){
+            $("#SiretID").val($("#Siret").text());
         }
 
         if($("#NameID").val() == ''){
@@ -42,8 +48,12 @@ $(document).ready(function(){
         if($("#AreaID").val() == ''){
             $("#AreaID").val($('#Area').text());
         }
+
+        if(userType == 'Employer' && $("#SalaryID").val() == ''){
+            $("#SalaryID").val($('#Salary').text());
+        }
+
         $("#Individual").submit();
-        // document.getElementById("Individual").submit();
     });
 });
 

@@ -10,7 +10,7 @@ Class IndividualController{
         if($json['Discriminator'] == 'Individual'){
             $siteController = new SiteController();
             $site = $siteController->getById(intval($json['SiteID']));
-            $user = new Individual($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Eligibility'], $json['Surname'], $site);
+            $user = new Individual($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Surname'], $site);
             return $user;
         }
     }
@@ -21,7 +21,7 @@ Class IndividualController{
             if($line['Discriminator'] == 'Individual'){
                 $siteController = new SiteController();
                 $site = $siteController->getById(intval($line['SiteID']));
-                $user = new Employee($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Eligibility'], $line['Salary'], $line['Surname'], $site);
+                $user = new Employee($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Salary'], $line['Surname'], $site);
                 array_push($result, $user);
             }
         }
@@ -89,12 +89,6 @@ Class IndividualController{
         return $this->parseAll($json);
     }
 
-    public function getByEligibility(int $eligibility){
-        $api = new ApiManager('Usr');
-        $json = $api->getByInt('Eligibility', $eligibility);
-        return $this->parseAll($json);
-    }
-
     public function getBySite(int $siteId){
         $api = new ApiManager('Usr');
         $json = $api->getByInt('Site', $siteId);
@@ -138,7 +132,6 @@ Class IndividualController{
                 <th>Surname</th>
                 <th>Email</th>
                 <th>Adresse</th>
-                <th>Eligibility</th>
                 <th>Site</th>
             </tr>
         </thead>
@@ -148,7 +141,6 @@ Class IndividualController{
                 <th> <?= $user->getSurname(); ?></th>
                 <th> <?= $user->getEmail(); ?></th>
                 <th> <?= $user->getNumero() . ', ' .  $user->getRue() . ' ' . $user->getPostcode() . ' ' . $user->getArea() ?> </th>
-                <th> <?= $user->getEligibility(); ?></th>
                 <th> <?= $user->getSite()->getName(); ?> </th>
             </tr>
         </tbody> -->
@@ -166,7 +158,6 @@ Class IndividualController{
                 <th>Surname</th>
                 <th>Email</th>
                 <th>Adresse</th>
-                <th>Eligibility</th>
                 <th>Site</th>
             </tr>
         </thead>
@@ -180,7 +171,6 @@ Class IndividualController{
                 <th> <?= $user->getSurname(); ?></th>
                 <th> <?= $user->getEmail(); ?></th>
                 <th> <?= $user->getNumero() . ', ' .  $user->getRue() . ' ' . $user->getPostcode() . ' ' . $user->getArea() ?> </th>
-                <th> <?= $user->getEligibility() == 1 ? 'Yes' : 'No'; ?></th>
                 <th> <?= $user->getSite()->getName(); ?> </th>
             </tr> -->
             <?php
@@ -200,7 +190,6 @@ Class IndividualController{
             htmlspecialchars($_POST['Rue']),
             htmlspecialchars($_POST['Postcode']),
             htmlspecialchars($_POST['Area']),
-            $_POST['Eligibility'], 
             htmlspecialchars($_POST['Surname']), 
             $site
         );
@@ -222,11 +211,10 @@ Class IndividualController{
             htmlspecialchars($_POST['Rue']),
             htmlspecialchars($_POST['Postcode']),
             htmlspecialchars($_POST['Area']),
-            $_POST['Eligibility'], 
             htmlspecialchars($_POST['Surname']), 
             $site
         );
-        $user = new Individual($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
+        $user = new Individual($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
         $user->updateIndividual();        
         header("Location: /particulier/$id"); 
     }

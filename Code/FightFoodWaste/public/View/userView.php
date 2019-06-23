@@ -5,7 +5,7 @@ $script = "../js/userView.js";
 ob_start();
 
 // $userType = $_SESSION['User']; 
-$userType = 'Employer'; 
+$userType = 'Saleman'; 
 $url = "/particulier/update/" . $user->getId();
 
 ?>
@@ -70,16 +70,6 @@ $url = "/particulier/update/" . $user->getId();
             <label for = "AreaID" class = 'inline col-md-4' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Area</label>
             <input class = 'form-control col-md-8 inline' type = 'text' name = 'Area' id = 'AreaID' placeholder = <?= $user->getArea() ?>>
             <p id = 'Area' class ="plaintext inline col-md-8 form-control"><?= $user->getArea() ?></p>
-
-            
-            <?php if($userType == 'Individual' || $userType == 'Saleman' || $userType == 'Volunteer') { ?>
-            <label for = "EligibilityID" class = 'col-md-4 inline' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Adherent</label>
-            <select class="form-control col-md-8 inline" id = "EligibilityID" name = "Eligibility">     
-                <option value = "Yes">Yes</option>
-                <option value = "No">No</option>
-            </select>
-            <p id = "Eligibility" class ="plaintext inline col-md-8 form-control"><?= $user->getEligibility() == 1 ? 'Yes' : 'No' ?></p>
-            <?php } ?>
 
             <?php if($userType == 'Employer') { ?>
             <label for = "SalaryID" class = 'col-md-4 inline' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Salary</label>

@@ -12,11 +12,10 @@ Class User{
 	private $rue;
 	private $postcode;
 	private $area; 
-	private $eligibility;
 	private $site;
 
 	// Constructor
-	public function __construct(?int $id, string $email, string $name, string $password, string $numero, string $rue, string $postcode, string $area, bool $eligibility, Site $site){
+	public function __construct(?int $id, string $email, string $name, string $password, string $numero, string $rue, string $postcode, string $area, Site $site){
 		$this->id = $id;
 		$this->email = $email;
 		$this->name = $name;
@@ -25,7 +24,6 @@ Class User{
 		$this->rue = $rue;
 		$this->area = $area;
 		$this->postcode = $postcode;
-		$this->eligibility = $eligibility;
 		$this->site = $site;
 	}
 
@@ -38,7 +36,6 @@ Class User{
     public function getRue(): string { return $this->rue; }
     public function getPostCode(): string { return $this->postcode; }
 	public function getArea(): string { return $this->area; }
-	public function getEligibility(): bool{ return $this->eligibility; }
 	public function getSite(): Site { return $this->site; }
 
 	public function getDiscriminator() : string{
@@ -96,7 +93,6 @@ Class User{
 			'Rue' => $this->rue,
 			'Postcode' => $this->postcode,
 			'Area' => $this->area,
-			'Eligibility' => $this->eligibility,
 			'SIRET' => $siret, 
 			'Salary' => $salary,
 			'Discriminator' => $discriminator);
@@ -131,7 +127,6 @@ Class User{
 			'Rue' => $this->rue,
 			'Postcode' => $this->postcode,
 			'Area' => $this->area,
-			'Eligibility' => $this->eligibility,
 			'SIRET' => $siret, 
 			'Salary' => $salary,
 			'Discriminator' => $discriminator);

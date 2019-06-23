@@ -9,7 +9,7 @@ Class UserController{
     private function parseOne($json) : User{
         $siteController = new SiteController();
         $site = $siteController->getById(intval($json['SiteID']));
-        return  new User($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Eligibility'], $site);
+        return  new User($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $site);
     }
 
     private function parseAll($json) : array{
@@ -18,7 +18,7 @@ Class UserController{
             $siteController = new SiteController();
             $site = $siteController->getById(intval($line['SiteID']));
 
-            $user = new User($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Eligibility'], $site);
+            $user = new User($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $site);
             array_push($result, $user);
         }
         return $result;
@@ -77,12 +77,6 @@ Class UserController{
     public function getByArea(string $area){
         $api = new ApiManager('Usr');
         $json = $api->getByString('Area', $area);
-        return $this->parseAll($json);
-    }
-
-    public function getByEligibility(int $eligibility){
-        $api = new ApiManager('Usr');
-        $json = $api->getByInt('Eligibility', $eligibility);
         return $this->parseAll($json);
     }
 

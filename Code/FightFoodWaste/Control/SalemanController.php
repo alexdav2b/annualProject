@@ -10,7 +10,7 @@ Class SalemanController{
         if($json['Discriminator'] == 'Saleman'){
             $siteManager = new SiteManager();
             $site = $siteManager->getById(intval($json['SiteID']));
-            $user = new Saleman($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Eligibility'], $json['Siret'], $site);
+            $user = new Saleman($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Siret'], $site);
             return $user;    
         }
     }
@@ -21,7 +21,7 @@ Class SalemanController{
             if($line['Discriminator'] == 'Saleman'){
                 $siteController = new SiteController();
                 $site = $siteController->getById(intval($line['SiteID']));
-                $user = new Saleman($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Eligibility'], $line['Siret'], $site);
+                $user = new Saleman($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Siret'], $site);
                 array_push($result, $user);
             }
         }
@@ -89,12 +89,6 @@ Class SalemanController{
         return $this->parseAll($json);
     }
 
-    public function getByEligibility(int $eligibility){
-        $api = new ApiManager('Usr');
-        $json = $api->getByInt('Eligibility', $eligibility);
-        return $this->parseAll($json);
-    }
-
     public function getBySite(int $siteId){
         $api = new ApiManager('Usr');
         $json = $api->getByInt('Site', $siteId);
@@ -125,7 +119,6 @@ Class SalemanController{
                 <th>Rue</th>
                 <th>Postcode</th>
                 <th>Area</th> -->
-                <th>Eligibility</th>
                 <th>Site</th>
             </tr>
         </thead>
@@ -139,7 +132,6 @@ Class SalemanController{
                 <th> <?= $user->getRue(); ?></th>
                 <th> <?= $user->getPostcode(); ?></th>
                 <th> <?= $user->getArea(); ?></th> -->
-                <th> <?= $user->getEligibility(); ?></th>
                 <th> <?= $user->getSite()->getName(); ?> </th>
             </tr>
         </tbody>
@@ -157,7 +149,6 @@ Class SalemanController{
                 <th>Siret</th>
                 <th>Email</th>
                 <th>Adresse</th>
-                <th>Eligibility</th>
                 <th>Site</th>
             </tr>
         </thead>
@@ -171,7 +162,6 @@ Class SalemanController{
                 <th> <?= $user->getSiret(); ?></th>
                 <th> <?= $user->getEmail(); ?></th>
                 <th> <?= $user->getNumero() . ', ' .  $user->getRue() . ' ' . $user->getPostcode() . ' ' . $user->getArea() ?> </th>
-                <th> <?= $user->getEligibility() == 1 ? 'Yes' : 'No'; ?></th>
                 <th> <?= $user->getSite()->getName(); ?> </th>
             </tr>
             <?php
@@ -191,11 +181,10 @@ Class SalemanController{
             htmlspecialchars($_POST['Rue']),
             htmlspecialchars($_POST['Postcode']),
             htmlspecialchars($_POST['Area']),
-            $_POST['Eligibility'], 
             htmlspecialchars($_POST['Siret']), 
             $site
         );
-        $user = new Saleman(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
+        $user = new Saleman(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
         $user->createIndividual();
         $id = $user->getId();
         header("Location: /compte/$id"); 

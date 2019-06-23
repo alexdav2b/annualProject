@@ -11,7 +11,7 @@ Class EmployeeController{
             $siteController = new SiteController();
             $site = $siteController->getById(intval($json['SiteID']));
 
-            $user = new Employee($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Eligibility'], $json['Salary'], $json['Surname'], $site);
+            $user = new Employee($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Salary'], $json['Surname'], $site);
             return $user;
         }
     }
@@ -22,7 +22,7 @@ Class EmployeeController{
             if($line['Discriminator'] == 'Employer'){
                 $siteController = new SiteController();
                 $site = $siteController->getById(intval($line['SiteID']));
-                $user = new Employee($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Eligibility'], $line['Salary'], $line['Surname'], $site);
+                $user = new Employee($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Salary'], $line['Surname'], $site);
                 array_push($result, $user);
             }
         }
@@ -87,12 +87,6 @@ Class EmployeeController{
     public function getByArea(string $area){
         $api = new ApiManager('Usr');
         $json = $api->getByString('Area', $area);
-        return $this->parseAll($json);
-    }
-
-    public function getByEligibility(int $eligibility){
-        $api = new ApiManager('Usr');
-        $json = $api->getByInt('Eligibility', $eligibility);
         return $this->parseAll($json);
     }
 

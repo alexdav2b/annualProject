@@ -53,11 +53,6 @@ ob_start();
             <input required class = "form-control col-md-9 offset-md-1 inline" type = "text" name = 'Rue' id = 'Rue' placeholder = 'Rue'>
             <input required class = 'form-control' type = 'text' name = 'Postcode' id = 'Postcode' placeholder = 'Postcode'>
             <input required class = 'form-control' type = 'text' name = 'Area' id = 'Area' placeholder = 'Area'>
-            <label for = "Eligibility" class = 'col-md-4 inline' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Adherent</label>
-            <select class="form-control col-md-8 inline" id = "Eligibility" name = "Eligibility">     
-                <option value = "Yes">Yes</option>
-                <option value = "No">No</option>
-            </select>
             <p class = 'col-md-6 offset-md-3'><button class = "btn btn-success" id = "Inscription" type = "submit" value = "Inscription">Sign In</button></p>
         </div>
     </form> 
@@ -81,11 +76,6 @@ ob_start();
             <input required class = "form-control col-md-9 offset-md-1 inline" type = "text" name = 'Rue' id = 'Rue' placeholder = 'Rue'>
             <input required class = 'form-control' type = 'text' name = 'Postcode' id = 'Postcode' placeholder = 'Postcode'>
             <input required class = 'form-control' type = 'text' name = 'Area' id = 'Area' placeholder = 'Area'>
-            <label for = "Eligibility" class = 'col-md-4 inline' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Adherent</label>
-            <select class="form-control col-md-8 inline" id = "Eligibility" name = "Eligibility">     
-                <option value = "Yes">Yes</option>
-                <option value = "No">No</option>
-            </select>
             <p class = 'col-md-6 offset-md-3'><button class = "btn btn-success" id = "Inscription" type = "submit" value = "Inscription">Sign In</button></p>
         </div>
     </form>   
