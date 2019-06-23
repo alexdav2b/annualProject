@@ -3,17 +3,32 @@ $title = 'Votre compte';
 $script = "../js/userView.js";
 //action = "/log/Individual" method = "put"
 ob_start();
+
+// $userType = $_SESSION['User']; 
+$userType = 'Employer'; 
+$url = "/particulier/update/" . $user->getId();
+
 ?>
 <div class = "col-md-6 offset-md-3">
     <h2 class= "col-md-6 offset-md-4">Votre Compte</h2>
-    <form   id = 'Individual' >
+
+    <form id = 'Individual' method = "post" action = "<?= $url ?>">
         <div class = 'row form-group' style = 'margin-bottom : 0 !important; padding-top : 0 !important; padding-left : 15px !important; padding-right : 15px !important;'>
+            
+            <?php if ($userType == 'Individual' || $userType == 'Employer' || $userType == 'Admin' || $userType == 'Volunteer'){ ?>
             <label for = "SurnameID" class = 'inline col-md-4' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Firstname</label>
             <input class = "inline col-md-8 form-control" type = "text" name = 'Surname' id = 'SurnameID' placeholder = <?= $user->getSurname() ?>>
             <p id = 'Surname' class ="plaintext inline col-md-8 form-control"><?= $user->getSurname() ?></p>
+            <?php } ?>
+
+            <?php if ($userType == 'Saleman'){ ?>
+            <label for = "SiretID" class = 'inline col-md-4' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Siret</label>
+            <input class = "inline col-md-8 form-control" type = "text" name = 'Siret' id = 'SiretID' >
+            <p id = 'Siret' class ="plaintext inline col-md-8 form-control"></p>
+            <?php } ?>
 
             <label for = "NameID" class = 'inline col-md-4' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Name</label>
-            <input class = "inline col-md-8 form-control" type = "text" name = 'Name' id = 'NameID' placeholder = <?= $user->getSurname() ?>>
+            <input class = "inline col-md-8 form-control" type = "text" name = 'Name' id = 'NameID' placeholder = <?= $user->getName() ?>>
             <p id = 'Name' class ="plaintext inline col-md-8 form-control"><?= $user->getName() ?></p>
 
             <label for = "EmailID" class = 'inline col-md-4' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Email</label>
@@ -56,18 +71,33 @@ ob_start();
             <input class = 'form-control col-md-8 inline' type = 'text' name = 'Area' id = 'AreaID' placeholder = <?= $user->getArea() ?>>
             <p id = 'Area' class ="plaintext inline col-md-8 form-control"><?= $user->getArea() ?></p>
 
+            
+            <?php if($userType == 'Individual' || $userType == 'Saleman' || $userType == 'Volunteer') { ?>
             <label for = "EligibilityID" class = 'col-md-4 inline' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Adherent</label>
             <select class="form-control col-md-8 inline" id = "EligibilityID" name = "Eligibility">     
                 <option value = "Yes">Yes</option>
                 <option value = "No">No</option>
             </select>
-            <p id = "Eligibility" class ="plaintext inline col-md-8 form-control"><?= $user->getEligibility()?></p>
+            <p id = "Eligibility" class ="plaintext inline col-md-8 form-control"><?= $user->getEligibility() == 1 ? 'Yes' : 'No' ?></p>
+            <?php } ?>
+
+            <?php if($userType == 'Employer') { ?>
+            <label for = "SalaryID" class = 'col-md-4 inline' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Salary</label>
+            <select class="form-control col-md-8 inline" id = "SalaryID" name = "Salary">     
+                <option value = "Yes">Yes</option>
+                <option value = "No">No</option>
+            </select>
+            <p id = "Salary" class ="plaintext inline col-md-8 form-control"><?= '1230€'?></p>
+            <?php } ?>
 
         </div>
     </form>
-    <p class = 'col-md-6 offset-md-3'><button class = "btn btn-success col-md-6 offset-md-3" id = "Update"value = "Inscription">Save changes</button></p>
+    <p class = 'col-md-12 inline '>
+        <button class = "btn btn-success col-md-4 offset-md-1" id = "Update" >Save changes</button>
+        <button class = "btn btn-danger col-md-4 offset-md-2" id = "Abort">Abort</button>
+        <button class = "btn btn-success col-md-4 offset-md-7" id = "Modify">Modify</button>
+    </p>
 
-    <p class = 'col-md-6 offset-md-3'><button class = "btn btn-success col-md-6 offset-md-3" id = "Modify" value = "Inscription">Modify</button></p>
 </div>
 
 <?php //  type = "submit" 

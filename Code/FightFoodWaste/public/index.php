@@ -18,17 +18,18 @@ $router->get('/compte/:id', "User#view");
 
 $router->get('/comptes', "User#viewAll");
 
-// $router->post('/compte/:id', function($id){echo 'Poster pour le compte' . $id; });
 
 // $router->get('/users', "Individual#viewAll");
 
-// Adhesion
+// ADHESIONS
+// -------------------------------------------------------------------
 
 $router->get('/adhesion/:id', "Adhesion#viewUser");
 
 $router->get('/adhesions', "Adhesion#viewAll");
 
-// Truck
+// TRUCK
+// -------------------------------------------------------------------
 
 $router->get('/trucks', "Truck#viewAll");
 
@@ -37,35 +38,53 @@ $router->get('/trucks/:site', "Truck#viewBySite");
 $router->get('/truck/:id', "Truck#view");
 
 
-// Delivery
+// DELIVERIES
+// -------------------------------------------------------------------
 
 $router->get('/deliveries', "Delivery#viewAll");
 $router->get('/delivery/:id', "Delivery#view");
 
 
-// Product
+// PRODUCT
+// -------------------------------------------------------------------
 
 
-// Stop
+// STOP
+// -------------------------------------------------------------------
 
 
-// Site
+
+// SITES
+// -------------------------------------------------------------------
 
 $router->get('/sites', "Site#viewAll");
 
 $router->get('/site/:id', "Site#view");
 
 
-// Test
+// USERS
+// -------------------------------------------------------------------
 
+// Individual
 $router->post('/log/particulier', "Individual#Inscription");
 
-$router->post('/log/particulier', "Saleman#Inscription");
+$router->post('/particulier/update/:id', "Individual#Modification");
 
 $router->get('/particulier/:id', "Individual#view");
 
-// $router->put('/particulier/:id', "Individual#view");
+
+
+
+// Saleman
+$router->post('/log/particulier', "Saleman#Inscription");
+
+// Employee
+
+// Admin
+
 // Run
+// -------------------------------------------------------------------
+
 
 $router->run();
 

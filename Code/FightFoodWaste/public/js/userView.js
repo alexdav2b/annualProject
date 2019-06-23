@@ -1,45 +1,58 @@
 $(document).ready(function(){
-    $("#Update").hide();
-    $("input").hide();
-    $("select").hide();
+    Abort();
     $("#Modify").click(function(){
         $("#Update").show();
+        $("#Abort").show();
         $("input").show();
         $("select").show();
         $(".plaintext").hide();
         $("#Modify").hide();
     });
+    $("#Abort").click(Abort);
     $("#Update").click(function(){
-        if($("#SurnameID").val()){
+        if($("#SurnameID").val() == ''){
             $("#SurnameID").val($('#Surname').text());
         }
-        if($("#NameID").val() == null){
+
+        if($("#NameID").val() == ''){
             $("#NameID").val($('#Name').text());
         }
-        if($("#EmailID").val() == null){
+
+        if($("#EmailID").val() == ''){
             $("#EmailID").val($('#Email').text());
         }
-        if($("#PasswordID").val() == null){
+
+        if($("#PasswordID").val() == ''){
             $("#PasswordID").val($('#Password').text());
         }
-        if($("#SiteID").val() == null){
-            $("#SiteID").val($('#Site').text());
-        }
-        if($("#NumeroID").val() == null){
+
+        if($("#NumeroID").val() == ''){
             $("#NumeroID").val($('#Numero').text());
         }
-        if($("#RueID").val() == null){
+
+
+        if($("#RueID").val() == ''){
             $("#RueID").val($('#Rue').text());
         }
-        if($("#PostcodeID").val() == null){
+
+        if($("#PostcodeID").val() == ''){
             $("#PostcodeID").val($('#Postcode').text());
         }
-        if($("#AreaID").val() == null){
+
+        if($("#AreaID").val() == ''){
             $("#AreaID").val($('#Area').text());
         }
-        if($("#EligibilityID").val() == null){
-            $("#EligibilityID").val($('#Eligibility').text());
-        }
-        window.location.replace("/");
+        $("#Individual").submit();
+        // document.getElementById("Individual").submit();
     });
 });
+
+function Abort(){
+    $("#Update").hide();
+    $("#Abort").hide();
+    $("input").hide();
+    $("select").hide();
+    $("#id").hide();
+    $(".plaintext").show();
+    $("#Modify").show();
+}

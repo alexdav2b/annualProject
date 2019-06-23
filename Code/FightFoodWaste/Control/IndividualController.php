@@ -112,6 +112,7 @@ Class IndividualController{
             require_once __DIR__ . '/../public/View/userView.php';
         }
     }
+
     // public function view(int $id){
     //     $user = $this->getById($id);
     //     if($user != NULL){
@@ -207,6 +208,27 @@ Class IndividualController{
         $user->createIndividual();        
         $id = $user->getId();
         header("Location: /compte/$id"); 
+    }
+
+    public function Modification(int $id){
+        var_dump('ok');
+        $controller = new SiteController();
+        $site = $controller->GetById($_POST['Site']);
+        $form = array(
+            htmlspecialchars($_POST['Email']),
+            htmlspecialchars($_POST['Name']),
+            htmlspecialchars($_POST['Password']),
+            htmlspecialchars($_POST['Numero']),
+            htmlspecialchars($_POST['Rue']),
+            htmlspecialchars($_POST['Postcode']),
+            htmlspecialchars($_POST['Area']),
+            $_POST['Eligibility'], 
+            htmlspecialchars($_POST['Surname']), 
+            $site
+        );
+        $user = new Individual($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
+        $user->updateIndividual();        
+        header("Location: /particulier/$id"); 
     }
 }
 

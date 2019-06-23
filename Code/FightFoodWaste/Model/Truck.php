@@ -95,3 +95,5 @@ Class Truck{
 	}
 
 }
+
+?>
