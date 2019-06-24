@@ -20,11 +20,11 @@ Class Saleman extends User{
         }
     }
 
-    public function createIndividual(): bool{
+    public function createSaleman(): bool{
         return parent::create('Saleman');
     }
 
-    public function updateIndividual(): bool{
+    public function updateSaleman(): bool{
         return parent::update('Saleman');
     }
 }

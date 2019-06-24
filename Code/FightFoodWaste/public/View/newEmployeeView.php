@@ -5,7 +5,9 @@ $script = "../js/userView.js";
 ob_start();
 
 // $userType = $_SESSION['User']; 
-$userType = 'Individual'; 
+$userType = 'Admin'; 
+
+$url = "/particulier/update/" . $user->getId();
 
 ?>
 <div class = "col-md-6 offset-md-3">
@@ -22,8 +24,8 @@ $userType = 'Individual';
 
             <?php if ($userType == 'Saleman'){ ?>
             <label for = "SiretID" class = 'inline col-md-4' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Siret</label>
-            <input class = "inline col-md-8 form-control" type = "text" name = 'Siret' id = 'SiretID' placeholder = <?= $user->getSiret() ?>>
-            <p id = 'Siret' class ="plaintext inline col-md-8 form-control"><?= $user->getSiret() ?></p>
+            <input class = "inline col-md-8 form-control" type = "text" name = 'Siret' id = 'SiretID' >
+            <p id = 'Siret' class ="plaintext inline col-md-8 form-control"></p>
             <?php } ?>
 
             <label for = "NameID" class = 'inline col-md-4' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Name</label>
@@ -72,20 +74,19 @@ $userType = 'Individual';
 
             <?php if($userType == 'Employer') { ?>
             <label for = "SalaryID" class = 'col-md-4 inline' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Salary</label>
-            <select class="form-control col-md-8 inline" id = "SalaryID" name = "Salary" placeholder = <?= $user->getSalary() ?>>     
+            <select class="form-control col-md-8 inline" id = "SalaryID" name = "Salary">     
                 <option value = "Yes">Yes</option>
                 <option value = "No">No</option>
             </select>
-            <p id = "Salary" class ="plaintext inline col-md-8 form-control"><?= $user->getSalary() ?>€</p>
+            <p id = "Salary" class ="plaintext inline col-md-8 form-control"><?= '1230€'?></p>
             <?php } ?>
 
         </div>
     </form>
     <p class = 'col-md-12 inline '>
-        <a href = "/compte/delete/<?= $user->getId(); ?>" class = "btn btn-danger  col-md-4 offset-md-1" id = "Delete" >Supprimer</a>
-        <button class = "btn btn-success col-md-4 offset-md-1" id = "Update">Enregistrer</button>
-        <button class = "btn btn-outline-success col-md-4 offset-md-2" id = "Modify">Modifier</button>
-        <button class = "btn btn-outline-danger  col-md-4 offset-md-2" id = "Abort" >Annuler</button>
+        <button class = "btn btn-success col-md-4 offset-md-1" id = "Update">Save changes</button>
+        <button class = "btn btn-success col-md-4 offset-md-7" id = "Modify">Modify</button>
+        <button class = "btn btn-danger  col-md-4 offset-md-2" id = "Abort" >Abort</button>
     </p>
 
 </div>

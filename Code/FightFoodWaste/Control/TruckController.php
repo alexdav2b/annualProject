@@ -66,6 +66,8 @@ Class TruckController{
         $object = $this->getById($id);
         if($object != NULL){
             require_once __DIR__ . '/../public/View/truckGestionView.php';
+        }else{
+            header('Location: /404');
         }
     }
 
@@ -73,6 +75,8 @@ Class TruckController{
         $objects = $this->getBySite($idSite);
         if($objects != NULl){ 
             require_once __DIR__ . '/../public/View/truckGestionView.php';
+        }else{
+            header('Location: /404');
         }
     }
 
@@ -80,6 +84,8 @@ Class TruckController{
         $objects = $this->getAll();
         if($objects != NULl){
             require_once __DIR__ . '/../public/View/truckGestionView.php';
+        }else{
+            header('Location: /404');
         }
     }
 

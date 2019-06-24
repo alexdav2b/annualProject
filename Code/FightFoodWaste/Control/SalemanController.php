@@ -8,8 +8,8 @@ Class SalemanController{
     // Parse
     private function parseOne($json){
         if($json['Discriminator'] == 'Saleman'){
-            $siteManager = new SiteManager();
-            $site = $siteManager->getById(intval($json['SiteID']));
+            $controller = new SiteController();
+            $site = $controller->getById(intval($json['SiteID']));
             $user = new Saleman($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Siret'], $site);
             return $user;    
         }
@@ -103,73 +103,7 @@ Class SalemanController{
 
     
     // Views
-
-    // a suppr
-    public function gestionViewOne(int $id){
-        $user = $this->getById($id);
-        if($user != NULL){
-        ?>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Siret</th>
-                <th>Email</th>
-                <th>Adresse</th>
-                <!-- <th>N°</th>
-                <th>Rue</th>
-                <th>Postcode</th>
-                <th>Area</th> -->
-                <th>Site</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th> <?= $user->getName(); ?></th>
-                <th> <?= $user->getSiret(); ?></th>
-                <th> <?= $user->getEmail(); ?></th>
-                <th> <?= $user->getNumero() . ', ' .  $user->getRue() . ' ' . $user->getPostcode() . ' ' . $user->getArea() ?> </th>
-                <!-- <th> <?= $user->getNumero(); ?></th>
-                <th> <?= $user->getRue(); ?></th>
-                <th> <?= $user->getPostcode(); ?></th>
-                <th> <?= $user->getArea(); ?></th> -->
-                <th> <?= $user->getSite()->getName(); ?> </th>
-            </tr>
-        </tbody>
-        <?php
-        }
-    }
-
-    public function gestionViewAll(){
-        $users = $this->getAll();
-        if($users != NULL){
-        ?>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Siret</th>
-                <th>Email</th>
-                <th>Adresse</th>
-                <th>Site</th>
-            </tr>
-        </thead>
-        <tbody>
-
-        <?php
-            foreach ($users as $user){
-            ?>
-            <tr>
-                <th> <?= $user->getName(); ?></th>
-                <th> <?= $user->getSiret(); ?></th>
-                <th> <?= $user->getEmail(); ?></th>
-                <th> <?= $user->getNumero() . ', ' .  $user->getRue() . ' ' . $user->getPostcode() . ' ' . $user->getArea() ?> </th>
-                <th> <?= $user->getSite()->getName(); ?> </th>
-            </tr>
-            <?php
-            }
-        ?> </tbody> <?php
-        }
-    }
-
+    
     public function Inscription(){
         $controller = new SiteController();
         $site = $controller->GetById($_POST['Site']);
@@ -185,9 +119,42 @@ Class SalemanController{
             $site
         );
         $user = new Saleman(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
-        $user->createIndividual();
+        $user->createSaleman();
         $id = $user->getId();
         header("Location: /compte/$id"); 
+    }
+
+    public function Modification(int $id){
+        $controller = new SiteController();
+        $site = $controller->GetById($_POST['Site']);
+        $form = array(
+            htmlspecialchars($_POST['Email']),
+            htmlspecialchars($_POST['Name']),
+            htmlspecialchars($_POST['Password']),
+            htmlspecialchars($_POST['Numero']),
+            htmlspecialchars($_POST['Rue']),
+            htmlspecialchars($_POST['Postcode']),
+            htmlspecialchars($_POST['Area']),
+            htmlspecialchars($_POST['Siret']), 
+            $site
+        );
+        $user = new Saleman($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
+        $user->createSaleman();        
+        header("Location: /saleman/$id"); 
+    }
+
+    public function view(int $id){
+        $user = $this->getById($id);
+        if($user == NULL || $user->getDiscriminator() != 'Saleman'){ 
+            header('Location: /404');
+        }
+        $url = "/commercant/update/" . $id;
+        $controller = new SiteController();
+        $sites = $controller->getAll();
+        if($sites == null){
+            header('Location: /404');
+        }
+        require_once __DIR__ . '/../public/View/userView.php';
     }
 }
 

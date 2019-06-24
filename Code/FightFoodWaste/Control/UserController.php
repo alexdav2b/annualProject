@@ -87,17 +87,25 @@ Class UserController{
     }
 
     // Views
-
-    public function view(int $id){
-        $user = $this->getById($id);
-        require_once __DIR__ . '/../public/View/userGestionView.php';
-    }
-
+    
     public function viewAll(){
         $users = $this->getAll();
         if($users != NULl){
             require_once __DIR__ . '/../public/View/userGestionView.php';
         }
+        else{
+            header('Location: /404');
+        }
+    }
+
+    public function Suppression(int $id){
+        $user = $this->GetById($id);
+        if($user == null){
+            header("Location: /404");
+        }
+        $user->delete();
+        // delete session
+        header("/");
     }
 }
 

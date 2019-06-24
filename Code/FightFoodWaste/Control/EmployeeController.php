@@ -99,6 +99,60 @@ Class EmployeeController{
     // getbySalary
     
     // Views
+    public function view(int $id){
+        $user = $this->getById($id);
+        if($user == NULL || $user->getDiscriminator() != 'Employer'){ 
+            header('Location: /404');
+        }
+        $url = "/employe/update/" . $id;
+        $controller = new SiteController();
+        $sites = $controller->getAll();
+        if($sites == null){
+            header('Location: /404');
+        }
+        require_once __DIR__ . '/../public/View/userView.php';
+    }
+
+    public function Inscription(){
+        $controller = new SiteController();
+        $site = $controller->GetById($_POST['Site']);
+        $form = array(
+            htmlspecialchars($_POST['Email']),
+            htmlspecialchars($_POST['Name']),
+            htmlspecialchars($_POST['Password']),
+            htmlspecialchars($_POST['Numero']),
+            htmlspecialchars($_POST['Rue']),
+            htmlspecialchars($_POST['Postcode']),
+            htmlspecialchars($_POST['Area']),
+            htmlspecialchars($_POST['Salary']), 
+            htmlspecialchars($_POST['Surname']), 
+            $site
+        );
+        $user = new Employee(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
+        $user->createIndividual();        
+        $id = $user->getId();
+        header("Location: /compte/$id"); 
+    }
+
+    public function Modification(int $id){
+        $controller = new SiteController();
+        $site = $controller->GetById($_POST['Site']);
+        $form = array(
+            htmlspecialchars($_POST['Email']),
+            htmlspecialchars($_POST['Name']),
+            htmlspecialchars($_POST['Password']),
+            htmlspecialchars($_POST['Numero']),
+            htmlspecialchars($_POST['Rue']),
+            htmlspecialchars($_POST['Postcode']),
+            htmlspecialchars($_POST['Area']),
+            htmlspecialchars($_POST['Salary']),
+            htmlspecialchars($_POST['Surname']), 
+            $site
+        );
+        $user = new Employee($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
+        $user->updateIndividual();        
+        header("Location: /particulier/$id"); 
+    }
 
 }
 

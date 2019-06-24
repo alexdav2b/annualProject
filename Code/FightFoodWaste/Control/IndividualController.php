@@ -100,84 +100,26 @@ Class IndividualController{
 
     public function view(int $id){
         $user = $this->getById($id);
+        if($user == NULL || $user->getDiscriminator() != 'Individual'){ 
+            header('Location: /404');
+        }
+        $url = "/particulier/update/" . $id;
         $controller = new SiteController();
         $sites = $controller->getAll();
-        if($user != NULL && $sites != null){
-            require_once __DIR__ . '/../public/View/userView.php';
+        if($sites == null){
+            header('Location: /404');
         }
+        require_once __DIR__ . '/../public/View/userView.php';
     }
-
-    // public function view(int $id){
-    //     $user = $this->getById($id);
-    //     if($user != NULL){
-
-    //     }
-    // }
 
     // public function viewAll(){
     //     $users = $this->getAll();
     //     if($users != NULL){
-            
+    //     }
+    //     else{
+    //         header('Location: /404');
     //     }
     // } 
-
-    // a suppr
-
-    public function gestionViewOne(int $id){
-
-        ?>
-        <!-- <thead>
-            <tr>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Email</th>
-                <th>Adresse</th>
-                <th>Site</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th> <?= $user->getName(); ?></th>
-                <th> <?= $user->getSurname(); ?></th>
-                <th> <?= $user->getEmail(); ?></th>
-                <th> <?= $user->getNumero() . ', ' .  $user->getRue() . ' ' . $user->getPostcode() . ' ' . $user->getArea() ?> </th>
-                <th> <?= $user->getSite()->getName(); ?> </th>
-            </tr>
-        </tbody> -->
-        <?php
-        
-    }
-
-    public function gestionViewAll(){
-        $users = $this->getAll();
-        if($users != NULL){
-        ?>
-        <!-- <thead>
-            <tr>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Email</th>
-                <th>Adresse</th>
-                <th>Site</th>
-            </tr>
-        </thead>
-        <tbody> -->
-
-        <?php
-            foreach ($users as $user){
-            ?>
-            <!-- <tr>
-                <th> <?= $user->getName(); ?></th>
-                <th> <?= $user->getSurname(); ?></th>
-                <th> <?= $user->getEmail(); ?></th>
-                <th> <?= $user->getNumero() . ', ' .  $user->getRue() . ' ' . $user->getPostcode() . ' ' . $user->getArea() ?> </th>
-                <th> <?= $user->getSite()->getName(); ?> </th>
-            </tr> -->
-            <?php
-            }
-        ?> </tbody> <?php
-        }
-    }
 
     public function Inscription(){
         $controller = new SiteController();
@@ -193,14 +135,13 @@ Class IndividualController{
             htmlspecialchars($_POST['Surname']), 
             $site
         );
-        $user = new Individual(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
+        $user = new Individual(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
         $user->createIndividual();        
         $id = $user->getId();
         header("Location: /compte/$id"); 
     }
 
     public function Modification(int $id){
-        var_dump('ok');
         $controller = new SiteController();
         $site = $controller->GetById($_POST['Site']);
         $form = array(
