@@ -4,7 +4,7 @@ CC_FLAGS = -Wall -Wextra -Wno-unused-parameter
 LIBS_FLAGS = $$(pkg-config --cflags --libs jansson libcurl sdl2)
 
 # File names
-EXEC = exe
+EXEC = version_produits
 SOURCES =	$(wildcard *.c) \
 			 $(wildcard */*.c)
 OBJECTS = $(SOURCES:.c=.o)
@@ -27,4 +27,4 @@ cleanObj:
 
 #construct all and clean obj
 build:
-	make && make cleanObj && ./exe
+	make && make cleanObj && ./version_produits
