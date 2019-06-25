@@ -24,11 +24,10 @@
             return $this->ID;
         }
 
-        public function getAdresse(){
-            $name = "depot".$this->ID;
-            $adresse = "".$this->numero." ".$this->rue." ";
-            $a = new Adresse ($name, $adresse, $this->codePostal, $this->ville);
-        }
+        public function getNumero(){return $this->numero;}
+        public function getRue(){return $this->rue;}
+        public function getCode(){return $this->codePostal;}
+        public function getVille(){return $this->ville;}
 
         public function setDepot(int $id, String $numero, String $rue, String $codePostal, String $ville, int $capacite){
             $this->ID = $id;

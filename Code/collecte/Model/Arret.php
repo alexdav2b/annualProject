@@ -6,7 +6,7 @@
         
         private $nbArticle;
 
-        public function __construct( ?string $nom ,?String $numero , ?string $rue , ?String $codePostale, ?string $ville, int $nbArticle = 0 ){
+        public function __construct( ?string $nom ,?String $numero , ?string $rue , ?String $codePostale, ?string $ville, ?int $nbArticle ){
             parent::__construct($nom, $numero ,$rue, $codePostale, $ville);
             $this->nbArticle = $nbArticle;
         }
