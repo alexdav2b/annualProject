@@ -9,15 +9,13 @@ $script = "../js/connexionView.js";
 ob_start();
 
 ?>
-<div id = "connexionForm" class = "formulaire col-xs-3 col-sm-3 col-md-3 col-lg-3 offset-xs-2 offset-sm-2 offset-md-2 offset-lg-2">
+<div id = "connexionForm"  class = "formulaire col-xs-3 col-sm-3 col-md-3 col-lg-3 offset-xs-2 offset-sm-2 offset-md-2 offset-lg-2">
     <h2 style = "height : 8%">Connexion</h2>
-    <?php $connexion = new Form(array('Email', 'Password')); ?>
-    <form action = '../Control/Connexion.php' method = "post">
-        <!-- <?php echo $connexion->input('Email'); ?>
-        <input class = "form-control" type = "password" name = "Password" id = "Password" placeholder = "Password">; -->
-        <?php $connexion->echoAllInputs(); ?>
+    <form action = "/connexion" method = "post">
+        <input class = "form-control" type = "text" name = "Email" id = "EmailID" placeholder = "Email">
+        <input class = "form-control" type = "text" name = "Password" id = "PasswordID" placeholder = "Password">
         <p><a href = "#">Mot de passe oublié ?</a></p>
-        <?php  echo $connexion->submit('Connexion'); ?>
+        <p class = 'col-md-6 offset-md-3'><button type = "submit" class = "btn btn-success" id = "ConnexionID" type = "submit">Connexion</button></p>
     </form> 
 </div>
 

@@ -142,25 +142,9 @@ Class User{
     private function StringIsNotOver(string $str, int $length){
         return (strlen($str) > 0 && strlen($str) <= $length);
 	}
-	
-	public function Connexion($fields): User{
-		session_start();
-		session_regenerate_id();
-		$_SESSION['name'] = getName();
-		// if (!isset($_SESSION['userId'])) {
-        //     $_SESSION['userId'] = 0;
-        // } else {
-        //     $_SESSION['userId']++;
-        // }
-	}
 
 	public function Inscription(){
 		
-	}
-
-    public function Deconnnexion(){
-        session_start();
-        session_destroy ();
 	}
 	
 	public function PasswordIsValid(string $password, string $hashedPassword): bool{

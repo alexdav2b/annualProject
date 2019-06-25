@@ -2,20 +2,18 @@
 $title = 'Votre compte';
 $script = "../js/userView.js";
 
+$userType = $_SESSION['User'];
 ob_start();
-
-// $userType = $_SESSION['User']; 
-$userType = 'Individual'; 
 
 ?>
 <div class = "col-md-6 offset-md-3">
     <h2 class= "col-md-6 offset-md-4">Votre Compte</h2>
 
-    <form id = 'User' method = "post" action = "<?= $url ?>">
+    <form id = 'User' method = "post" action = "<?= $url ?>" >
         <div class = 'row form-group' style = 'margin-bottom : 0 !important; padding-top : 0 !important; padding-left : 15px !important; padding-right : 15px !important;'>
             
             <?php if ($userType == 'Individual' || $userType == 'Employer' || $userType == 'Admin' || $userType == 'Volunteer'){ ?>
-            <label for = "SurnameID" class = 'inline col-md-4' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>First name</label>
+            <label for = "SurnameID" class = 'inline col-md-4' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Surname</label>
             <input class = "inline col-md-8 form-control" type = "text" name = 'Surname' id = 'SurnameID' placeholder = <?= $user->getSurname() ?>>
             <p id = 'Surname' class ="plaintext inline col-md-8 form-control"><?= $user->getSurname() ?></p>
             <?php } ?>

@@ -6,7 +6,7 @@ require_once __DIR__ . '/../Model/Employee.php';
 Class EmployeeController{
 
     // Parse
-    private function parseOne() : Employee{
+    private function parseOne($json) : Employee{
         if($json['Discriminator'] == 'Employer'){
             $siteController = new SiteController();
             $site = $siteController->getById(intval($json['SiteID']));
@@ -100,6 +100,11 @@ Class EmployeeController{
     
     // Views
     public function view(int $id){
+        if(!isset($_SESSION['User']) && !isset($_SESSION['ID']) && $_SESSION['User'] == null && $_SESSION['Id'] == null 
+        || $_SESSION['Id'] != $id){
+            header("Location: /404");
+        }
+
         $user = $this->getById($id);
         if($user == NULL || $user->getDiscriminator() != 'Employer'){ 
             header('Location: /404');

@@ -35,7 +35,6 @@ function ShowUpdate(){
 // }
 
 function Update(){
-    // $("#User").attr("action", "");
     Check();
     $("#User").submit();
 }
@@ -43,8 +42,8 @@ function Update(){
 function Check(){
     var userType = '<?= $userType ?>'; 
 
-    if((userType == 'Individual' || userType == 'Employer' || userType == 'Admin' || userType == 'Volunteer') && $("#SurnameID").val() == ''){
-        $("#SurnameID").val($('#Surname').text());
+    if($("#SurnameID").val() == '' && userType != 'Saleman'){
+        $("#SurnameID").val($("#Surname").text());
     }
 
     if(userType == 'Saleman' && $("#SiretID").val() == ''){

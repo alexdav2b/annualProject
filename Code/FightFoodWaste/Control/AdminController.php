@@ -6,12 +6,12 @@ require_once __DIR__ . '/../Model/Admin.php';
 Class AdminController{
 
     // Parse
-    private function parseOne() : Admin{
+    private function parseOne($json) : Admin{
         if($json['Discriminator'] == 'Admin'){
             $siteController = new SiteController();
             $site = $siteController->getById(intval($json['SiteID']));
 
-            $user = new Admin($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Salary'], $json['Surname'], $site);
+            $user = new Admin($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Surname'], $site);
             return $user;
         }
     }
@@ -22,7 +22,7 @@ Class AdminController{
             if($line['Discriminator'] == 'Admin'){
                 $siteController = new SiteController();
                 $site = $siteController->getById(intval($line['SiteID']));
-                $user = new Admin($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Salary'], $line['Surname'], $site);
+                $user = new Admin($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Surname'], $site);
                 array_push($result, $user);
             }
         }
@@ -95,16 +95,20 @@ Class AdminController{
         $json = $api->getByInt('Site', $siteId);
         return $this->parseAll($json);
     }
-
-    // getbySalary
     
     // Views
     public function view(int $id){
+        if(!isset($_SESSION['User']) && !isset($_SESSION['ID']) && $_SESSION['User'] == null && $_SESSION['Id'] == null 
+        || $_SESSION['Id'] != $id){
+            header("Location: /404");
+        }
+
+        $userType = $_SESSION['User'];
         $user = $this->getById($id);
         if($user == NULL || $user->getDiscriminator() != 'Admin'){ 
             header('Location: /404');
         }
-        $url = "/employe/update/" . $id;
+        $url = "/admin/update/" . $id;
         $controller = new SiteController();
         $sites = $controller->getAll();
         if($sites == null){
@@ -124,12 +128,11 @@ Class AdminController{
             htmlspecialchars($_POST['Rue']),
             htmlspecialchars($_POST['Postcode']),
             htmlspecialchars($_POST['Area']),
-            htmlspecialchars($_POST['Salary']), 
             htmlspecialchars($_POST['Surname']), 
             $site
         );
-        $user = new Admin(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
-        $user->createIndividual();        
+        $user = new Admin(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
+        $user->createAdmin();        
         $id = $user->getId();
         header("Location: /compte/$id"); 
     }
@@ -145,12 +148,11 @@ Class AdminController{
             htmlspecialchars($_POST['Rue']),
             htmlspecialchars($_POST['Postcode']),
             htmlspecialchars($_POST['Area']),
-            htmlspecialchars($_POST['Salary']),
             htmlspecialchars($_POST['Surname']), 
             $site
         );
-        $user = new Admin($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
-        $user->updateIndividual();        
+        $user = new Admin($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
+        $user->updateAdmin();        
         header("Location: /admin/$id"); 
     }
 

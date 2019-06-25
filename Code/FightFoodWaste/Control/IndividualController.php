@@ -99,6 +99,11 @@ Class IndividualController{
     // Views
 
     public function view(int $id){
+        if(!isset($_SESSION['User']) && !isset($_SESSION['ID']) && $_SESSION['User'] == null && $_SESSION['Id'] == null 
+        || $_SESSION['Id'] != $id){
+            header("Location: /404");
+        }
+
         $user = $this->getById($id);
         if($user == NULL || $user->getDiscriminator() != 'Individual'){ 
             header('Location: /404');

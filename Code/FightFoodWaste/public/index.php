@@ -4,6 +4,10 @@ require_once __DIR__ . '/../public/Router/Router.php';
 
 $router = new Router($_GET['url']);
 
+if(!isset($_SESSION['User'])){
+    session_start();
+}
+
 // PAGES
 // -------------------------------------------------------------------
 
@@ -92,13 +96,17 @@ $router->post('/employe/update/:id', "Employee#Modification");
 
 $router->get('/employe/:id', "Employee#view"); 
 
-
 // Admin
 $router->get('/comptes', "User#viewAll");
 
-$router->post('/admin/update/:id', "Admin#Modification"); // Controller
+$router->post('/admin/update/:id', "Admin#Modification"); 
 
-$router->get('/admin/:id', "Admin#view"); // Controller
+$router->get('/admin/:id', "Admin#view"); 
+
+// Connexion - Déconnexion
+$router->post('/connexion', "User#Connexion");
+
+$router->get('/deconnexion', "User#Deconnexion");
 
 
 // RUN
@@ -106,7 +114,4 @@ $router->get('/admin/:id', "Admin#view"); // Controller
 
 $router->run();
 
-
-// use $router
-// echo $router->url('Post#show', ['id' => 1, 'slug' => 'salut-les-gens']);
 ?>

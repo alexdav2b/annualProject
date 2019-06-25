@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../../Control/PagesController.php';
 
 require_once __DIR__ . '/../../Control/AdhesionController.php';
+require_once __DIR__ . '/../../Control/AdminController.php';
 require_once __DIR__ . '/../../Control/DeliveryController.php';
 require_once __DIR__ . '/../../Control/DeliveryTypeController.php';
 require_once __DIR__ . '/../../Control/DepositeryController.php';

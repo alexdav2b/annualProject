@@ -103,9 +103,48 @@ Class UserController{
         if($user == null){
             header("Location: /404");
         }
-        $user->delete();
-        // delete session
-        header("/");
+        header("/deconnexion");
+    }
+
+    public function Connexion(){
+        if(isset($_POST['Password']) && isset($_POST['Email'])){
+            $users = $this->getByEmail($_POST['Email']);
+            $user = $users[0];
+            if($user == NULL){
+                header('Location: /404');
+            }
+            if($_POST['Password'] == $user->getPassword()){
+                session_destroy();
+                session_start();
+                $_SESSION['User'] = $user->getDiscriminator();
+                $_SESSION['Id'] = $user->getId();
+
+                $url = '/';
+                switch($_SESSION['User']){
+                    case 'Individual' :
+                        $url .= 'particulier/';
+                        break;
+                    case 'Saleman' :
+                        $url .= 'commercant/';
+                        break;
+                    case 'Admin':
+                        $url .= 'admin/';
+                        break;
+                    case 'Employer' :
+                        $url .= 'employe/';
+                        break;
+                }
+                $url .= $user->getId();
+                header('Location: ' . $url);
+            }
+        }
+
+    }
+
+    public function Deconnexion(){
+        session_unset();
+        session_destroy();
+        header('Location: /');
     }
 }
 
