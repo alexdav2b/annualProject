@@ -2,8 +2,8 @@
 
 char* fromBarcodeToName(char * code)
 {
-    // https://fr.openfoodfacts.org/api/v0/produit/3029330003533.json
     char *err;
+    //get json from openfoodfact
     char *data = getProduct(code, &err);
     int found = 0, size;
     char *name;
@@ -11,36 +11,33 @@ char* fromBarcodeToName(char * code)
     name = malloc(sizeof(char)*80);
     size = 80;
 
-    json_t *root;
+    json_t *rData;
     json_error_t error;
-
-    root = json_loads(data, 0, &error);
-    if (!root)
+    rData = json_loads(data, 0, &error);
+    if (!rData)
     {
-        fprintf(stderr, "error: on line %d: %s\n", error.line, error.text);
+        fprintf(stderr, "erreur: line %d: %s\n", error.line, error.text);
         return "err";
     }
     free(data);
 
-    json_t *product = json_object_get(root, "product");
+    json_t *product = json_object_get(rData, "product");
 
     const char *key;
     json_t *value;
-
+    
     void *iter = json_object_iter(product);
     while (iter)
     {
         key = json_object_iter_key(iter);
         value = json_object_iter_value(iter);
-        value = json_object_iter_value(iter);
         if (sameString("product_name_fr", key))
         {
+            //get french name
             found = 1;
-            printf("Key: %s, Value: %s\n", key, json_string_value(value));
             memset(name, '\0', size);
             strcpy(name, json_string_value(value));
             name[strlen(json_string_value(value))] = '\0';
-            printf("\n33e : %c\nname : %s\n", name[33], name);
         }
         iter = json_object_iter_next(product, iter);
     }
@@ -48,6 +45,7 @@ char* fromBarcodeToName(char * code)
     {
         while (iter)
         {
+            //get general name if french not exist
             key = json_object_iter_key(iter);
             value = json_object_iter_value(iter);
             value = json_object_iter_value(iter);
@@ -63,7 +61,6 @@ char* fromBarcodeToName(char * code)
     json_decref(product);
     if(found != 1)
         return "err";
-    printf("\nname : %s\n", name);
     return name;
 }
 
@@ -85,7 +82,7 @@ char * getProduct(char *code, char **err)
     CURL *curl_handle;
     CURLcode res;
     char *url;
-
+    //var that receive json
     struct http_data_t chunk;
 
     chunk.data = malloc(sizeof(struct http_data_t));
@@ -96,11 +93,10 @@ char * getProduct(char *code, char **err)
     curl_handle = curl_easy_init();
 
     url = calloc(sizeof(char), strlen(url_model) + strlen(code) + 1);
-    //comme printf 2e parm dans le code format du premier
+    //create final url
     sprintf(url, url_model, code);
-    // printf("\n%s\n", url);
     curl_easy_setopt(curl_handle, CURLOPT_URL, url);
-
+    //callback to enlarge max data json
     curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, write_memory);
     curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, (void *)&chunk);
 
@@ -123,7 +119,6 @@ char * getProduct(char *code, char **err)
     curl_easy_cleanup(curl_handle);
     curl_global_cleanup();
 
-    // printf("%s", chunk.data);
     return chunk.data;
 }
 

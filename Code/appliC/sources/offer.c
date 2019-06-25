@@ -8,16 +8,11 @@ int createOffer(struct User *user)
 
     while(wait)
     {
-        fflush(stdin); //STDOUT
         printf("\n1: Proposer un produit \n2: Valier la proposition \n3: Retourner au menu\n");
-        fflush(stdin);
-        fgets(cmd, 3, stdin);
-        fflush(stdin);
+        fgets(cmd, 3, stdin);        
         if(cmd[0] == '1')
         {
-            listProduct = addProduct(user, listProduct, nbProduct);
-            validDate(listProduct, nbProduct);
-            nbProduct += 1;
+            listProduct = addProduct(user, listProduct, &nbProduct);
             printList(listProduct, nbProduct);
         }
         else if(cmd[0] == '2')
@@ -28,15 +23,31 @@ int createOffer(struct User *user)
     return 0;
 }
 
-int validDate(struct Product *listProduct, int nbProduct)
+//ask user validity date
+char *validDate(struct Product *listProduct, int nbProduct)
 {
-    char valDate[42];
+    char valDate[11];
+    int i, wait = 1;
 
-    printf("Entrez la date de peremption\n");
-    fgets(valDate, 42, stdin);
-    //traitement de la date -> format
-    strcpy(listProduct[nbProduct].validDate, valDate);
-    return 0;
+    
+    while(wait)
+    {
+        printf("Entrez la date de peremption :\n");
+        fflush(stdout);
+        fflush(stdin);
+        fgets(valDate, 12, stdin);
+        i = 0;
+        while(valDate[i] != '\0')
+        {
+            if(valDate[i] == '\n')
+                valDate[i] = '\0';
+            i++;
+        }
+        if(i == 10)
+            wait = 1;
+        printf("date : %s\n", valDate);
+    }
+    return valDate;
 }
 
 char *getBarcode()
@@ -57,17 +68,19 @@ char *getBarcode()
     return productBarcode;
 }
 
-struct Product *addProduct(struct User *user, struct Product *listProduct, int nbProduct)
+struct Product *addProduct(struct User *user, struct Product *listProduct, int *nbProduct)
 {
     int i;
     unsigned int sizeName;
     unsigned int j;
     char *productBarcode;
-    char *name;
-    struct Product *newListProduct = malloc(sizeof(struct Product) * (nbProduct + 1));
-
+    char *name, *date;
+    struct Product *newListProduct;
+    //get barcode in string
     productBarcode = getBarcode();
+    //get name from openfoodfact
     name = fromBarcodeToName(productBarcode);
+    
     sizeName = strlen(name);
 
     if (sameString("err", name))
@@ -76,73 +89,46 @@ struct Product *addProduct(struct User *user, struct Product *listProduct, int n
     }
     else if(productBarcode[0] != '\n')
     {
+        //save new product 
         //copy previous list
-        for(i = 0; i < nbProduct; i++)
+        newListProduct  = malloc(sizeof(struct Product) * (*nbProduct + 1));
+        for(i = 0; i < *nbProduct; i++)
         {
             newListProduct[i] = listProduct[i];
         }
         //name
         for(j =0; j < 80 && j < strlen(name); j++)
         {
-            newListProduct[nbProduct].name[j] = name[j];
+            newListProduct[*nbProduct].name[j] = name[j];
         }
-        newListProduct[nbProduct].name[sizeName] = '\0';
+        free(name);
+        newListProduct[*nbProduct].name[sizeName] = '\0';
         //barcode value
         for(j =0; j < 14; j++)
         {
-            newListProduct[nbProduct].barcodeValue[j] = productBarcode[j];
+            newListProduct[*nbProduct].barcodeValue[j] = productBarcode[j];
         }
-        //id user
-        strcpy(newListProduct[nbProduct].usrId, user->usrId);
-        //id depot
-        strcpy(newListProduct[nbProduct].depoId, user->siteId);
+        //id user and depot
+        for(j = 0; j < 5; j++)
+        {
+            newListProduct[*nbProduct].usrId[j] = user->usrId[j];
+            newListProduct[*nbProduct].depoId[j] = user->siteId[j];
+        }
         //id statut
-        strcpy(newListProduct[nbProduct].depoId, "0\0");
-
+        newListProduct[*nbProduct].depoId[0] = "0";
+        newListProduct[*nbProduct].depoId[1] = "\0";
+        // validity date 
+        // date = validDate(listProduct, *nbProduct);
+        // printf("\n %s\n", date);
+        // for(i = 0; i < 11; i++)
+        // {
+        //     listProduct[*nbProduct].validDate[i] = date[i];
+        // }
+        *nbProduct += 1;
         free(productBarcode);
         free(listProduct);
         return newListProduct;
     }
-    else
-    {
-        free(productBarcode);
-    }
-    // free(newListProduct);
+    free(productBarcode);
     return listProduct;
-}
-
-struct Product *dellProduct(struct Product *listProduct, int nbProduct, int idProduct)
-{
-    int i;
-    char *productBarcode;
-    char *name;
-    struct Product *newListProduct = malloc(sizeof(struct Product) * (nbProduct - 1));
-
-    for(i = 0; i < nbProduct; i++)
-    {
-        newListProduct[i] = listProduct[i];
-    }
-    productBarcode = getBarcode();
-    name = fromBarcodeToName(productBarcode);
-
-    printf("\ntest : %d\n", sameString("err", name));
-    if (sameString("err", name))
-    {
-        printf("ce produit n'es pas reconnu\n");
-    }
-    if(productBarcode[0] != '\n')
-    {
-        for(unsigned int j =0; j < 14; j++)
-        {
-            newListProduct[nbProduct].barcodeValue[j] = productBarcode[j];
-        }
-        
-        for(unsigned int j =0; j < 80 && j < strlen(name); j++)
-        {
-            newListProduct[nbProduct].name[j] = name[j];
-        }
-        free(productBarcode);
-        return newListProduct;
-    }
-    return 0;
 }
