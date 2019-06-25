@@ -9,7 +9,6 @@ ob_start();
             <th>Name</th>
             <th>Email</th>
             <th>Adresse</th>
-            <th>Eligibility</th>
             <th>Status</th>
             <th>Site</th>
         </tr>
@@ -24,7 +23,6 @@ ob_start();
             <th> <?= $user->getName(); ?></th>
             <th> <?= $user->getEmail(); ?></th>
             <th> <?= $user->getNumero() . ', ' .  $user->getRue() . ' ' . $user->getPostcode() . ' ' . $user->getArea() ?> </th>
-            <th> <?= $user->getEligibility() ? 'Yes' : 'No'; ?></th>
             <th> <?= $user->getDiscriminator(); ?> </th>
             <th> <?= $user->getSite()->getName(); ?> </th>
         </tr>
@@ -35,7 +33,6 @@ ob_start();
             <th> <?= $user->getName(); ?></th>
             <th> <?= $user->getEmail(); ?></th>
             <th> <?= $user->getNumero() . ', ' .  $user->getRue() . ' ' . $user->getPostcode() . ' ' . $user->getArea() ?> </th>
-            <th> <?= $user->getEligibility() ? 'Yes' : 'No'; ?></th>
             <th> <?= $user->getDiscriminator(); ?> </th>
             <th> <?= $user->getSite()->getName(); ?> </th>
         </tr>

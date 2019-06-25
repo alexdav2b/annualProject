@@ -63,3 +63,5 @@ Class DeliveryType{
 		return false;
 	}
 }
+
+?>

@@ -6,8 +6,8 @@ Class Individual extends User{
 
     private $surname;
 
-    public function __construct(?int $id, string $email, string $name, string $password, string $numero, string $rue, string $postcode, string $area, bool $eligibility, string $surname, Site $site){
-        parent::__construct($id, $email, $name, $password, $numero, $rue, $postcode, $area, $eligibility, $site);
+    public function __construct(?int $id, string $email, string $name, string $password, string $numero, string $rue, string $postcode, string $area, string $surname, Site $site){
+        parent::__construct($id, $email, $name, $password, $numero, $rue, $postcode, $area, $site);
         $this->surname = $surname;
     }
 

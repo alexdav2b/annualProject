@@ -9,7 +9,7 @@ ob_start(); ?>
 
 <?php
 
-$userManager = new UserManager();
+$userManager = new UserController();
 
 $userManager->gestionViewOne(4);
 

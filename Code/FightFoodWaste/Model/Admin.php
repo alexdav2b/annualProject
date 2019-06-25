@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../Model/User.php';
 
-Class Employee extends User{
+Class Admin extends User{
     private $salary;
     private $surname;
 
@@ -27,12 +27,12 @@ Class Employee extends User{
         }
     }
 
-    public function createEmployee(): bool{
-        return parent::create('Employer');
+    public function createAdmin(): bool{
+        return parent::create('Admin');
     }
 
-    public function updateEmployee(): bool{
-        return parent::update('Employer');
+    public function updateAdmin(): bool{
+        return parent::update('Admin');
     }
 }
 

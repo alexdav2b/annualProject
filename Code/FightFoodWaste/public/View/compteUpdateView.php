@@ -5,7 +5,7 @@ require_once __DIR__ . '/../Model/UserManager.php';
 $title = "FightFoodWaste - Compte";
 ob_start(); 
 
-$userManager = new UserManager();
+$userManager = new UserController();
 $user = $userManager->getById(4);
 
 ?>

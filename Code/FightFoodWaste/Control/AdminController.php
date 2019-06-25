@@ -1,34 +1,35 @@
 <?php
 
 require_once __DIR__ . '/../Model/ApiManager.php';
-require_once __DIR__ . '/../Model/Saleman.php';
+require_once __DIR__ . '/../Model/Admin.php';
 
-Class SalemanController{
+Class AdminController{
 
     // Parse
-    private function parseOne($json){
-        if($json['Discriminator'] == 'Saleman'){
-            $controller = new SiteController();
-            $site = $controller->getById(intval($json['SiteID']));
-            $user = new Saleman($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Siret'], $site);
-            return $user;    
+    private function parseOne() : Admin{
+        if($json['Discriminator'] == 'Admin'){
+            $siteController = new SiteController();
+            $site = $siteController->getById(intval($json['SiteID']));
+
+            $user = new Admin($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Salary'], $json['Surname'], $site);
+            return $user;
         }
     }
 
     private function parseAll($json) : array{
         $result = [];
         foreach($json as $line){
-            if($line['Discriminator'] == 'Saleman'){
+            if($line['Discriminator'] == 'Admin'){
                 $siteController = new SiteController();
                 $site = $siteController->getById(intval($line['SiteID']));
-                $user = new Saleman($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Siret'], $site);
+                $user = new Admin($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Salary'], $line['Surname'], $site);
                 array_push($result, $user);
             }
         }
         return $result;
     }
 
-    // GET
+    // Get
     public function getById(int $id){
         $api = new ApiManager('Usr');
         $json = $api->getById($id);
@@ -95,15 +96,23 @@ Class SalemanController{
         return $this->parseAll($json);
     }
 
-    public function getBySiret(string $siret){
-        $api = new ApiManager('Usr');
-        $json = $api->getByInt('Siret', $siret);
-        return $this->parseAll($json);
-    }
-
+    // getbySalary
     
     // Views
-    
+    public function view(int $id){
+        $user = $this->getById($id);
+        if($user == NULL || $user->getDiscriminator() != 'Admin'){ 
+            header('Location: /404');
+        }
+        $url = "/employe/update/" . $id;
+        $controller = new SiteController();
+        $sites = $controller->getAll();
+        if($sites == null){
+            header('Location: /404');
+        }
+        require_once __DIR__ . '/../public/View/userView.php';
+    }
+
     public function Inscription(){
         $controller = new SiteController();
         $site = $controller->GetById($_POST['Site']);
@@ -115,11 +124,12 @@ Class SalemanController{
             htmlspecialchars($_POST['Rue']),
             htmlspecialchars($_POST['Postcode']),
             htmlspecialchars($_POST['Area']),
-            htmlspecialchars($_POST['Siret']), 
+            htmlspecialchars($_POST['Salary']), 
+            htmlspecialchars($_POST['Surname']), 
             $site
         );
-        $user = new Saleman(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
-        $user->createSaleman();
+        $user = new Admin(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
+        $user->createIndividual();        
         $id = $user->getId();
         header("Location: /compte/$id"); 
     }
@@ -135,27 +145,15 @@ Class SalemanController{
             htmlspecialchars($_POST['Rue']),
             htmlspecialchars($_POST['Postcode']),
             htmlspecialchars($_POST['Area']),
-            htmlspecialchars($_POST['Siret']), 
+            htmlspecialchars($_POST['Salary']),
+            htmlspecialchars($_POST['Surname']), 
             $site
         );
-        $user = new Saleman($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
-        $user->createSaleman();        
-        header("Location: /saleman/$id"); 
+        $user = new Admin($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
+        $user->updateIndividual();        
+        header("Location: /admin/$id"); 
     }
 
-    public function view(int $id){
-        $user = $this->getById($id);
-        if($user == NULL || $user->getDiscriminator() != 'Saleman'){ 
-            header('Location: /404');
-        }
-        $url = "/commercant/update/" . $id;
-        $controller = new SiteController();
-        $sites = $controller->getAll();
-        if($sites == null){
-            header('Location: /404');
-        }
-        require_once __DIR__ . '/../public/View/userView.php';
-    }
 }
 
 ?>

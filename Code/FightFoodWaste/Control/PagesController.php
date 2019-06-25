@@ -3,14 +3,7 @@
 Class PagesController {
 
     public function home(){
-        $title = "Fight Food Waste";
-
-        ob_start();
-
-        echo ('test');
-
-        $content = ob_get_clean();
-        require_once __DIR__ . '/../public/View/templateView.php';
+        require_once __DIR__ . '/../public/View/homeView.php';
     }
 
     public function about(){
@@ -29,6 +22,10 @@ Class PagesController {
 
         require_once __DIR__ . '/../public/View/templateView.php';
         
+    }
+
+    public function notFound(){
+        require_once __DIR__ . '/../public/View/notFoundView.php';
     }
 
     public function log(){

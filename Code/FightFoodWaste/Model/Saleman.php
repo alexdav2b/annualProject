@@ -6,8 +6,8 @@ Class Saleman extends User{
 
     private $siret;
 
-    public function __construct(?int $id, string $email, string $name, string $password, string $numero, string $rue, string $postcode, string $area, bool $eligibility, string $siret, Site $site){
-        parent::__construct($id, $email, $name, $password, $numero, $rue, $postcode, $area, $eligibility, $site);
+    public function __construct(?int $id, string $email, string $name, string $password, string $numero, string $rue, string $postcode, string $area, string $siret, Site $site){
+        parent::__construct($id, $email, $name, $password, $numero, $rue, $postcode, $area, $site);
         if(strlen($siret) == 14){
             $this->siret = $siret;
         }
@@ -20,11 +20,11 @@ Class Saleman extends User{
         }
     }
 
-    public function createIndividual(): bool{
+    public function createSaleman(): bool{
         return parent::create('Saleman');
     }
 
-    public function updateIndividual(): bool{
+    public function updateSaleman(): bool{
         return parent::update('Saleman');
     }
 }

@@ -211,7 +211,7 @@ class DatabaseManager {
                 $col = ['ID', 'SiteID', 'Plate', 'Name', 'Capacity'];
                 break;
             case 'usr':
-                $col = ['ID', 'SiteID', 'Email', 'Name', 'Surname', 'Password', 'Numero', 'Rue', 'Postcode', 'Area', 'Eligibility', 'Siret', 'Salary', 'Discriminator'];
+                $col = ['ID', 'SiteID', 'Email', 'Name', 'Surname', 'Password', 'Numero', 'Rue', 'Postcode', 'Area', 'Siret', 'Salary', 'Discriminator'];
                 break;
         }
         return $col;

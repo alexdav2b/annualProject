@@ -7,34 +7,23 @@
 
 
     class Tournee {
-        private $adresses;
-        private $articles;
-        private $adresseDepot;
-        private $nbArret;
-        private $nbArticle;
-        private $date;
-        private $chauffeur;
-        private $vehicule;
+        private $id;
+        private $truck;
+        private $UsrId;
+        private $type;
+        private $start;
+        private $end;
 
-        public function __construct ($date = null){
-            $this->adresses = array(); 
-            $this->articles = array();
-            $this->adresseDepot = new Adresse (NULL, NULL, NULL, NULL, NULL);
-            $this->nbArret = 0;
-            $this->nbArticle = 0;
-            $this->date = $date;
-            $this->chauffeur = new Conducteur (NULL , NULL, NULL);
-            $this->vehicule = new Vehicule ( NULL, NULL, NULL, NULL );
+        public function __construct (?int $id, ?int $truck, ?int $usrId, ?int $type, ?string $start, ?string $end){
+            $this->id = $id;
+            $this->truck = $truck;
+            $this->UsrId = $usrId;
+            $this->type = $type;
+            $this->start = $start;
+            $this->end = $end;
         }
 
-        public function getAdresse($indice){return $this->adresses[$indice] ;}
-        public function getNb(){return $this->nb ;}
-        public function getDate(){return $this->date ; }
-
-        public function addAdresse(Adresse $p){
-            $this->adresses[$this->nb] = $p;
-            $this->nb = $this->nb + 1;
-        }
+        public function getStrat(){return $this->strat ; }
 
         /*
 
@@ -47,19 +36,13 @@
         */
 
         public function __toString(){
-            $points = '';
-            $i = 0;
-            $n = 0;
-            for($i=0 ; $i<$this->nb ; $i++){
-                $n = $i +1 ;
-                echo "Adresse n°".$n."<br>";
-                echo $this->adresses[$i]."<br>";
-                echo "<br>";
-            }
-            return $points.
-                $this->nb.'<br>'.
-                $this->date;
-
+            $res = 'Id : '.$this->id.
+                '<br>Id véhicule : '.$this->truck.
+                '<br>Usr id : '.$this->UsrId.
+                '<br>Type : '.$this->type.
+                '<br>Début : '.$this->start.
+                '<br>Fin : '.$this->end ;
+            return $res;
         }
 
     }

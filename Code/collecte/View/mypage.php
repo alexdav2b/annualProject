@@ -4,10 +4,6 @@
 $json_site = file_get_contents('http://apipa/site');
 $site_data = json_decode($json_site);
 
-foreach($site_data as $site){
-    echo "Id site : ".$site->ID;
-}
-
 ?>
 
 <form action="itineraire.php" method="post" enctype="multipart/form-data" >
@@ -24,7 +20,7 @@ foreach($site_data as $site){
     <br>
 
     <label for="date">Choix de la date :</label>
-    <input type="date" name="date" id="date">
+    <input type="datetime-local" name="date" id="date">
     <br>
     <input type="submit" value="Valider">
 

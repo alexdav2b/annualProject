@@ -9,7 +9,7 @@ Class UserController{
     private function parseOne($json) : User{
         $siteController = new SiteController();
         $site = $siteController->getById(intval($json['SiteID']));
-        return  new User($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Eligibility'], $site);
+        return  new User($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $site);
     }
 
     private function parseAll($json) : array{
@@ -18,7 +18,7 @@ Class UserController{
             $siteController = new SiteController();
             $site = $siteController->getById(intval($line['SiteID']));
 
-            $user = new User($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Eligibility'], $site);
+            $user = new User($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $site);
             array_push($result, $user);
         }
         return $result;
@@ -80,12 +80,6 @@ Class UserController{
         return $this->parseAll($json);
     }
 
-    public function getByEligibility(int $eligibility){
-        $api = new ApiManager('Usr');
-        $json = $api->getByInt('Eligibility', $eligibility);
-        return $this->parseAll($json);
-    }
-
     public function getBySite(int $siteId){
         $api = new ApiManager('Usr');
         $json = $api->getByInt('Site', $siteId);
@@ -93,17 +87,25 @@ Class UserController{
     }
 
     // Views
-
-    public function view(int $id){
-        $user = $this->getById($id);
-        require_once __DIR__ . '/../public/View/userGestionView.php';
-    }
-
+    
     public function viewAll(){
         $users = $this->getAll();
         if($users != NULl){
             require_once __DIR__ . '/../public/View/userGestionView.php';
         }
+        else{
+            header('Location: /404');
+        }
+    }
+
+    public function Suppression(int $id){
+        $user = $this->GetById($id);
+        if($user == null){
+            header("Location: /404");
+        }
+        $user->delete();
+        // delete session
+        header("/");
     }
 }
 
