@@ -4,14 +4,23 @@ int connexion()
 {
     int wait = 1, i = 0;
     char email[42];
-    char mdp[42];
+    char pwd[42];
+    struct User *user;
+
+    user = malloc(sizeof(struct Product) * 1);
+
+//temporaire 
+    // menu(user);
+    // return 0;
+//fin tmp
 
     while(wait)
     {
         printf("Email :\n");
         fgets(email, 42, stdin);
         printf("Mot de passe :\n");
-        fgets(mdp, 42, stdin);
+        fgets(pwd, 42, stdin);
+        printf("\nmod de passe : %s 42\n", pwd);
         while(email[i] != '\0')
         {
             if(email[i] == '\n')
@@ -19,32 +28,74 @@ int connexion()
             i++;
         }
         i = 0;
-        while(mdp[i] != '\0')
+        while(pwd[i] != '\0')
         {
-            if(mdp[i] == '\n')
-                mdp[i] = '\0';
+            if(pwd[i] == '\n')
+                pwd[i] = '\0';
             i++;
         }
-        if(verifConnexion(email, mdp))
+        if(verifConnexion(user, email, pwd))
             wait = 0;
     }
-    menu();
+    menu(user);
     return 0;
 }
 
-int verifConnexion(char* email, char* mdp)
+int verifConnexion(struct User *user, char* email, char* pwd)
 {
     char *err;
     char *userData = getUserData(email, &err);
+    char *tmpUsrId;
+    char *tmpSiteId;
+    json_t *rData;
+    json_error_t error;
 
-    return 1;
+    tmpUsrId = malloc(sizeof(char)*4);
+    tmpSiteId = malloc(sizeof(char)*4);
+    rData = json_loads(userData, 0, &error);
+    if (!rData)
+    {
+        fprintf(stderr, "error: on line %d: %s\n", error.line, error.text);
+        return 1;
+    }
+    free(userData);
+
+
+    const char *key;
+    json_t *value;
+
+    void *iter = json_object_iter(rData);
+    while (iter)
+    {
+        key = json_object_iter_key(iter);
+        value = json_object_iter_value(iter);
+        printf("Key: %s, Value: %s\n", key, json_string_value(value));
+        if(sameString("ID", key))
+        {
+            strcpy(tmpUsrId, json_string_value(value));
+        }
+        if(sameString("SiteID", key))
+        {
+            strcpy(tmpSiteId, json_string_value(value));
+        }
+        if(sameString("password", key) && sameString((char*)json_string_value(value), pwd))
+        {
+            user->usrId = tmpUsrId;
+            user->siteId = tmpSiteId;
+            strcpy(user->email, email);
+            return 1;
+        }
+        iter = json_object_iter_next(rData, iter);
+    }
+
+    json_decref(rData);
 
     return 0;
 }
 
 char * getUserData(char *email, char **err)
 {
-    const char url_model[] = "http://fightfoodwasteAPI/usr/Email/%s/getByString";
+    const char url_model[] = "apitdp.todomain.ovh/usr/Email/%s/getByString";
 
     CURL *curl_handle;
     CURLcode res;
@@ -86,6 +137,6 @@ char * getUserData(char *email, char **err)
 
     curl_easy_cleanup(curl_handle);
     curl_global_cleanup();
-
+    printf("json : %s\n", chunk.data);
     return chunk.data;
 }

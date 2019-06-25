@@ -13,19 +13,34 @@
 
 struct Product
 {
-    int barcodeValue;
-    char name[42];
-    int endDate;
+    char name[80];
+    char barcodeValue[14];
+    char *validDate;
+    char *depoId;
+    char *usrId;
+    char *statutId;
+
 };
 
-char *gets(char *str);
-int toInt(char *string);
+struct User
+{
+    char *email;
+    char *usrId;
+    char *siteId;
+};
+
+
 int connexion();
-int verifConnexion(char* email, char* mdp);
+int verifConnexion(struct User *user, char* email, char* mdp);
     char * getUserData(char *email, char **err);
 
-int menu();
-    int createOffer();
-        struct Product *addProduct(struct Product *listProduct, int nbProduct);
+int menu(struct User *user);
+    int createOffer(struct User *user);
+        struct Product *addProduct(struct User *user, struct Product *listProduct, int nbProduct);
+        int validDate(struct Product *listProduct, int nbProduct);
         int sendOffer();
-        int printList(struct Product *listProduct, int nbProduct);
+
+int printList(struct Product *listProduct, int nbProduct);
+char *gets(char *str);
+int toInt(char *string);
+int sameString(char *model, const char*test);

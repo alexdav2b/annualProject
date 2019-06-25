@@ -1,4 +1,4 @@
-#include "headers/headers.h"
+#include "../headers/headers.h"
 
 int main()
 {
@@ -12,9 +12,32 @@ int main()
     return 0;
 }
 
+// int main(void) {
+  
+//   char* s = NULL;
+  
+//   json_t *root = json_object();
+//   json_t *json_arr = json_array();
+  
+//   json_object_set_new( root, "destID", json_integer( 1 ) );
+//   json_object_set_new( root, "command", json_string("enable") );
+//   json_object_set_new( root, "respond", json_integer( 0 ));
+//   json_object_set_new( root, "data", json_arr );
+  
+//   json_array_append( json_arr, json_integer(11) );
+//   json_array_append( json_arr, json_integer(12) );
+//   json_array_append( json_arr, json_integer(14) );
+//   json_array_append( json_arr, json_integer(9) );
+  
+//   s = json_dumps(root, 0);
+  
+//   puts(s);
+//   json_decref(root);
+  
+//  return 0;
+// }
 
-
-int menu()
+int menu(struct User *user)
 {
     int wait = 1;
     char cmd[42];
@@ -24,7 +47,7 @@ int menu()
         printf("1: Proposer une offre \n 2: Quitter\n");
         fgets(cmd, 42, stdin);
         if(cmd[0] == '1')
-            createOffer();
+            createOffer(user);
         else if(cmd[0] == '2')
             wait = 0;
     }
@@ -45,7 +68,7 @@ int printList(struct Product *listProduct, int nbProduct)
     int i;
     for(i = 0; i < nbProduct; i++)
     {
-        printf("id : %d, cb : %d\n",i, listProduct[i].barcodeValue);
+        printf("id : %d, cb : %s, name : %s\n",i, listProduct[i].barcodeValue, listProduct[i].name);
     }
     return 0;
 }
