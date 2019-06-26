@@ -6,6 +6,7 @@
     margin : 0;
     padding : 0;
     box-sizing: border-box;
+    scroll-behavior : smooth;
 }
 
 h1{
@@ -86,14 +87,18 @@ main{
 /* CONTENT */
 
 #content-container {
-    background-color : rgba(54, 54, 54, 0.12);
+    background-image: linear-gradient(to top left, orange, orangeRed);
+
+    /* background-color : rgba(54, 54, 54, 0.12); */
     min-height: 82vh; 
     overflow:auto;
-    padding-top : 1em;
-    padding-bottom : 1em;
+    /* padding-top : 1em;
+    padding-bottom : 1em; */
 }
 
 #content-container div{
+    margin-top : 1em;
+    margin-bottom : 1em;
     vertical-align: middle;
     background-color : #FFFFFF;
     border-radius: 10px;
@@ -105,10 +110,28 @@ main{
     color : #009900;
 }
 
+#home-content{
+    background-image: url("../images/fond1.jpg");
+    background-repeat: no-repeat;
+    margin: 0px !important;
+    background-size : 100%;
+    background-position: bottom;
+    width : 100%;
+    min-height : 500px;
+    padding-top : 10em !important;
+    background-attachment: fixed;
+}
+
+.homeSlide{
+    margin-bottom : 5em !important;
+}
+
 /* ------------------------------------------------------------ */
 /* CONNEXION / INSCRIPTION */
 
 #connexionForm , #inscriptionForm {
+    margin-top : 1em;
+    margin-bottom : 1em;
     text-align: center;
     border-radius: 25px;
     height: 100%;

@@ -4,19 +4,19 @@ $title = "FightFoodWaste - Administration";
 ob_start();
 ?>
 
-<ul class="nav flex-column col-md-2" id = 'adminNav'>
+<ul class="nav flex-column col-md-2" id = 'adminNav' style="padding-top : 1em">
     <li class="nav-item">
-        <a class="nav-link active" href="#">Users</a>
+        <a class="nav-link active" href="/comptes" style = "color : white">Users</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Adhesion</a>
+        <a class="nav-link" href="/adhesions" style = "color : white">Adhesion</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Deliveries</a>
+        <a class="nav-link" href="#" style = "color : white">Deliveries</a>
         <!-- Collecte & Distribution -->
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Stocks</a>
+        <a class="nav-link" href="#" style = "color : white">Stocks</a>
     </li>
 </ul>
 <div class = 'col-md-10 container-fluid'>

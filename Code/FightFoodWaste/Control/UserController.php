@@ -107,6 +107,9 @@ Class UserController{
     }
 
     public function Connexion(){
+        if(isset($_SESSION['User'])){
+            header('Location: 404');
+        }
         if(isset($_POST['Password']) && isset($_POST['Email'])){
             $users = $this->getByEmail($_POST['Email']);
             $user = $users[0];
