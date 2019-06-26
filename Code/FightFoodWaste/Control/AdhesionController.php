@@ -98,6 +98,31 @@ Class AdhesionController{
         $pdf = new PDF();
         // imprimer avec header;
     }
+
+    public function New(){
+        if(!isset($_SESSION['User']) || !isset($_SESSION['Id']) || !isset($_POST['Cb']) || !isset($_POST['Code'])){
+            header('Location: /404');
+        }
+        $controller = new UserController();
+        $user = $controller->getById($_SESSION['Id']);
+
+        $date = new DateTime('NOW');
+        $date->format('c');
+        $form = array(
+            $date,
+            htmlspecialchars($_POST['Cb']),
+            htmlspecialchars($_POST['Code']),
+            $user
+        );
+        $adhesion = new Adhesion(null, $form[0], $form[1], $form[2], $form[3],  $form[4]);
+        $adhesion->create();        
+        $id = $adhesion->getId();
+        header("Location: /adhesion/$id"); 
+    }
+
+    public function ViewNew(){
+
+    }
 }
 
 ?>
