@@ -2,7 +2,10 @@
 ob_start();
 
 ?>
-<h2>User</h2>
+<div class = "row">
+    <h2>User</h2>
+    <a class = "btn btn-success" href = "/employe/new">Ajouter un Employé</a>
+</div>
 <table class="table table-striped">
     <thead>
         <tr>

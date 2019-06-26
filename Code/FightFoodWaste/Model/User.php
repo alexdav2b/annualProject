@@ -142,16 +142,12 @@ Class User{
     private function StringIsNotOver(string $str, int $length){
         return (strlen($str) > 0 && strlen($str) <= $length);
 	}
-
-	public function Inscription(){
-		
-	}
 	
 	public function PasswordIsValid(string $password, string $hashedPassword): bool{
         $salt = substr($hashedPassword, 0, 10);
         $password = HashNSalt($password, $salt);
         return ($password == $hashedPassword);
-    }
+	}
 }
 
 ?>

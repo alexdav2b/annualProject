@@ -73,33 +73,35 @@ $router->post('/adhesion', "Adhesion#New"); //
 // -------------------------------------------------------------------
 
 // All
-$router->get('/compte/delete/:id', "User#Suppression"); //
+$router->get('/compte/delete/:id', "User#Suppression"); 
 
 // Individual
 $router->post('/log/particulier', "Individual#Inscription");
 
-$router->post('/particulier/update/:id', "Individual#Modification");
+$router->post('/particulier/update/:id', "Individual#Modification");  // Verifier Admin || User
 
 $router->get('/particulier/:id', "Individual#view");
 
 // Saleman
 $router->post('/log/commercant', "Saleman#Inscription"); 
 
-$router->post('/commercant/update/:id', "Saleman#Modification"); 
+$router->post('/commercant/update/:id', "Saleman#Modification");   // Verifier Admin || User
 
 $router->get('/commercant/:id', "Saleman#view"); 
 
 // Employee
-$router->post('/log/employe', "Employee#Inscription"); //
+$router->get('/employe/new', "Employee#New"); // Verifier
 
-$router->post('/employe/update/:id', "Employee#Modification"); 
+$router->post('/log/employe', "Employee#Inscription"); // Verifier
+
+$router->post('/employe/update/:id', "Employee#Modification"); // Verifier Admin || User
 
 $router->get('/employe/:id', "Employee#view"); 
 
 // Admin
 $router->get('/comptes', "User#viewAll");
 
-$router->post('/admin/update/:id', "Admin#Modification"); 
+$router->post('/admin/update/:id', "Admin#Modification");  // Verifier Admin || User
 
 $router->get('/admin/:id', "Admin#view"); 
 

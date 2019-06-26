@@ -118,6 +118,14 @@ Class EmployeeController{
         require_once __DIR__ . '/../public/View/userView.php';
     }
 
+    public function New(){
+        if($_SESSION['User'] != 'Admin'){
+            header("Location: /404");
+        }
+        require_once __DIR__ . 'newEmployeeView.php';
+    }
+
+
     public function Inscription(){
         $controller = new SiteController();
         $site = $controller->GetById($_POST['Site']);

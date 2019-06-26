@@ -88,6 +88,16 @@ Class AdhesionController{
             require_once __DIR__ . '/../public/View/adhesionGestionView.php';
         }
     }
+
+    public function Invoice(int $id){
+        $adhesion = $this->getById($id);
+        if($adhesion == null || !isset($_SESSION['User']) || $_SESSION['User'] != $adhesion->getUser()->getId()){
+            header('Location: /404');
+        }
+
+        $pdf = new PDF();
+        // imprimer avec header;
+    }
 }
 
 ?>
