@@ -3,16 +3,15 @@ ob_start();
 
 ?>
 <div class = "row">
-    <h2>User</h2>
-    <a class = "btn btn-success" href = "/employe/new">Ajouter un Employé</a>
+    <h2 class="offset-md-1">Utilisateurs</h2>
 </div>
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Name</th>
+            <th>Nom</th>
             <th>Email</th>
             <th>Adresse</th>
-            <th>Status</th>
+            <th>Statut</th>
             <th>Site</th>
         </tr>
     </thead>

@@ -13,7 +13,7 @@ $user = $userManager->getById(4);
     <input type = 'text' name = "name"><br> 
 
 </form>
-<table class = "table table-hover table-responsive table-striped col-md-12">
+<table class = "table table-hover table-responsive table-striped col-md-12 col-lg-12">
 
 <?php
 

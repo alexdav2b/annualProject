@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $("#Individual").hide();
+    $("#Individual").show();
     $("#Saleman").hide();
     $("#optionIndividual").click(function(){
         $("#Individual").show();

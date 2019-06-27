@@ -15,6 +15,7 @@ function ShowView(){
     $(".plaintext").show();
     $("#Modify").show();
     $("#Delete").show();
+    $("#PasswordHide").hide();
 }
 
 function ShowUpdate(){
@@ -25,6 +26,7 @@ function ShowUpdate(){
     $(".plaintext").hide();
     $("#Modify").hide();
     $("#Delete").hide();
+    $("#PasswordHide").hide();
 }
 
 // function Delete(){
@@ -41,13 +43,14 @@ function Update(){
 
 function Check(){
     var userType = '<?= $userType ?>'; 
+    var password ='<?= $password ?>';
 
     if($("#SurnameID").val() == '' && userType != 'Saleman'){
         $("#SurnameID").val($("#Surname").text());
     }
 
-    if(userType == 'Saleman' && $("#SiretID").val() == ''){
-        $("#SiretID").val($("#Siret").text());
+    if($("#SiretID").val() == '' && userType != 'Admin' && userType != 'Employer' && userType != 'Volunteer' && userType != 'Individual'){
+        $("#SiretID").val();
     }
 
     if($("#NameID").val() == ''){
@@ -59,7 +62,7 @@ function Check(){
     }
 
     if($("#PasswordID").val() == ''){
-        $("#PasswordID").val($('#Password').text());
+        $("#PasswordID").val($("#PasswordHide").text());
     }
 
     if($("#NumeroID").val() == ''){

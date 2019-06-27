@@ -73,6 +73,11 @@ Class User{
 		$this->site = $site;
 	}
 
+	public function setPassword(string $password){
+		$salt = bin2hex(random_bytes(5)); // 10 characters
+		$this->password = $this->HashNSalt($salt,  $password); // 50 characters
+    }
+
 	// API
 	public function create(string $discriminator) : bool{
 		$api = new ApiManager('Usr');
@@ -144,10 +149,20 @@ Class User{
 	}
 	
 	public function PasswordIsValid(string $password, string $hashedPassword): bool{
-        $salt = substr($hashedPassword, 0, 10);
-        $password = HashNSalt($password, $salt);
+		$salt = substr($hashedPassword, 0, 10);
+		$password = $this->HashNSalt($salt, $password);
         return ($password == $hashedPassword);
 	}
+
+	private function HashNSalt(string $salt, string $password): string{
+        // in DATABASE :  10st characters = SALT, 40 last = hash (SALT + PASSWORD)
+        // ripemd160 => 40 characters
+        $salted = $salt . $password; 
+        $algo = 'ripemd160'; 
+        $hashed = hash($algo, $salted, FALSE);
+        $password = $salt . $hashed; 
+        return $password;
+    }
 }
 
 ?>

@@ -83,41 +83,79 @@ Class AdhesionController{
     }
 
     public function viewUser(int $id){
-        $adhesions = $this->getByUser($id);
-        if($adhesions != NULL){
-            require_once __DIR__ . '/../public/View/adhesionGestionView.php';
+        if(!isset($_SESSION['User']) || $_SESSION['User'] != 'Saleman' && $_SESSION['Id'] != $id){
+            header('Location: /404');
         }
+        $all = $this->getByUser($id);
+        if($all == null){
+            header('Location: /404');
+        }
+        $adhesions = array();
+        $count = count($all);
+
+        foreach($all as $adhesion){
+            if($adhesion->getUser()->getId() == $id){
+                array_push($adhesions, $adhesion);
+            }
+        }
+
+        require_once __DIR__ . '/../public/View/adhesionView.php';
     }
 
     public function Invoice(int $id){
         $adhesion = $this->getById($id);
-        if($adhesion == null || !isset($_SESSION['User']) || $_SESSION['User'] != $adhesion->getUser()->getId()){
+        if($adhesion == null || !isset($_SESSION['User']) || $_SESSION['User'] != 'Saleman' && $_SESSION['Id'] != $adhesion->getUser()->getId()){
             header('Location: /404');
         }
+        $userN = $adhesion->getUser()->getNumero();
+        $userR = $adhesion->getUser()->getRue();
+        $userP = $adhesion->getUser()->getPostcode();
+        $userA = $adhesion->getUser()->getArea();
 
-        $pdf = new PDF();
-        // imprimer avec header;
+        $siteN = $adhesion->getUser()->getSite()->getNumero();
+        $siteR = $adhesion->getUser()->getSite()->getRue();
+        $siteP = $adhesion->getUser()->getSite()->getPostcode();
+        $siteA = $adhesion->getUser()->getSite()->getArea();
+
+        $name = $adhesion->getUser()->getName();
+        $date = $adhesion->getDate();
+        $prix = 100;
+
+        $lastDay = date('d/m/Y', strtotime($date . '+1 year'));
+        $date = date('d/m/Y', strtotime($date));
+        
+        require_once __DIR__ . '/../public/View/AdhesionPDF.php';
     }
 
-    public function New(){
-        if(!isset($_SESSION['User']) || !isset($_SESSION['Id']) || !isset($_POST['Cb']) || !isset($_POST['Code'])){
+    public function Add(){
+        if(!isset($_SESSION['User']) || $_SESSION['User'] != 'Saleman' || !isset($_SESSION['Id']) || !isset($_POST['Cb']) || !isset($_POST['Code'])){
             header('Location: /404');
         }
         $controller = new UserController();
         $user = $controller->getById($_SESSION['Id']);
+        $idUser = $_SESSION['Id'];
 
-        $date = new DateTime('NOW');
-        $date->format('c');
+        $newDate = new DateTime($_POST['Date']);
+        $date = $newDate->format('Y-m-d H:i:s');
+
         $form = array(
             $date,
-            htmlspecialchars($_POST['Cb']),
-            htmlspecialchars($_POST['Code']),
+            htmlspecialchars($_POST['CB']),
+            htmlspecialchars($_POST['Numero']),
             $user
         );
-        $adhesion = new Adhesion(null, $form[0], $form[1], $form[2], $form[3],  $form[4]);
+        $adhesion = new Adhesion(null, $form[0], $form[1], $form[2], $form[3]);
         $adhesion->create();        
         $id = $adhesion->getId();
-        header("Location: /adhesion/$id"); 
+
+        header("Location: /adhesions/$idUser"); 
+    }
+
+    public function New(){
+        if(!isset($_SESSION['User']) || $_SESSION['User'] != 'Saleman'){
+            header('Location: /404');
+        }
+        require_once __DIR__ . '/../public/View/newAdhesionView.php';
     }
 
     public function ViewNew(){

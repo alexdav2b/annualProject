@@ -122,29 +122,57 @@ Class EmployeeController{
         if($_SESSION['User'] != 'Admin'){
             header("Location: /404");
         }
-        require_once __DIR__ . 'newEmployeeView.php';
+        $controller = new SiteController();
+        $sites = $controller->getAll();
+        require_once __DIR__ . '/../public/View/newEmployeeView.php';
     }
 
+    private function HashNSalt(string $salt, string $password): string{
+        // in DATABASE :  10st characters = SALT, 40 last = hash (SALT + PASSWORD)
+        // ripemd160 => 40 characters
+        $salted = $salt . $password; 
+        $algo = 'ripemd160'; 
+        $hashed = hash($algo, $salted, FALSE);
+        $password = $salt . $hashed; 
+        return $password;
+    }
 
     public function Inscription(){
         $controller = new SiteController();
         $site = $controller->GetById($_POST['Site']);
+
+        $salt = bin2hex(random_bytes(5)); // 10 characters
+        $password = $this->HashNSalt($salt,  $POST['Password']); // 50 characters
+
         $form = array(
             htmlspecialchars($_POST['Email']),
             htmlspecialchars($_POST['Name']),
-            htmlspecialchars($_POST['Password']),
+            $password,
             htmlspecialchars($_POST['Numero']),
             htmlspecialchars($_POST['Rue']),
             htmlspecialchars($_POST['Postcode']),
             htmlspecialchars($_POST['Area']),
-            htmlspecialchars($_POST['Salary']), 
+            $_POST['Salary'], 
             htmlspecialchars($_POST['Surname']), 
             $site
         );
+
+        foreach($form as $value){
+            if($value == null){
+                header("Location: /employe/new");
+            }
+        }
         $user = new Employee(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
-        $user->createIndividual();        
+        $user->createEmployee();        
         $id = $user->getId();
-        header("Location: /compte/$id"); 
+
+        ob_start();
+        echo("<div class = 'col-md-6 offset-md-3'>");
+        echo("<p>L'utilisateur a été créé</p>");
+        echo("</div>");
+        $content = ob_get_clean();
+
+        require_once __DIR__ . '/../public/View/templateView.php';
     }
 
     public function Modification(int $id){
@@ -163,8 +191,8 @@ Class EmployeeController{
             $site
         );
         $user = new Employee($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
-        $user->updateIndividual();        
-        header("Location: /particulier/$id"); 
+        $user->updateEmployee();        
+        header("Location: /employe/$id"); 
     }
 
 }

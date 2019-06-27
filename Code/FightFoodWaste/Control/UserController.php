@@ -106,6 +106,22 @@ Class UserController{
         header("/deconnexion");
     }
 
+    public function PasswordIsValid(string $password, string $hashedPassword): bool{
+        $salt = substr($hashedPassword, 0, 10);
+        $password = HashNSalt($password, $salt);
+        return ($password == $hashedPassword);
+	}
+
+    private function HashNSalt(string $salt, string $password): string{
+        // in DATABASE :  10st characters = SALT, 40 last = hash (SALT + PASSWORD)
+        // ripemd160 => 40 characters
+        $salted = $salt . $password; 
+        $algo = 'ripemd160'; 
+        $hashed = hash($algo, $salted, FALSE);
+        $password = $salt . $hashed; 
+        return $password;
+    }
+
     public function Connexion(){
         if(isset($_SESSION['User'])){
             header('Location: 404');
@@ -116,7 +132,11 @@ Class UserController{
             if($user == NULL){
                 header('Location: /404');
             }
-            if($_POST['Password'] == $user->getPassword()){
+            // var_dump($_POST['Password']);
+            // var_dump($user->getPassword());
+            // var_dump(HashNSalt());
+
+            if($user->PasswordIsValid($_POST['Password'], $user->getPassword())){
                 session_destroy();
                 session_start();
                 $_SESSION['User'] = $user->getDiscriminator();

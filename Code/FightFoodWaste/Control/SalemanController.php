@@ -101,16 +101,29 @@ Class SalemanController{
         return $this->parseAll($json);
     }
 
+    private function HashNSalt(string $salt, string $password): string{
+        // in DATABASE :  10st characters = SALT, 40 last = hash (SALT + PASSWORD)
+        // ripemd160 => 40 characters
+        $salted = $salt . $password; 
+        $algo = 'ripemd160'; 
+        $hashed = hash($algo, $salted, FALSE);
+        $password = $salt . $hashed; 
+        return $password;
+    }
     
     // Views
     
     public function Inscription(){
         $controller = new SiteController();
         $site = $controller->GetById($_POST['Site']);
+
+        $salt = bin2hex(random_bytes(5)); // 10 characters
+        $password = $this->HashNSalt($salt,  $POST['Password']); // 50 characters
+
         $form = array(
             htmlspecialchars($_POST['Email']),
             htmlspecialchars($_POST['Name']),
-            htmlspecialchars($_POST['Password']),
+            $password,
             htmlspecialchars($_POST['Numero']),
             htmlspecialchars($_POST['Rue']),
             htmlspecialchars($_POST['Postcode']),
@@ -121,6 +134,16 @@ Class SalemanController{
         $user = new Saleman(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
         $user->createSaleman();
         $id = $user->getId();
+        if($id == null){
+            header('Location: /404');
+        }
+        
+        session_destroy();
+        session_start();
+        $_SESSION['User'] = $user->getDiscriminator();
+        $_SESSION['Id'] = $user->getId();
+
+        header("Location: /particulier/$id"); 
         header("Location: /compte/$id"); 
     }
 
@@ -139,12 +162,12 @@ Class SalemanController{
             $site
         );
         $user = new Saleman($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
-        $user->createSaleman();        
-        header("Location: /saleman/$id"); 
+        $user->updateSaleman();      
+        header("Location: /commercant/$id"); 
     }
 
     public function view(int $id){
-        if(!isset($_SESSION['User']) && !isset($_SESSION['ID']) && $_SESSION['User'] == null && $_SESSION['Id'] == null 
+        if(!isset($_SESSION['User']) && !isset($_SESSION['ID']) && $_SESSION['User'] != 'Saleman' && $_SESSION['Id'] == null 
         || $_SESSION['Id'] != $id){
             header("Location: /404");
         }

@@ -99,11 +99,10 @@ Class IndividualController{
     // Views
 
     public function view(int $id){
-        if(!isset($_SESSION['User']) && !isset($_SESSION['ID']) && $_SESSION['User'] == null && $_SESSION['Id'] == null 
+        if(!isset($_SESSION['User']) && !isset($_SESSION['ID']) && $_SESSION['User'] != 'Individual' && $_SESSION['Id'] == null 
         || $_SESSION['Id'] != $id){
-            header("Location: /404");
+           header("Location: /404");
         }
-
         $user = $this->getById($id);
         if($user == NULL || $user->getDiscriminator() != 'Individual'){ 
             header('Location: /404');
@@ -117,22 +116,27 @@ Class IndividualController{
         require_once __DIR__ . '/../public/View/userView.php';
     }
 
-    // public function viewAll(){
-    //     $users = $this->getAll();
-    //     if($users != NULL){
-    //     }
-    //     else{
-    //         header('Location: /404');
-    //     }
-    // } 
-
+    private function HashNSalt(string $salt, string $password): string{
+        // in DATABASE :  10st characters = SALT, 40 last = hash (SALT + PASSWORD)
+        // ripemd160 => 40 characters
+        $salted = $salt . $password; 
+        $algo = 'ripemd160'; 
+        $hashed = hash($algo, $salted, FALSE);
+        $password = $salt . $hashed; 
+        return $password;
+    }
+    
     public function Inscription(){
         $controller = new SiteController();
         $site = $controller->GetById($_POST['Site']);
+
+        $salt = bin2hex(random_bytes(5)); // 10 characters
+        $password = $this->HashNSalt($salt,  $_POST['Password']); // 50 characters
+
         $form = array(
             htmlspecialchars($_POST['Email']),
             htmlspecialchars($_POST['Name']),
-            htmlspecialchars($_POST['Password']),
+            $password,
             htmlspecialchars($_POST['Numero']),
             htmlspecialchars($_POST['Rue']),
             htmlspecialchars($_POST['Postcode']),
@@ -143,7 +147,16 @@ Class IndividualController{
         $user = new Individual(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
         $user->createIndividual();        
         $id = $user->getId();
-        header("Location: /compte/$id"); 
+        if($id == null){
+            header('Location: /404');
+        }
+
+        session_destroy();
+        session_start();
+        $_SESSION['User'] = $user->getDiscriminator();
+        $_SESSION['Id'] = $user->getId();
+
+        header("Location: /particulier/$id"); 
     }
 
     public function Modification(int $id){
@@ -165,5 +178,6 @@ Class IndividualController{
         header("Location: /particulier/$id"); 
     }
 }
+
 
 ?>

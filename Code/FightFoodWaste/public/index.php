@@ -23,7 +23,7 @@ $router->get('/404', "Pages#notFound");
 // ADHESIONS
 // -------------------------------------------------------------------
 
-$router->get('/adhesion/:id', "Adhesion#viewOne"); // id
+//$router->get('/adhesion/:id', "Adhesion#viewOne"); // id
 
 $router->get('/adhesions/:id', "Adhesion#viewUser"); // idUser => Saleman
 
@@ -31,8 +31,9 @@ $router->get('/adhesions', "Adhesion#viewAll"); // admin
 
 $router->get('/adhesion', "Adhesion#New"); //
 
-$router->post('/adhesion', "Adhesion#New"); //
+$router->post('/adhesion', "Adhesion#Add"); //
 
+$router->get('/adhesion/Facture/:id', "Adhesion#Invoice"); // pdf
 
 // TRUCK
 // -------------------------------------------------------------------
@@ -76,29 +77,33 @@ $router->post('/adhesion', "Adhesion#New"); //
 $router->get('/compte/delete/:id', "User#Suppression"); 
 
 // Individual
-$router->post('/log/particulier', "Individual#Inscription");
+$router->post('/log/particulier', "Individual#Inscription"); //
 
 $router->post('/particulier/update/:id', "Individual#Modification");  // Verifier Admin || User
 
 $router->get('/particulier/:id', "Individual#view");
 
 // Saleman
-$router->post('/log/commercant', "Saleman#Inscription"); 
+$router->post('/log/commercant', "Saleman#Inscription"); // 
 
 $router->post('/commercant/update/:id', "Saleman#Modification");   // Verifier Admin || User
 
 $router->get('/commercant/:id', "Saleman#view"); 
 
 // Employee
-$router->get('/employe/new', "Employee#New"); // Verifier
+$router->get('/employe/new', "Employee#New"); 
 
-$router->post('/log/employe', "Employee#Inscription"); // Verifier
+$router->post('/log/employe', "Employee#Inscription");
 
 $router->post('/employe/update/:id', "Employee#Modification"); // Verifier Admin || User
 
 $router->get('/employe/:id', "Employee#view"); 
 
 // Admin
+$router->get('/admin/new', "Admin#New");
+
+$router->post('/log/admin', "Admin#Inscription");
+
 $router->get('/comptes', "User#viewAll");
 
 $router->post('/admin/update/:id', "Admin#Modification");  // Verifier Admin || User

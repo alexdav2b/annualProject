@@ -10,9 +10,7 @@ require_once __DIR__ . '/../Model/User.php';
     private $user;
 
     public function __construct(?int $id, $date, string $cb, string $code, User $user){
-        if(strlen($cb) != 16 && strlen($code) != 16){
-            throw new Exception();
-        }
+        $this->code = $code;
         $this->id = $id;
         $this->date = $date;
         $this->cb = $cb; 
@@ -59,7 +57,7 @@ require_once __DIR__ . '/../Model/User.php';
 			'UserID' => $this->user->getId(),
 			'DateAdhesion' => $this->date,
 			'Cb' => $this->cb,
-			'Code' => $this->$code);
+            'Code' => $this->code);
 		$json = json_encode($array);
 		$json = $api->create($json);
 		if ($json != NULL){
