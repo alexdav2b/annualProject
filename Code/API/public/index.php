@@ -15,7 +15,6 @@ $app = new \Slim\App([
 ]);
 
 
-
 $container = $app->getContainer();
 
 $app->post('/{table}/create',\App\Controllers\PagesController::class . ':create');
