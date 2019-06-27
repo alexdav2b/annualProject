@@ -14,7 +14,7 @@ $app = new \Slim\App([
     ]
 ]);
 
-require('../app/container.php');
+
 
 $container = $app->getContainer();
 
