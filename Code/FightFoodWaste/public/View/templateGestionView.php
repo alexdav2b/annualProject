@@ -12,13 +12,13 @@ ob_start();
         <a class="nav-link" href="/adhesions" style = "color : white">Adhesion</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#" style = "color : white">Deliveries</a>
+        <a class="nav-link" href="/itineraire" style = "color : white">+ Nouvel Itinéraire</a>
         <!-- Collecte & Distribution -->
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
         <a class="nav-link" href="#" style = "color : white">Stocks</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item"> -->
         <a class="nav-link" href="/employe/new" style = "color : white">+ Nouvel Employé</a>
     </li>
     <li class="nav-item">
