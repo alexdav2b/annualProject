@@ -9,6 +9,7 @@ require_once __DIR__ . '/../../Control/DeliveryTypeController.php';
 require_once __DIR__ . '/../../Control/DepositeryController.php';
 require_once __DIR__ . '/../../Control/EmployeeController.php';
 require_once __DIR__ . '/../../Control/IndividualController.php';
+require_once __DIR__ . '/../../Control/ItineraireController.php';
 require_once __DIR__ . '/../../Control/ProductController.php';
 require_once __DIR__ . '/../../Control/SalemanController.php';
 require_once __DIR__ . '/../../Control/SiteController.php';

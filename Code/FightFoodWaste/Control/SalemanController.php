@@ -117,13 +117,14 @@ Class SalemanController{
         $controller = new SiteController();
         $site = $controller->GetById($_POST['Site']);
 
-        $salt = bin2hex(random_bytes(5)); // 10 characters
-        $password = $this->HashNSalt($salt,  $POST['Password']); // 50 characters
+        // $salt = bin2hex(random_bytes(5)); // 10 characters
+        // $password = $this->HashNSalt($salt,  $POST['Password']); // 50 characters
 
         $form = array(
             htmlspecialchars($_POST['Email']),
             htmlspecialchars($_POST['Name']),
-            $password,
+            // $password,
+            htmlspecialchars($_POST['Password']),
             htmlspecialchars($_POST['Numero']),
             htmlspecialchars($_POST['Rue']),
             htmlspecialchars($_POST['Postcode']),

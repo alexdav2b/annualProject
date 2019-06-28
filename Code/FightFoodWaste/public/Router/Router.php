@@ -19,13 +19,13 @@ Class Router{
         return $this->add($path, $callable, $name, 'POST');
     }
 
-    public function delete($path, $callable, $name = null){
-        return $this->add($path, $callable, $name, 'DELETE');
-    }
+    // public function delete($path, $callable, $name = null){
+    //     return $this->add($path, $callable, $name, 'DELETE');
+    // }
 
-    public function put($path, $callable, $name = null){
-        return $this->add($path, $callable, $name, 'PUT');
-    }
+    // public function put($path, $callable, $name = null){
+    //     return $this->add($path, $callable, $name, 'PUT');
+    // }
 
 
     private function add($path, $callable, $name, $method){

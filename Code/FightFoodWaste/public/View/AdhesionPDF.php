@@ -23,7 +23,7 @@ Class PDF extends FPDF{
         $this->SetFont('Arial', '', 12); // police
         $this->Cell(2); // deplacement vers la droite
 
-        $this->Cell(40,10,'Adresse', 0, 0,1); // Ecriture
+        $this->Cell(40,10,'Adresse :', 0, 0,1); // Ecriture
     }
 
     // Footer de la page

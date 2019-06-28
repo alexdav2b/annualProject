@@ -30,7 +30,7 @@ ob_start();
                 <th> <?= $adhesion->getId(); ?></th>
                 <th> <?= $adhesion->getDate(); ?></th>
                 <th> <?= $adhesion->getUser()->getName(); ?> </th>
-                <th><a href = <?= $url ?> class = "btn btn-success" id = "Create">Adhérer</a></th> 
+                <th><a href = <?= $url ?> class = "btn btn-success" id = "Create">Voir PDF</a></th> 
             </tr>
             <?php }
         }else{ ?>

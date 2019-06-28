@@ -99,6 +99,7 @@ $router->post('/employe/update/:id', "Employee#Modification"); // Verifier Admin
 
 $router->get('/employe/:id', "Employee#view"); 
 
+// -------------------------------------------------------------------
 // Admin
 $router->get('/admin/new', "Admin#New");
 
@@ -115,6 +116,13 @@ $router->post('/connexion', "User#Connexion");
 
 $router->get('/deconnexion', "User#Deconnexion");
 
+
+// ITINERAIRE
+// -------------------------------------------------------------------
+
+$router->get('/itineraire', "Itineraire#new");
+
+$router->post('/itineraire', "Itineraire#view");
 
 // RUN
 // -------------------------------------------------------------------

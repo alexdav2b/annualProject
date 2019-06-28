@@ -6,7 +6,7 @@ require_once __DIR__ . '/../Model/Adresse.php';
 require_once __DIR__ . '/../Model/Vehicule.php';
 require_once __DIR__ . '/../Model/Conducteur.php';
 require_once __DIR__ . '/../Model/Article.php';
-require_once __DIR__ . '/../Model/Site.php';
+require_once __DIR__ . '/../Model/Sitee.php';
 require_once __DIR__ . '/../Model/Depot.php';
 require_once __DIR__ . '/../Model/Arret.php';
 require_once __DIR__ . '/../Model/GmapApi.php';
@@ -14,7 +14,7 @@ require_once __DIR__ . '/../Model/GmapApi.php';
 $json_site = file_get_contents($url.'site/'.$_POST['site']);
 $site_data = json_decode($json_site);
 
-$s = new Site($site_data->ID, $site_data->Name);
+$s = new Sitee($site_data->ID, $site_data->Name);
 echo $s;
 
 echo "<hr>";

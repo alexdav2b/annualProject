@@ -136,7 +136,8 @@ Class UserController{
             // var_dump($user->getPassword());
             // var_dump(HashNSalt());
 
-            if($user->PasswordIsValid($_POST['Password'], $user->getPassword())){
+            // if($user->PasswordIsValid($_POST['Password'], $user->getPassword())){
+                if($_POST['Password'] == $user->getPassword()){
                 session_destroy();
                 session_start();
                 $_SESSION['User'] = $user->getDiscriminator();
