@@ -38,12 +38,12 @@ int connexion()
                 pwd[i] = '\0';
             i++;
         }
-        // printf("av verif\n");
-        // user = verifConnexion(email, pwd);
-        // printf("ap verif\n");
-        user->email = "a@gmail.com";
-        user->siteId[0] = '1';
-        user->usrId[0] = '1';
+        printf("av verif\n");
+        user = verifConnexion(email, pwd);
+        printf("ap verif\n");
+        // user->email = "a@gmail.com";
+        // user->siteId[0] = '1';
+        // user->usrId[0] = '1';
 
         if(user != NULL)
             wait = 0;
@@ -90,7 +90,7 @@ struct User *verifConnexion(char* email, char* pwd)
         fprintf(stderr, "erreur: line %d: %s\n", error.line, error.text);
         return NULL;
     }
-    free(userData);
+    // free(userData);
     for(i = 0; i < json_array_size(rData); i++)
     {
         userObject = json_array_get(rData, i);
@@ -103,7 +103,7 @@ struct User *verifConnexion(char* email, char* pwd)
     }
 
     struct User *Nuser;
-    Nuser = malloc(sizeof(struct Product) * 1);
+    Nuser = malloc(sizeof(struct User) * 1);
     if( Nuser == NULL)
     {
         printf("les mallocs est de la merde");
@@ -121,6 +121,7 @@ struct User *verifConnexion(char* email, char* pwd)
             Nuser->siteId[i] = siteId[i];
         }
         printf("av email\n");
+        Nuser->email = calloc(sizeof(char), strlen(email) + 1);
         strcpy(Nuser->email, email);
         printf("ap email\n");
         json_decref(rData);
@@ -177,7 +178,7 @@ char * getUserData(char *email, char **err)
         *err = NULL;
     }
 
-    curl_easy_cleanup(curl_handle);
+    // curl_easy_cleanup(curl_handle);
     
     return chunk.data;
 }

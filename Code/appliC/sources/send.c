@@ -25,7 +25,7 @@ int sendOffer(struct Product *listProduct, int nbProduct, struct User *user)
     printf("\n name = %s\n", listProduct[0].usrId);
 
     // printf("nombre de produits : %d\n", i);
-    json = calloc(sizeof(char),strlen(json_model)+ strlen(listProduct[0].barcodeValue)+ strlen(listProduct[0].validDate)+ strlen(listProduct[0].usrId)+ 1);
+    json = calloc(sizeof(char), strlen(json_model) + strlen(listProduct[0].barcodeValue) + strlen(listProduct[0].validDate) + strlen(listProduct[0].usrId) + 1);
     sprintf(json, json_model, listProduct[0].name, listProduct[0].barcodeValue, listProduct[0].validDate, listProduct[0].usrId, listProduct[0].usrId);
     printf("\ntest2\n");
 
@@ -36,13 +36,17 @@ int sendOffer(struct Product *listProduct, int nbProduct, struct User *user)
     printf("\ntest2\n");
     if (curl)
     {
+        printf("\ntest22\n");
         //url target
         curl_easy_setopt(curl, CURLOPT_URL, "http://fightfoodwasteapi.spell.ovh/product/create");
+        printf("\ntest223\n");
         //post data
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json);
+        printf("\ntest224\n");
         // send request
         res = curl_easy_perform(curl);
         // print error
+        printf("\ntest23\n");
         if (res != CURLE_OK)
             fprintf(stderr, "curl_easy_perform() failed: %s\n",
                     curl_easy_strerror(res));

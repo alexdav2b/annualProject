@@ -19,7 +19,7 @@ char *fromBarcodeToName(char *code)
         fprintf(stderr, "erreur: line %d: %s\n", error.line, error.text);
         return "err";
     }
-    free(data);
+    // free(data);
 
     json_t *product = json_object_get(rData, "product");
 
@@ -116,7 +116,7 @@ char *getProduct(char *code, char **err)
         *err = NULL;
     }
 
-    curl_easy_cleanup(curl_handle);
+    // curl_easy_cleanup(curl_handle);
     // curl_global_cleanup();
 
     return chunk.data;
