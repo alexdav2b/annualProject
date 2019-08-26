@@ -12,8 +12,6 @@ struct Product
     char validDate[11];
     char depoId[5];
     char usrId[5];
-    char statutId[2];
-
 };
 
 struct User
@@ -33,7 +31,9 @@ int menu(struct User *user);
     int createOffer(struct User *user);
         struct Product *addProduct(struct User *user, struct Product *listProduct, int *nbProduct);
         char *validDate(struct Product *listProduct, int nbProduct);
-        int sendOffer();
+
+//send.c
+int  sendOffer(struct Product *listProduct, int nbProduct, struct User *user);
 
 //utils
 int printList(struct Product *listProduct, int nbProduct);

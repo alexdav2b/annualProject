@@ -5,14 +5,18 @@ int connexion()
     int wait = 1, i = 0;
     char email[42];
     char pwd[42];
-    struct User *user;
+    struct User *user = NULL;
 
-    user = malloc(sizeof(struct Product) * 1);
+    user = malloc(sizeof(struct User) * 1);
+    if( user == NULL)
+    {
+        printf("les mallocs est de la merde");
+    }
 
-//temporaire 
-    menu(user);
-    return 0;
-//fin tmp
+// //temporaire 
+//     menu(user);
+//     return 0;
+// //fin tmp
 
     while(wait)
     {
@@ -34,12 +38,18 @@ int connexion()
                 pwd[i] = '\0';
             i++;
         }
-        user = verifConnexion(email, pwd);
+        // printf("av verif\n");
+        // user = verifConnexion(email, pwd);
+        // printf("ap verif\n");
+        user->email = "a@gmail.com";
+        user->siteId[0] = '1';
+        user->usrId[0] = '1';
+
         if(user != NULL)
             wait = 0;
     }
     printf("connection effectue \nuser : %s, id : %s, site : %s\n", user->email, user->usrId, user->siteId);
-    // menu(user);
+    menu(user);
     return 0;
 }
 
@@ -58,7 +68,15 @@ struct User *verifConnexion(char* email, char* pwd)
     json_t *pasword, *tmpUsrId, *tmpSiteId;
 
     usrId = malloc(sizeof(char) * 5);
+    if( usrId == NULL)
+    {
+        printf("les mallocs est de la merde");
+    }
     siteId = malloc(sizeof(char) * 5);
+    if( siteId == NULL)
+    {
+        printf("les mallocs est de la merde");
+    }
     //load json to parse it
     rData = json_loads(userData, 0, &error);
     //test if it's an array and if it's not null
@@ -83,8 +101,13 @@ struct User *verifConnexion(char* email, char* pwd)
         tmpSiteId = json_object_get(userObject, "SiteID");
        
     }
+
     struct User *Nuser;
     Nuser = malloc(sizeof(struct Product) * 1);
+    if( Nuser == NULL)
+    {
+        printf("les mallocs est de la merde");
+    }
     if(sameString(pwd, json_string_value(pasword)))
     {
         //save user data in it's struct
@@ -97,8 +120,11 @@ struct User *verifConnexion(char* email, char* pwd)
             Nuser->usrId[i] = usrId[i];
             Nuser->siteId[i] = siteId[i];
         }
+        printf("av email\n");
         strcpy(Nuser->email, email);
+        printf("ap email\n");
         json_decref(rData);
+        printf("Nuser \nuser : %s, id : %s, site : %s\n", Nuser->email, Nuser->usrId, Nuser->siteId);
         return Nuser;
     }
     else
@@ -106,12 +132,13 @@ struct User *verifConnexion(char* email, char* pwd)
         printf("mot de passe incorect\n");
     }
     json_decref(rData);
+    
     return NULL;
 }
 
 char * getUserData(char *email, char **err)
 {
-    const char url_model[] = "apitdp.todomain.ovh/usr/Email/%s/getByString";
+    const char url_model[] = "fightfoodwasteapi.spell.ovh/usr/Email/%s/getByString";
 
     CURL *curl_handle;
     CURLcode res;
@@ -122,7 +149,7 @@ char * getUserData(char *email, char **err)
     chunk.data = malloc(sizeof(struct http_data_t));
     chunk.size = 0;
 
-    curl_global_init(CURL_GLOBAL_ALL);
+    
 
     curl_handle = curl_easy_init();
 
@@ -151,6 +178,6 @@ char * getUserData(char *email, char **err)
     }
 
     curl_easy_cleanup(curl_handle);
-    curl_global_cleanup();
+    
     return chunk.data;
 }

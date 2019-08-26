@@ -1,10 +1,10 @@
 # Declaration of variables
 CC = gcc
 CC_FLAGS = -Wall -Wextra -Wno-unused-parameter
-LIBS_FLAGS = $$(pkg-config --cflags --libs jansson libcurl sdl2)
+LIBS_FLAGS = -lcurl -ljansson  #$$(pkg-config --cflags --libs jansson libcurl)
 
 # File names
-EXEC = version_produits
+EXEC = tmp
 SOURCES =	$(wildcard *.c) \
 			 $(wildcard */*.c)
 OBJECTS = $(SOURCES:.c=.o)
@@ -27,4 +27,4 @@ cleanObj:
 
 #construct all and clean obj
 build:
-	make && make cleanObj && ./version_produits
+	make && make cleanObj && ./tmp
