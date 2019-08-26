@@ -6,7 +6,7 @@ require_once __DIR__ . '/../Model/Statut.php';
 Class StatutController{
 
     // Parse
-    private function parseOne($json) : Stop{
+    private function parseOne($json) : Statut{
         return new Statut($json['ID'], $json['Name']);
     }
 

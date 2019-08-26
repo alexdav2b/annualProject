@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Model/UserManager.php';
 
 $title = "FightFoodWaste - Compte";
+$scripts = array(); 
 ob_start(); 
 
 $userManager = new UserController();

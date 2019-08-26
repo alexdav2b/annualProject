@@ -14,8 +14,9 @@ class DatabaseManager {
 
 	 // 2.
 	private function __construct(){
-		$conn = 'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME;
-		$this->pdo = new PDO($conn, DB_USER, DB_PWD);
+        // $conn = 'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME;
+		$conn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME ;
+        $this->pdo = new PDO($conn, DB_USER, DB_PWD);
 	}
 
 	// 3.
@@ -165,7 +166,7 @@ class DatabaseManager {
             case 'delivery' : 
                 $col = ['ID', 'TruckID', 'UsrID', 'DeliveryTypeID', 'DateStart', 'DateEnd'];
                 break;
-            case 'deliveryType' :
+            case 'deliverytype' :
                 $col = ['ID', 'Name'];
                 break;
             case 'depositery':
@@ -208,7 +209,7 @@ class DatabaseManager {
                 $col = ['StopID','ProductID'];
                 break;
             case 'truck':
-                $col = ['ID', 'SiteID', 'Plate', 'Name', 'Capacity'];
+                $col = ['ID', 'SiteID', 'Plate', 'Name', 'Capacity', 'Libre'];
                 break;
             case 'usr':
                 $col = ['ID', 'SiteID', 'Email', 'Name', 'Surname', 'Password', 'Numero', 'Rue', 'Postcode', 'Area', 'Siret', 'Salary', 'Discriminator'];

@@ -2,20 +2,22 @@
 
 require_once __DIR__ . '/../Model/Site.php';
 
-Class Truck{
+Class Truck implements JsonSerializable{
 
     private $id;
     private $plate;
     private $name;
     private $capacity;
     private $site;
+    private $libre;
 
-    public function __construct(?int $id, string $plate, string $name, int $capacity, Site $site){
+    public function __construct(?int $id, string $plate, string $name, int $capacity, Site $site, bool $libre){
         $this->id = $id;
         $this->plate = $plate; 
         $this->name = $name; 
         $this->capacity = $capacity;
         $this->site = $site;
+        $this->libre = $libre;
 
     }
 
@@ -24,6 +26,7 @@ Class Truck{
     public function getName(): string { return $this->name; }
     public function getCapacity(): int { return $this->capacity; }
     public function getSite(): Site { return $this->site; }
+    public function getLibre(): bool {return $this->libre; }
 
 
     public function setId(int $id){ 
@@ -52,6 +55,9 @@ Class Truck{
         $this->site = $site;
     }
 
+    public function setLibre(bool $libre){
+        $this->libre = $libre;
+    }
     // Method
 
     public function create(string $discriminator) : bool{
@@ -63,7 +69,8 @@ Class Truck{
             'SiteID' => $this->site->getId(),
 			'Plate' => $this->plate,
 			'Name' => $this->name,
-            'Capacity' => $this->capacity);
+            'Capacity' => $this->capacity,
+            'Libre' => $this->libre);
 		$json = json_encode($array);
 		$json = $api->create($json);
 		if ($json != NULL){
@@ -85,13 +92,18 @@ Class Truck{
             'SiteID' => $this->site->getId(),
 			'Plate' => $this->plate,
 			'Name' => $this->name,
-            'Capacity' => $this->capacity);
+            'Capacity' => $this->capacity,
+            'Libre' => $this->libre);
 		$json = json_encode($array);
 		$json = $api->update($json);
 		if ($json != NULL){
 			return true;		
 		}
 		return false;
+    }
+    
+    public function jsonSerialize(){
+		return get_object_vars($this);
 	}
 
 }

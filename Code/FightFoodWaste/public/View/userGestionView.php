@@ -1,6 +1,6 @@
 <?php
 ob_start();
-
+$scripts = array(); 
 ?>
 <div class = "row">
     <h2 class="offset-md-1">Utilisateurs</h2>

@@ -1,6 +1,7 @@
 <?php
 
 $title = "FightFoodWaste - Administration";
+$scripts = array(); 
 ob_start();
 ?>
 
@@ -17,8 +18,8 @@ ob_start();
     </li>
     <!-- <li class="nav-item">
         <a class="nav-link" href="#" style = "color : white">Stocks</a>
-    </li>
-    <li class="nav-item"> -->
+    </li>-->
+    <li class="nav-item">
         <a class="nav-link" href="/employe/new" style = "color : white">+ Nouvel Employé</a>
     </li>
     <li class="nav-item">

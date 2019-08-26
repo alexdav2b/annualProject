@@ -17,7 +17,7 @@ Class DepositeryController{
         $result = [];
         foreach($json as $line){
             $siteController = new SiteController();
-            $site = $siteController->getById(intval($json['SiteID']));
+            $site = $siteController->getById(intval($line['SiteID']));
             $depositery = new Depositery($line['ID'], $site, $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Capacity']);
             array_push($result, $depositery);
         }
@@ -39,7 +39,7 @@ Class DepositeryController{
 
     public function getBySite(int $siteId) : array{
         $api = new ApiManager('Depositery');
-        $json = $api->getByString('SiteID', $line);
+        $json = $api->getByInt('SiteID', $siteId);
         return $this->parseAll($json);
     }
 

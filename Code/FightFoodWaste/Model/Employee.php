@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../Model/User.php';
 
-Class Employee extends User{
+Class Employee extends User implements JsonSerializable{
     private $salary;
     private $surname;
 
@@ -34,6 +34,10 @@ Class Employee extends User{
     public function updateEmployee(): bool{
         return parent::update('Employer');
     }
+    
+    public function jsonSerialize(){
+		return get_object_vars($this);
+	}
 }
 
 ?>

@@ -4,6 +4,8 @@ require_once __DIR__ . '/../Model/ApiManager.php';
 require_once __DIR__ . '/../Model/Depositery.php';
 require_once __DIR__ . '/../Model/User.php';
 require_once __DIR__ . '/../Model/Statut.php';
+require_once __DIR__ . '/../Model/Product.php';
+
 
 Class ProductController{
 
@@ -19,23 +21,23 @@ Class ProductController{
         $statutController = new StatutController();
         $statut = $statutController->getById(intval($json['StatutID']));
 
-        return new Product($json['ID'], $json['Name'], $json['Barcode'], $json['ValidDate'], $depositery, $donator, $receiver, $staut);
+        return new Product($json['ID'], $json['Name'], $json['Barcode'], $json['ValidDate'], $depositery, $donator, $receiver, $statut);
     }
 
     private function parseAll($json) : array{
         $result = [];
         foreach($json as $line){
             $depositeryController = new DepositeryController();
-            $depositery = $depositeryController->getById(intval($json['DepositeryID']));
+            $depositery = $depositeryController->getById(intval($line['DepositeryID']));
     
             $userController = new UserController();
-            $receiver = $receiverController->getById(intval($json['UsrID_Received']));
-            $donator = $userController->getByInt(intval($json['UsrID_Donated']));
+            $receiver = $userController->getById(intval($line['UsrID_Received']));
+            $donator = $userController->getById(intval($line['UsrID_Donated']));
     
             $statutController = new StatutController();
-            $statut = $statutController->getById(intval($json['StatutID']));
+            $statut = $statutController->getById(intval($line['StatutID']));
     
-            $product = new Product($line['ID'], $line['Name'], $line['Barcode'], $line['ValidDate'], $depositery, $donator, $receiver, $staut);
+            $product = new Product($line['ID'], $line['Name'], $line['Barcode'], $line['ValidDate'], $depositery, $donator, $receiver, $statut);
     
             array_push($result, $product);
         }

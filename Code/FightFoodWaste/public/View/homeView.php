@@ -1,6 +1,6 @@
 <?php
 $title = 'FightFoodWaste';
-
+$scripts = array(); 
 ob_start();
 
 ?>

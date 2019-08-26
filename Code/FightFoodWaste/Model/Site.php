@@ -29,6 +29,9 @@ Class Site{
     public function getArea() : string { return $this->area; }
     public function getCapacity() : int { return $this->capacity; }
 
+    public function getAddress(string $ad): string{
+        return $this->getNumero().' '.$this->getRue().' '.$this->getPostcode().' '.$this->getArea();
+    }
 
     public function setId(int $id){ 
         if($id > 0)

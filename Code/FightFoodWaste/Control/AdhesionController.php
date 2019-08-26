@@ -87,9 +87,7 @@ Class AdhesionController{
             header('Location: /404');
         }
         $all = $this->getByUser($id);
-        if($all == null){
-            header('Location: /404');
-        }
+
         $adhesions = array();
         $count = count($all);
 

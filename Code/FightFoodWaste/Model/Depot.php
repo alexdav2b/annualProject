@@ -28,6 +28,10 @@
         public function getRue(){return $this->rue;}
         public function getCode(){return $this->codePostal;}
         public function getVille(){return $this->ville;}
+        
+        public function getAddress(string $ad): string{
+            return $this->getNumero().' '.$this->getRue().' '.$this->getPostcode().' '.$this->getArea();
+        }
 
         public function setDepot(int $id, String $numero, String $rue, String $codePostal, String $ville, int $capacite){
             $this->ID = $id;

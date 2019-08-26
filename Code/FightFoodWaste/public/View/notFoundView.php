@@ -1,7 +1,7 @@
 <?php
 
 $title = 'Error 404 - Page not found';
-
+$scripts = array(); 
 ob_start();
 ?>
 

@@ -1,6 +1,6 @@
 <?php
 $title = 'Nouvel Employé';
-
+$scripts = array(); 
 ob_start();
 
 ?>

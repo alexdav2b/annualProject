@@ -122,6 +122,17 @@ $router->get('/deconnexion', "User#Deconnexion");
 
 $router->get('/itineraire', "Itineraire#new");
 
+$router->post('/itineraire/Site', "Itineraire#ChoseSite");
+
+$router->post('/itineraire/Truck', 'Itineraire#ChoseTruck');
+
+$router->post('/itineraire/Employee', 'Itineraire#ChoseEmployee');
+
+$router->post('/itineraire/Delivery', 'Itineraire#ChoseDeliveryType');
+
+$router->post('/itineraire/Start', 'Itineraire#ChoseStart');
+
+
 $router->post('/itineraire', "Itineraire#view");
 
 // RUN

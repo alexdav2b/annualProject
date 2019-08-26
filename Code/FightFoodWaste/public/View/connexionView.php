@@ -7,7 +7,8 @@ if(isset($_SESSION['User'])){
 }
 
 $title = "FightFoodWaste - Login";
-$script = "../js/connexionView.js";
+$scripts = array();
+array_push($scripts, "../js/connexionView.js");
 
 ob_start();
 
@@ -58,7 +59,7 @@ ob_start();
         </div>
     </form> 
 
-    <form action = "/log/Saleman" method = "post" id = 'Saleman'> 
+    <form action = "/log/commercant" method = "post" id = 'Saleman'> 
         <div class = 'row form-group' style = 'margin-bottom : 0 !important; padding-top : 0 !important; padding-left : 15px !important; padding-right : 15px !important;'>
             <input required class = "form-control" type = "text" name = 'Siret' id = 'SiretID' placeholder = 'Siret'>
             <input required class = "form-control" type = "text" name = 'Name' id = 'NameID' placeholder = 'Name'>

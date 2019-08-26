@@ -1,10 +1,12 @@
 <?php
 
+require_once __DIR__ . '/.conf.php';
+
 Class ApiManager{
     private $url;
 
     public function __construct(string $table){
-        $this->url = 'http://fightfoodwasteapi/' . strtolower($table);
+        $this->url = API_URL . strtolower($table);
     }
 
     private function getUrl(): string { return $this->url; }

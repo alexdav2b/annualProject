@@ -1,8 +1,9 @@
 <?php
 $title = 'Votre compte';
-$script = "../js/userView.js";
-
+$scripts = array(); 
+array_push($scripts,"../js/userView.js");
 $userType = $_SESSION['User'];
+
 ob_start();
 
 ?>

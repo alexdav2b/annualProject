@@ -1,6 +1,6 @@
 <?php
 $title = 'Nouvel Admin';
-
+$scripts = array(); 
 ob_start();
 
 ?>

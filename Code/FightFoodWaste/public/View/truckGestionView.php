@@ -4,7 +4,8 @@ require_once __DIR__ . '/../../Model/User.php';
 require_once __DIR__ . '/../../Control/Form.php';
 
 $title = "FightFoodWaste - Login";
-$script = "../js/connexionView.js";
+$scripts = array();
+array_push($scripts,"../js/connexionView.js");
 
 ob_start();
 ?>

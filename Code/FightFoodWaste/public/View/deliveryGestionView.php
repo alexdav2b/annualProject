@@ -7,6 +7,7 @@ require_once __DIR__ . '/../../Model/DeliveryType.php';
 require_once __DIR__ . '/../../Control/Form.php';
 
 $title = "FightFoodWaste - Login";
+$scripts = array(); 
 
 ob_start();
 ?>

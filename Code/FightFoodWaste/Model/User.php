@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../Model/Site.php';
 // require_once __DIR__ . '/../Control/SiteController.php';
-Class User{
+Class User implements JsonSerializable{
 	// Propriety
 	private $id;  
 	private $email; 
@@ -162,7 +162,12 @@ Class User{
         $hashed = hash($algo, $salted, FALSE);
         $password = $salt . $hashed; 
         return $password;
-    }
+	}
+	
+	public function jsonSerialize(){
+		return get_object_vars($this);
+	}
+
 }
 
 ?>
