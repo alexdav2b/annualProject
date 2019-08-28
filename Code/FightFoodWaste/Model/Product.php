@@ -4,7 +4,7 @@ require_once __DIR__ . '/../Model/User.php';
 require_once __DIR__ . '/../Model/Depositery.php';
 require_once __DIR__ . '/../Model/Statut.php';
 
-Class Product{
+Class Product implements JsonSerializable{
     private $id;
     private $name;
     private $barcode;
@@ -131,6 +131,10 @@ Class Product{
 			return true;		
 		}
 		return false;
+    }
+    
+    public function jsonSerialize(){
+		return get_object_vars($this);
 	}
 }
 

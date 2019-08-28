@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 use PDO;
-use  PDOStatement;
+use PDOStatement;
 
 require_once __DIR__ . '/.conf.php';
 
@@ -149,7 +149,8 @@ class DatabaseManager {
         $col = [];
         switch($table){
             case 'adhesion':
-                $col = ['ID', 'UsrID', 'DateAdhesion', 'Cb', 'Code'];
+                // $col = ['ID', 'UsrID', 'DateAdhesion', 'Cb', 'Code'];
+                $col = ['ID', 'UsrID', 'DateAdhesion'];
                 break;
             case 'affectation':
                 $col = ['ServiceID', 'UsrID'];
@@ -206,13 +207,13 @@ class DatabaseManager {
                 $col = ['ID', 'DateHour', 'DeliveryID', 'UsrID'];
                 break;
             case 'stop_product':
-                $col = ['StopID','ProductID'];
+                $col = ['ID', 'StopID','ProductID'];
                 break;
             case 'truck':
                 $col = ['ID', 'SiteID', 'Plate', 'Name', 'Capacity', 'Libre'];
                 break;
             case 'usr':
-                $col = ['ID', 'SiteID', 'Email', 'Name', 'Surname', 'Password', 'Numero', 'Rue', 'Postcode', 'Area', 'Siret', 'Salary', 'Discriminator'];
+                $col = ['ID', 'SiteID', 'Email', 'Name', 'Surname', 'Password', 'Numero', 'Rue', 'Postcode', 'Area', 'Siret','Eligibility',  'Salary', 'Discriminator', 'Permis', 'Libre'];
                 break;
         }
         return $col;

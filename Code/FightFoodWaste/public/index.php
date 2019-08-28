@@ -116,6 +116,7 @@ $router->post('/connexion', "User#Connexion");
 
 $router->get('/deconnexion', "User#Deconnexion");
 
+$router->post('/mdp', "User#MotDePasseOublie");
 
 // ITINERAIRE
 // -------------------------------------------------------------------
@@ -130,8 +131,9 @@ $router->post('/itineraire/Employee', 'Itineraire#ChoseEmployee');
 
 $router->post('/itineraire/Delivery', 'Itineraire#ChoseDeliveryType');
 
-$router->post('/itineraire/Start', 'Itineraire#ChoseStart');
+// $router->post('/itineraire/Start', 'Itineraire#ChoseStart');
 
+$router->post('itineraire/CreateDelivery', 'Itineraire#CreateDelivery');
 
 $router->post('/itineraire', "Itineraire#view");
 

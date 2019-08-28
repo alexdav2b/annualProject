@@ -161,8 +161,15 @@ Class AdminController{
         echo("<p>L'utilisateur a été créé</p>");
         echo("</div>");
         $content = ob_get_clean();
-
+        header('Location: /MailInscription:' .$user->getEmail(), $user->getName());
+        MailInscription($user->getEmail(), $user->getById($id));
         require_once __DIR__ . '/../public/View/templateView.php';
+    }
+
+    private function MailInscription($email, $user){
+        $mail = new Mail($email, MAIL, 'Inscription FightFoodWaste');
+        $mail->generateBody('Inscription', $user);
+        $mail->Send('Simple');
     }
 
     public function Modification(int $id){

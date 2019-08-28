@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../Model/ApiManager.php';
 require_once __DIR__ . '/../Model/User.php';
+require_once __DIR__ . '/../Model/Mail.php';
 
 Class UserController{
 
@@ -46,7 +47,7 @@ Class UserController{
 
     public function getByName(string $name){
         $api = new ApiManager('Usr');
-        $json = $api->getByString('Name', $email);
+        $json = $api->getByString('Name', $name);
         return $this->parseAll($json);
     }
 
@@ -123,6 +124,7 @@ Class UserController{
     }
 
     public function Connexion(){
+        var_dump($_POST);
         if(isset($_SESSION['User'])){
             header('Location: 404');
         }
@@ -137,7 +139,8 @@ Class UserController{
             // var_dump(HashNSalt());
 
             // if($user->PasswordIsValid($_POST['Password'], $user->getPassword())){
-                if($_POST['Password'] == $user->getPassword()){
+            if($_POST['Password'] == $user->getPassword()){
+                var_dump('ok');
                 session_destroy();
                 session_start();
                 $_SESSION['User'] = $user->getDiscriminator();
@@ -160,6 +163,10 @@ Class UserController{
                 }
                 $url .= $user->getId();
                 header('Location: ' . $url);
+            }else{
+                session_destroy();
+                header('Location: /log');
+
             }
         }
 
@@ -170,6 +177,35 @@ Class UserController{
         session_destroy();
         header('Location: /');
     }
-}
 
+    public function MailInscription($email, $user){
+        $mail = new Mail($email, MAIL, 'Inscription FightFoodWaste');
+        $mail->generateBody('Inscription', $user);
+        $mail->Send('Simple');
+    }
+
+    private function MailMdp($email, $mdp){
+        $mail = new Mail($email, MAIL, 'Mot de passe oublie');
+        $mail->generateBody('Mdp', $mdp);
+    }
+
+    public function MotDePasseOublie(){
+        $email = $_POST['email'];
+        $user = $this->getByEmail($email);
+        
+        // Génération du mot de passe
+        $size = 10;
+        // Initialisation des caractères utilisables
+        $password = '';
+        $characters = array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+        for($i=0;$i<$size;$i++)
+        {
+            $password .= ($i%2) ? strtoupper($characters[array_rand($characters)]) : $characters[array_rand($characters)];
+        }
+        $user->setPassword($password);
+        $user>update();
+        MailMdp($user->getEmail(), $password);
+    }
+    
+}
 ?>

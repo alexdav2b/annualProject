@@ -19,9 +19,7 @@ class PagesController{
         header("Content-Type: application/json");
         $json = $request->getBody(); 
         $data = json_decode($json, true);
-
         $db = DatabaseManager::getManager();
-
         $sql = $db->getSQLCreate($args['table'], $data);
         if($sql == 'error'){
             return $response->withStatus(400);

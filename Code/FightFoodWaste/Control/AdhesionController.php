@@ -11,7 +11,7 @@ Class AdhesionController{
     private function parseOne($json) : Adhesion{
         $userController = new UserController();
         $user = $userController->getById(intval($json['UsrID']));
-        $adhesion = new Adhesion($json['ID'], $json['DateAdhesion'], $json['Cb'], $json['Code'], $user);
+        $adhesion = new Adhesion($json['ID'], $json['DateAdhesion'], $user);
         return $adhesion;
     }
 
@@ -22,7 +22,7 @@ Class AdhesionController{
             $userController = new UserController();
             $user = $userController->getById(intval($line['UsrID']));
 
-            $adhesion = new Adhesion($line['ID'], $line['DateAdhesion'], $line['Cb'], $line['Code'], $user);
+            $adhesion = new Adhesion($line['ID'], $line['DateAdhesion'], $user);
             array_push($result, $adhesion);
         }
         return $result;
@@ -48,18 +48,6 @@ Class AdhesionController{
         return $this->parseAll($json);
     }
 
-    public function getByCb(string $cb){
-        $api = new ApiManager('Adhesion');
-        $json = $api->getByString('Cb', $cb);
-        return $this->parseAll($json);
-    }
-
-    public function getbyCode(string $code){
-        $api = new ApiManager('Adhesion');
-        $json = $api->getByString('Code', $code);
-        return $this->parseAll($json);
-    }
-
     public function getByUser(int $idUser){
         $api = new ApiManager('Adhesion');
         $json = $api->getByInt('UsrID', $idUser);
@@ -82,10 +70,24 @@ Class AdhesionController{
         }
     }
 
+    public function Tri($adhesions){
+        usort($adhesion, function($a, $b){
+            //retourner 0 en cas d'égalité
+            if ($a->getDate() == $b->getDate()) {
+                return 0;
+            } else if ($a->getDate() < $b->getDate()) {//retourner -1 en cas d’infériorité
+                return -1;
+            } else {//retourner 1 en cas de supériorité
+                return 1;
+            }
+        });
+    }
+
     public function viewUser(int $id){
         if(!isset($_SESSION['User']) || $_SESSION['User'] != 'Saleman' && $_SESSION['Id'] != $id){
             header('Location: /404');
         }
+
         $all = $this->getByUser($id);
 
         $adhesions = array();
@@ -96,7 +98,26 @@ Class AdhesionController{
                 array_push($adhesions, $adhesion);
             }
         }
+        $btn;
+        if($adhesions != null && count($adhesions) != 1){
+            $this->Tri($adhesions);
 
+            $now = new DateTime();
+            $now = $now->format('Y-m-d H:i:s');
+
+            $last = $all[count($all)];
+            $last = new DateTime($last);
+
+            $year = $last->add(new DateInterval('P1Y'));
+            $month = $last->add(new DateInterval('P11M'));
+            if($month <= $now || $year <= $now){
+                $btn = true;
+            }else{
+                $btn = false;
+            }
+        }else{
+            $btn = true;
+        }
         require_once __DIR__ . '/../public/View/adhesionView.php';
     }
 
@@ -126,27 +147,25 @@ Class AdhesionController{
     }
 
     public function Add(){
-        if(!isset($_SESSION['User']) || $_SESSION['User'] != 'Saleman' || !isset($_SESSION['Id']) || !isset($_POST['Cb']) || !isset($_POST['Code'])){
+        if(!isset($_SESSION['User']) || $_SESSION['User'] != 'Saleman' || !isset($_SESSION['Id'])){
             header('Location: /404');
         }
+
+        $now = new DateTime();
+        $now = $now->format('Y-m-d H:i:s');
+
         $controller = new UserController();
         $user = $controller->getById($_SESSION['Id']);
         $idUser = $_SESSION['Id'];
 
-        $newDate = new DateTime($_POST['Date']);
-        $date = $newDate->format('Y-m-d H:i:s');
-
         $form = array(
-            $date,
-            htmlspecialchars($_POST['CB']),
-            htmlspecialchars($_POST['Numero']),
+            $now,
             $user
         );
-        $adhesion = new Adhesion(null, $form[0], $form[1], $form[2], $form[3]);
+        $adhesion = new Adhesion(null, $form[0], $form[1]);
         $adhesion->create();        
         $id = $adhesion->getId();
 
-        header("Location: /adhesions/$idUser"); 
     }
 
     public function New(){

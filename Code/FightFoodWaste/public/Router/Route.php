@@ -15,6 +15,7 @@ require_once __DIR__ . '/../../Control/SalemanController.php';
 require_once __DIR__ . '/../../Control/SiteController.php';
 require_once __DIR__ . '/../../Control/StatutController.php';
 require_once __DIR__ . '/../../Control/StopController.php';
+require_once __DIR__ . '/../../Control/StopProductController.php';
 require_once __DIR__ . '/../../Control/TruckController.php';
 require_once __DIR__ . '/../../Control/UserController.php';
 

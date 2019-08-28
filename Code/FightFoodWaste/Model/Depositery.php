@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../Model/Site.php';
 
-Class Depositery{
+Class Depositery implements JsonSerializable{
     private $id;
     private $site;
     private $numero;
@@ -112,6 +112,9 @@ Class Depositery{
 			return true;		
 		}
 		return false;
+    }
+    public function jsonSerialize(){
+		return get_object_vars($this);
 	}
 }
 

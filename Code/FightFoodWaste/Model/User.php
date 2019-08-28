@@ -87,7 +87,10 @@ Class User implements JsonSerializable{
 		$surname = ($discriminator == 'Individual' || $discriminator == 'Employer' || $discriminator == 'Admin' || $discriminator == 'Volunteer') ? $this->getSurname() : NULL;
 		$siret = ($discriminator == 'Saleman') ? $this->getSiret() : null;
 		$salary = ($discriminator == 'Employer') ? $this->getSalary() : null;
-		
+		$libre = ($discriminator == 'Employer') ? $this->getLibre() : null;
+		$permis = ($discriminator == 'Employer') ? $this->getPermis() : null;
+		$el = ($discriminator == 'Individual') ? $this->getEligibility() : null;
+
 		$array = array(
 			'SiteID' => $this->site->getId(),
 			'Email' => $this->email,
@@ -99,10 +102,15 @@ Class User implements JsonSerializable{
 			'Postcode' => $this->postcode,
 			'Area' => $this->area,
 			'SIRET' => $siret, 
+			'Eligibility' => $el,
 			'Salary' => $salary,
-			'Discriminator' => $discriminator);
+			'Discriminator' => $discriminator,
+			'Permis' => $permis,
+			'Libre' => $libre);
 		$json = json_encode($array);
+		
 		$json = $api->create($json);
+
 		if ($json != NULL){
 			$this->id = $json['ID'];
 			return true;
@@ -121,6 +129,10 @@ Class User implements JsonSerializable{
 		$surname = ($discriminator == 'Individual' || $discriminator == 'Employer' || $discriminator == 'Admin' || $discriminator == 'Volunteer') ? $this->getSurname() : NULL;
 		$siret = ($discriminator == 'Saleman') ? $this->getSiret() : null;
 		$salary = ($discriminator == 'Employer') ? $this->getSalary() : null;
+		$libre = ($discriminator == 'Employer') ? $this->getLibre() : null;
+		$permis = ($discriminator == 'Employer') ? $this->getPermis() : null;
+		$el = ($discriminator == 'Individual') ? $this->getEligibility() : null;
+
 		$array = array(
 			'ID' => $this->id,
 			'SiteID' => $this->site->getId(),
@@ -133,8 +145,11 @@ Class User implements JsonSerializable{
 			'Postcode' => $this->postcode,
 			'Area' => $this->area,
 			'SIRET' => $siret, 
+			'Eligibility' => $el,
 			'Salary' => $salary,
-			'Discriminator' => $discriminator);
+			'Discriminator' => $discriminator,
+			'Permis' => $permis,
+			'Libre' => $libre);
 		$json = json_encode($array);
 		$json = $api->update($json);
 		if ($json != NULL){

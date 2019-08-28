@@ -11,7 +11,7 @@ Class EmployeeController{
             $siteController = new SiteController();
             $site = $siteController->getById(intval($json['SiteID']));
 
-            $user = new Employee($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Salary'], $json['Surname'], $site);
+            $user = new Employee($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Salary'], $json['Surname'], $site, $json['Permis'], $json['Libre']);
             return $user;
         }
     }
@@ -22,7 +22,7 @@ Class EmployeeController{
             if($line['Discriminator'] == 'Employer'){
                 $siteController = new SiteController();
                 $site = $siteController->getById(intval($line['SiteID']));
-                $user = new Employee($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Salary'], $line['Surname'], $site);
+                $user = new Employee($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Salary'], $line['Surname'], $site, $line['Permis'], $line['Libre']);
                 array_push($result, $user);
             }
         }
@@ -96,6 +96,18 @@ Class EmployeeController{
         return $this->parseAll($json);
     }
 
+    public function getByLibre(bool $libre){
+        $api = new ApiManager('Usr');
+        $json = $api->getByInt('Libre', $libre);
+        return $this->parseAll($json);
+    }
+
+    public function getByPermis(bool $permis){
+        $api = new ApiManager('Usr');
+        $json = $api->getByInt('Permis', $permis);
+        return $this->parseAll($json);
+    }
+
     // getbySalary
     
     // Views
@@ -155,7 +167,9 @@ Class EmployeeController{
             htmlspecialchars($_POST['Area']),
             $_POST['Salary'], 
             htmlspecialchars($_POST['Surname']), 
-            $site
+            $site,
+            //$permis,
+            true
         );
 
         foreach($form as $value){
@@ -163,7 +177,7 @@ Class EmployeeController{
                 header("Location: /employe/new");
             }
         }
-        $user = new Employee(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
+        $user = new Employee(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9], $form[10],$form[11]);
         $user->createEmployee();        
         $id = $user->getId();
 
@@ -172,8 +186,14 @@ Class EmployeeController{
         echo("<p>L'utilisateur a été créé</p>");
         echo("</div>");
         $content = ob_get_clean();
-
+        MailInscription($user->getEmail(), $user->getById($id));
         require_once __DIR__ . '/../public/View/templateView.php';
+    }
+
+    private function MailInscription($email, $user){
+        $mail = new Mail($email, MAIL, 'Inscription FightFoodWaste');
+        $mail->generateBody('Inscription', $user);
+        $mail->Send('Simple');
     }
 
     public function Modification(int $id){

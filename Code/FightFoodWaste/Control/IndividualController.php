@@ -10,7 +10,7 @@ Class IndividualController{
         if($json['Discriminator'] == 'Individual'){
             $siteController = new SiteController();
             $site = $siteController->getById(intval($json['SiteID']));
-            $user = new Individual($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Surname'], $site);
+            $user = new Individual($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Surname'], $site, $json['Eligibility']);
             return $user;
         }
     }
@@ -21,7 +21,7 @@ Class IndividualController{
             if($line['Discriminator'] == 'Individual'){
                 $siteController = new SiteController();
                 $site = $siteController->getById(intval($line['SiteID']));
-                $user = new Employee($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Salary'], $line['Surname'], $site);
+                $user = new Individual($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Surname'], $site, $json['Eligbility']);
                 array_push($result, $user);
             }
         }
@@ -94,6 +94,12 @@ Class IndividualController{
         $json = $api->getByInt('Site', $siteId);
         return $this->parseAll($json);
     }
+
+    public function getByEligibility(bool $el){
+        $api = new ApiManager('Usr');
+        $json = $api->getByInt('Eligibility', $el);
+        return $this->parseAll($json);
+    }
     
 
     // Views
@@ -143,9 +149,10 @@ Class IndividualController{
             htmlspecialchars($_POST['Postcode']),
             htmlspecialchars($_POST['Area']),
             htmlspecialchars($_POST['Surname']), 
-            $site
+            $site,
+            true
         );
-        $user = new Individual(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
+        $user = new Individual(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
         $user->createIndividual();        
         $id = $user->getId();
         if($id == null){
@@ -172,9 +179,10 @@ Class IndividualController{
             htmlspecialchars($_POST['Postcode']),
             htmlspecialchars($_POST['Area']),
             htmlspecialchars($_POST['Surname']), 
-            $site
+            $site,
+            true
         );
-        $user = new Individual($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
+        $user = new Individual($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
         $user->updateIndividual();        
         header("Location: /particulier/$id"); 
     }

@@ -1,6 +1,6 @@
 <?php
 
-Class DeliveryType{
+Class DeliveryType implements JsonSerializable{
 
     private $id;
     private $name;
@@ -61,6 +61,10 @@ Class DeliveryType{
 			return true;		
 		}
 		return false;
+	}
+
+	public function jsonSerialize(){
+		return get_object_vars($this);
 	}
 }
 

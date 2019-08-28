@@ -4,7 +4,7 @@ require_once __DIR__ . '/../Model/User.php';
 require_once __DIR__ . '/../Model/DeliveryType.php';
 require_once __DIR__ . '/../Model/Truck.php';
 
-Class Delivery{
+Class Delivery implements JsonSerializable{
 
 	private $id;
 	private $truck;
@@ -63,7 +63,7 @@ Class Delivery{
 
 	// Database
 
-    public function create(string $discriminator) : bool{
+    public function create() : bool{
 		$api = new ApiManager('Delivery');
 		if($this->id != null){
 			return false;
@@ -104,6 +104,10 @@ Class Delivery{
 			return true;		
 		}
 		return false;
+	}
+
+	public function jsonSerialize(){
+		return get_object_vars($this);
 	}
 }
 

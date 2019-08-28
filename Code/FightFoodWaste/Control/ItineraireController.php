@@ -104,62 +104,164 @@ Class ItineraireController {
 
 
     public function ChoseSite(){
-        $siteId = $_POST["siteId"]; 
-        $siteController = new SiteController();
-        $site = $siteController->getById(intval($siteId));
-
-        $truckController = new TruckController();
-        $trucks = $truckController->getBySite($site->getId());
-        
-        $freeTrucks = array();
-        foreach($trucks as $truck){
-            if($truck->getLibre()){
-               array_push($freeTrucks, $truck);
+        $siteId = $_POST["siteId"];
+        if($siteId != null && $siteId != 0 ){
+            $siteController = new SiteController();
+            $site = $siteController->getById(intval($siteId));
+    
+            $truckController = new TruckController();
+            $trucks = $truckController->getBySite($site->getId());
+            
+            $freeTrucks = array();
+            foreach($trucks as $truck){
+                if($truck->getLibre()){
+                   array_push($freeTrucks, $truck);
+                }
             }
+            http_response_code(201);
+            echo(json_encode($freeTrucks));
+        }else{
+            http_response_code(400);
         }
-        echo(json_encode($freeTrucks));
-    }
+
+	}
 
     public function ChoseTruck(){
         $truckId = $_POST['truckId'];
-        $truckController = new TruckController();
-        $truck = $truckController->getById(intval($truckId));
+        if($truckId != null && $truckId != 0){
+            $truckController = new TruckController();
+            $truck = $truckController->getById(intval($truckId));
+    
+            $employeeController = new EmployeeController();
+            $employees = $employeeController->getByPermis(1);
+            
+            // permis et libre
+            $result = array();
+            foreach($employees as $employee){
+                if($employee->getLibre()){
+                    $new = array('id' => $employee->getId(), 'name' => $employee->getName(), 'surname' => $employee->getSurname());
+                    array_push($result, $new);
+                }
 
-        $employeeController = new EmployeeController();
-        $employees = $employeeController->getAll();
-        // permis et libre
-        $result = array();
-        foreach($employees as $employee){
-            $new = array('id' => $employee->getId(), 'name' => $employee->getName(), 'surname' => $employee->getSurname());
-            array_push($result, $new);
+            }
+            http_response_code(201);
+            echo(json_encode($result));
+        }else{
+            http_response_code(400);
         }
-        echo(json_encode($result));
+
     }
 
     public function ChoseEmployee(){
-        $userId = $_POST['employeeId'];
-        // permis
-        $employeeController = new EmployeeController();
-        $employee = $employeeController->getById(intval($userId));    
-    
-        $deliveryTypeController = new DeliveryTypeController();
-        $types = $deliveryTypeController->getAll();
+        $userId = $_POST['id'];
+        if($userId != null && $userId != 0){
+            $employeeController = new EmployeeController();
+            $employee = $employeeController->getById(intval($userId));    
+        
+            $deliveryTypeController = new DeliveryTypeController();
+            $types = $deliveryTypeController->getAll();
+            http_response_code(201);
+            echo(json_encode($types));
+        }
+        else{
+            http_response_code(400);
+        }
     }
 
     public function ChoseDeliveryType(){
-        $deliveryTypeId = '';
-        $deliveryTypeController = new DeliveryTypeController();
-        $type = $deliveryTypeController->getById($deliveryTypeId);
-    
-        $depositeryController = new DepositeryController();
-        $depots = $depositeryController->getBySite($site->getId());
+        $deliveryTypeId = $_POST['id'];
+        $siteId = $_POST['id'];
+        if($deliveryTypeId != 0 && $deliveryTypeId != null){
+            $deliveryTypeController = new DeliveryTypeController();
+            $type = $deliveryTypeController->getById($deliveryTypeId);
+
+
+            
+            // $depositeryController = new DepositeryController();
+            // $depots = $depositeryController->getBySite($site->getId());
+
+
+            http_response_code(201);
+
+        }
+        else{
+            http_response_code(400);
+        }
+    }
+
+    public function CreateDelivery(){
+        $typeId = $_POST['type'];
+        $employeeId = $_POST['user'];
+        $truckId = $_POST['truck'];
+        $dateHour = $_POST['dateHour'];
+
+        if($employeeId != null && $truckId != null && $dateHour != null){
+            $deliveryTypeController = new DeliveryTypeController();
+            $deliveryType = $deliveryTypeController->getById($truckId);
+
+            $truckC = new TruckController();
+            $truck = $truckC->getById($truckId);
+
+            $employeeC = new EmployeeController();
+            $employee = $employeeC->getById($employeeId);
+
+            if($employee != null && $truck != null && $deliveryType != null){
+                $deliveryController = new DeliveryController();
+                $delivery = new Delivery(null, $truck, $employee, $deliveryType, $dateHour, null);
+                $delivery->create();
+                // http_response_code(201);
+                
+                $productC = new ProductController();
+                $products = array();
+                if($deliveryType->getName() == 'delivery'){
+                    $products = $productC->getByStatut(3);
+                }else if($deliveryType->getName() == 'collection'){
+                    $products = $productC->getByStatut(2);
+                }      
+
+                $stopToCreate = array();
+                foreach($products as $product){
+                    $stopProduitC = new StopProductController();
+                    $stopProduitsId = $stopProduitC->getBy($product->getId());
+                    if($stopProduitsId == null){
+                        // créer stop
+                        // $stop = new Stop(null, null, )                        
+                        // créer stop product
+                    }
+                    
+                    $stopC = new StopController();
+                    // $stops = $stopC->get
+                }
+
+                
+                http_response_code(201);
+                echo(json_encode($products));
+            }else{
+                http_response_code(400);
+            }
+        }else{
+            http_response_code(400);
+        }
     }
 
     public function ChoseStart(){
-        $depotId = '';
-        $depositeryController = new DepositeryController();
-        $depot = $depositeryController->getBySite($site->getId());
+        $depotId = $_POST['id'];
+        if($depotId != null && $depotId != 0){
+            $depositeryController = new DepositeryController();
+            $depot = $depositeryController->getBySite($site->getId());
+            
+            // Générer les stops
+            http_response_code(201);
+            echo(json_encode($depot));  
+        }
+ 
     }    
+
+    public function GererateStops(){
+        // recuperer tous les produits du type de la livraison
+        // Créer un stop
+        // Y ajouter les produits
+    }
 
     public function view(){
         // Date

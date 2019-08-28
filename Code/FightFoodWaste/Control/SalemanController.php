@@ -132,7 +132,9 @@ Class SalemanController{
             htmlspecialchars($_POST['Siret']), 
             $site
         );
+
         $user = new Saleman(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
+        
         $user->createSaleman();
         $id = $user->getId();
         if($id == null){
@@ -144,8 +146,7 @@ Class SalemanController{
         $_SESSION['User'] = $user->getDiscriminator();
         $_SESSION['Id'] = $user->getId();
 
-        header("Location: /particulier/$id"); 
-        header("Location: /compte/$id"); 
+        header("Location: /commercant/$id"); 
     }
 
     public function Modification(int $id){

@@ -22,5 +22,4 @@ Class PagesController {
         $sites = $controller->getAll();
         require_once __DIR__ . '/../public/View/connexionView.php';     
     }
-
 }

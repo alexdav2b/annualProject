@@ -1,8 +1,8 @@
 <?php
 
 require_once __DIR__ . '/../../Model/User.php';
-
 $title = "FightFoodWaste - Adhésions";
+$scripts = array(); 
 
 ob_start();
 ?>
@@ -41,9 +41,11 @@ ob_start();
         <?php } ?>
         </tbody>
     </table>
-    <a href = "/adhesion" class = "btn btn-success col-md-4 offset-md-4 col-lg-4 offset-lg-4" id = "Create" style='margin-bottom : 1em;'>
-    Adhérer
-    </a>
+    <?php if($btn){?>
+        <a href = "/adhesion" class = "btn btn-success col-md-4 offset-md-4 col-lg-4 offset-lg-4" id = "Create" style='margin-bottom : 1em;'>
+        Adhérer ?
+        </a>
+    <?php } ?>
 </div>
 <?php 
 
