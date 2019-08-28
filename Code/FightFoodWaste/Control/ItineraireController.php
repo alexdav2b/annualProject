@@ -210,19 +210,21 @@ Class ItineraireController {
                 $delivery = new Delivery(null, $truck, $employee, $deliveryType, $dateHour, null);
                 $delivery->create();
                 // http_response_code(201);
-                
+
                 $productC = new ProductController();
                 $products = array();
-                if($deliveryType->getName() == 'delivery'){
+                $name = $deliveryType->getName();
+                if($name == 'delivery'){
                     $products = $productC->getByStatut(3);
-                }else if($deliveryType->getName() == 'collection'){
+                }else if($name == 'collection'){
                     $products = $productC->getByStatut(2);
                 }      
-
+                
                 $stopToCreate = array();
                 foreach($products as $product){
                     $stopProduitC = new StopProductController();
-                    $stopProduitsId = $stopProduitC->getBy($product->getId());
+                    // if null
+                    $stopProduitsId = $stopProduitC->getByProductId($product->getId());
                     if($stopProduitsId == null){
                         // créer stop
                         // $stop = new Stop(null, null, )                        

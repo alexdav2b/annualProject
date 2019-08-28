@@ -15,7 +15,11 @@ Class ProductController{
         $depositery = $depositeryController->getById(intval($json['DepositeryID']));
 
         $userController = new UserController();
-        $receiver = $receiverController->getById(intval($json['UsrID_Received']));
+        if($line['UsrID_Received'] =! null){
+            $receiver = $receiverController->getById(intval($json['UsrID_Received']));
+        }else{
+            $receiver = null;
+        }
         $donator = $userController->getByInt(intval($json['UsrID_Donated']));
 
         $statutController = new StatutController();
@@ -29,11 +33,16 @@ Class ProductController{
         foreach($json as $line){
             $depositeryController = new DepositeryController();
             $depositery = $depositeryController->getById(intval($line['DepositeryID']));
-    
+            
             $userController = new UserController();
-            $receiver = $userController->getById(intval($line['UsrID_Received']));
+            if($line['UsrID_Received'] =! null){
+                $receiver = $userController->getById(intval($line['UsrID_Received']));
+            }else{
+                $receiver = null;
+            }
+            
             $donator = $userController->getById(intval($line['UsrID_Donated']));
-    
+            
             $statutController = new StatutController();
             $statut = $statutController->getById(intval($line['StatutID']));
     
