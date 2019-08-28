@@ -7,15 +7,13 @@ Class Truck implements JsonSerializable{
     private $id;
     private $plate;
     private $name;
-    private $capacity;
     private $site;
     private $libre;
 
-    public function __construct(?int $id, string $plate, string $name, int $capacity, Site $site, bool $libre){
+    public function __construct(?int $id, string $plate, string $name, Site $site, bool $libre){
         $this->id = $id;
         $this->plate = $plate; 
         $this->name = $name; 
-        $this->capacity = $capacity;
         $this->site = $site;
         $this->libre = $libre;
 
@@ -24,7 +22,7 @@ Class Truck implements JsonSerializable{
     public function getId(): ?int{ return $this->id; }
     public function getPlate() : string {return $this->plate; }
     public function getName(): string { return $this->name; }
-    public function getCapacity(): int { return $this->capacity; }
+
     public function getSite(): Site { return $this->site; }
     public function getLibre(): bool {return $this->libre; }
 
@@ -44,10 +42,7 @@ Class Truck implements JsonSerializable{
             $this->name = $name; 
     }
         
-    public function setCapacity(int $number){
-        if($number > 0)
-            $this->capacity = $number;
-    }
+ 
 
     public function setSite(int $siteId){
         $controller = new SiteController();
@@ -69,7 +64,6 @@ Class Truck implements JsonSerializable{
             'SiteID' => $this->site->getId(),
 			'Plate' => $this->plate,
 			'Name' => $this->name,
-            'Capacity' => $this->capacity,
             'Libre' => $this->libre);
 		$json = json_encode($array);
 		$json = $api->create($json);
@@ -92,7 +86,6 @@ Class Truck implements JsonSerializable{
             'SiteID' => $this->site->getId(),
 			'Plate' => $this->plate,
 			'Name' => $this->name,
-            'Capacity' => $this->capacity,
             'Libre' => $this->libre);
 		$json = json_encode($array);
 		$json = $api->update($json);

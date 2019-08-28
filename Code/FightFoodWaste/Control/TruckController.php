@@ -9,7 +9,7 @@ Class TruckController{
     private function parseOne($json) : Truck{
         $controller = new SiteController();
         $site = $controller->getById(intval($json['SiteID']));
-        $truck = new Truck($json['ID'], $json['Plate'], $json['Name'], $json['Capacity'], $site, $json['Libre']);
+        $truck = new Truck($json['ID'], $json['Plate'], $json['Name'], $site, $json['Libre']);
         return $truck;
     }
 
@@ -18,7 +18,7 @@ Class TruckController{
         foreach($json as $line){
             $controller = new SiteController();
             $site = $controller->getById(intval($line['SiteID']));
-            $object = new Truck($line['ID'], $line['Plate'], $line['Name'], $line['Capacity'], $site, $line['Libre']);
+            $object = new Truck($line['ID'], $line['Plate'], $line['Name'], $site, $line['Libre']);
             array_push($result, $object);
         }
         return $result;
@@ -55,11 +55,6 @@ Class TruckController{
         return $this->parseAll($json);
     }
 
-    public function getCapacity(int $number){
-        $api = new ApiManager('Truck');
-        $json = $api->getByInt('Capacity', $number);
-        return $this->parseAll($json); 
-    }
 
     public function getLibre(bool $libre){
         $api = new ApiManager('Truck');

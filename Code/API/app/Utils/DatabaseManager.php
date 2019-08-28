@@ -210,7 +210,7 @@ class DatabaseManager {
                 $col = ['ID', 'StopID','ProductID'];
                 break;
             case 'truck':
-                $col = ['ID', 'SiteID', 'Plate', 'Name', 'Capacity', 'Libre'];
+                $col = ['ID', 'SiteID', 'Plate', 'Name', 'Libre'];
                 break;
             case 'usr':
                 $col = ['ID', 'SiteID', 'Email', 'Name', 'Surname', 'Password', 'Numero', 'Rue', 'Postcode', 'Area', 'Siret','Eligibility',  'Salary', 'Discriminator', 'Permis', 'Libre'];
