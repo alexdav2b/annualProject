@@ -34,7 +34,7 @@ Class ApiManager{
                 'header' => "Content-Type: application/json\r\n" . "Accept: application/json\r\n")
             );
         $url = $this->getUrl() . '/' . $id;
-
+    
         $context  = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
         $json = json_decode($result, true);

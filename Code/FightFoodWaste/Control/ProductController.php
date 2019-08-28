@@ -15,7 +15,7 @@ Class ProductController{
         $depositery = $depositeryController->getById(intval($json['DepositeryID']));
 
         $userController = new UserController();
-        if($line['UsrID_Received'] =! null){
+        if($line['UsrID_Received'] ==! null){
             $receiver = $receiverController->getById(intval($json['UsrID_Received']));
         }else{
             $receiver = null;
@@ -35,7 +35,7 @@ Class ProductController{
             $depositery = $depositeryController->getById(intval($line['DepositeryID']));
             
             $userController = new UserController();
-            if($line['UsrID_Received'] =! null){
+            if($line['UsrID_Received'] ==! null){
                 $receiver = $userController->getById(intval($line['UsrID_Received']));
             }else{
                 $receiver = null;

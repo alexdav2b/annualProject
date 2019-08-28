@@ -222,6 +222,7 @@ Class ItineraireController {
                 
                 $stopToCreate = array();
                 foreach($products as $product){
+
                     $stopProduitC = new StopProductController();
                     // if null
                     $stopProduitsId = $stopProduitC->getByProductId($product->getId());
