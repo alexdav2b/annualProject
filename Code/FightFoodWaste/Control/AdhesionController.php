@@ -110,22 +110,23 @@ Class AdhesionController{
             $last = new DateTime($last);
         }
         $now = new DateTime();
-        $now = $now->format('Y-m-d H:i:s');
         
         $year = clone $last;
         $month =  clone $last;
         $date = clone $last; 
 
         $year->add(new DateInterval('P1Y'));
-
         $month->add(new DateInterval('P11M'));
 
-        if($month <= $now || $year <= $now){
+        if($month <= $now){
             $btn = true;
+            $dateToPost = $year;
+        }else if($year <= $now){
+            $btn = true;
+            $dateToPost = $now;
         }else{
             $btn = false;
         }
-        
         require_once __DIR__ . '/../public/View/adhesionView.php';
     }
 

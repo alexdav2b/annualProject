@@ -48,7 +48,7 @@ ob_start();
         <button id = 'validate'  onclick='Paypal()'  class = "btn btn-success col-md-4 offset-md-4 col-lg-4 offset-lg-4" id = "Create" style='margin-bottom : 1em;'>
         Adhérer ?
         </button>
-        <p>Rejoignez-nous pour seulement 100€ par an</p>
+        <p>Rejoignez-nous pour seulement 100€ par an à partir du <?= $dateToPost->format('Y-m-d'); ?></p>
         <div class = 'offset-md-2 offset-lg-2 col-md-8 col-lg-8 inline ' style = 'margin-top : 1em;' id="paypal-button-container"></div>
 
     <?php  } ?>

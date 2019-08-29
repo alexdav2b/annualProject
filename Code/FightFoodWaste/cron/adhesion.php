@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../Model/Mail.php';
 require_once __DIR__ . '/../Control/AdhesionController.php';
+require_once __DIR__ . '/../Control/UserController.php';
 
 $adhesionC = new AdhesionController();
 
@@ -24,7 +25,6 @@ foreach($users as $adhesionA){
         $last = new DateTime($last);
     }
     $now = new DateTime();
-    $now = $now->format('Y-m-d H:i:s');
     
     $year = clone $last;
     $month =  clone $last;
