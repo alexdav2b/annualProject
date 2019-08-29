@@ -71,7 +71,7 @@ Class AdhesionController{
     // }
 
     public function Tri($adhesions){
-        usort($adhesion, function($a, $b){
+        usort($adhesions, function($a, $b){
             //retourner 0 en cas d'égalité
             if ($a->getDate() == $b->getDate()) {
                 return 0;
@@ -93,31 +93,39 @@ Class AdhesionController{
         $adhesions = array();
         $count = count($all);
 
+        
         foreach($all as $adhesion){
             if($adhesion->getUser()->getId() == $id){
                 array_push($adhesions, $adhesion);
             }
         }
         $btn;
+        $last;
         if($adhesions != null && count($adhesions) != 1){
             $this->Tri($adhesions);
-
-            $now = new DateTime();
-            $now = $now->format('Y-m-d H:i:s');
-
-            $last = $all[count($all)];
-            $last = new DateTime($last);
-
-            $year = $last->add(new DateInterval('P1Y'));
-            $month = $last->add(new DateInterval('P11M'));
-            if($month <= $now || $year <= $now){
-                $btn = true;
-            }else{
-                $btn = false;
-            }
+            $last = end($all); 
+            $last = new DateTime($last->getDate());
         }else{
-            $btn = true;
+            $last = $adhesions[0]->getDate();
+            $last = new DateTime($last);
         }
+        $now = new DateTime();
+        $now = $now->format('Y-m-d H:i:s');
+        
+        $year = clone $last;
+        $month =  clone $last;
+        $date = clone $last; 
+
+        $year->add(new DateInterval('P1Y'));
+
+        $month->add(new DateInterval('P11M'));
+
+        if($month <= $now || $year <= $now){
+            $btn = true;
+        }else{
+            $btn = false;
+        }
+        
         require_once __DIR__ . '/../public/View/adhesionView.php';
     }
 
@@ -166,14 +174,16 @@ Class AdhesionController{
         $adhesion->create();        
         $id = $adhesion->getId();
 
+        http_response_code(201);
+        echo (json_encode($adhesion));
     }
 
-    public function New(){
-        if(!isset($_SESSION['User']) || $_SESSION['User'] != 'Saleman'){
-            header('Location: /404');
-        }
-        require_once __DIR__ . '/../public/View/newAdhesionView.php';
-    }
+    // public function New(){
+    //     if(!isset($_SESSION['User']) || $_SESSION['User'] != 'Saleman'){
+    //         header('Location: /404');
+    //     }
+    //     require_once __DIR__ . '/../public/View/newAdhesionView.php';
+    // }
 
     public function ViewNew(){
 

@@ -29,7 +29,7 @@ $router->get('/adhesions/:id', "Adhesion#viewUser"); // idUser => Saleman
 
 // $router->get('/adhesions', "Adhesion#viewAll"); // admin
 
-$router->get('/adhesion', "Adhesion#New"); //
+// $router->get('/adhesion', "Adhesion#New"); //
 
 $router->post('/adhesion', "Adhesion#Add"); //
 

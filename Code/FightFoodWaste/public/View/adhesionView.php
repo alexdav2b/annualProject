@@ -3,11 +3,13 @@
 require_once __DIR__ . '/../../Model/User.php';
 $title = "FightFoodWaste - Adhésions";
 $scripts = array(); 
+array_push($scripts, "https://www.paypal.com/sdk/js?client-id=sb&currency=EUR");
+array_push($scripts, "/../js/paypal.js");
 
 ob_start();
 ?>
 <div class = "col-md-6 offset-md-3 col-lg-6 offset-lg-3">
-    <h2 class= "col-md-6 offset-md-4 col-lg-6 offset-lg-4">Adhérer</h2>
+    <h2 class= "col-md-6 offset-md-4 col-lg-6 offset-lg-4">Adhesions</h2>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -25,7 +27,7 @@ ob_start();
                 $adhesionId = $adhesion->getId();
                 $url ="/adhesion/Facture/$adhesionId";
                 ?>
-            <tr>
+            <tr id = "all">
                 <th> <?= $adhesion->getId(); ?></th>
                 <th> <?= $adhesion->getDate(); ?></th>
                 <th> <?= $adhesion->getUser()->getName(); ?> </th>
@@ -33,7 +35,7 @@ ob_start();
             </tr>
             <?php }
         }else{ ?>
-            <tr>
+            <tr id = "one">
                 <th> <?= $adhesion->getId(); ?></th>
                 <th> <?= $adhesion->getDate(); ?></th>
                 <th> <?= $adhesion->getUser()->getName(); ?> </th>    
@@ -41,11 +43,15 @@ ob_start();
         <?php } ?>
         </tbody>
     </table>
-    <?php if($btn){?>
-        <a href = "/adhesion" class = "btn btn-success col-md-4 offset-md-4 col-lg-4 offset-lg-4" id = "Create" style='margin-bottom : 1em;'>
+    <?php  if($btn){?>
+        
+        <button id = 'validate'  onclick='Paypal()'  class = "btn btn-success col-md-4 offset-md-4 col-lg-4 offset-lg-4" id = "Create" style='margin-bottom : 1em;'>
         Adhérer ?
-        </a>
-    <?php } ?>
+        </button>
+        <p>Rejoignez-nous pour seulement 100€ par an</p>
+        <div class = 'offset-md-2 offset-lg-2 col-md-8 col-lg-8 inline ' style = 'margin-top : 1em;' id="paypal-button-container"></div>
+
+    <?php  } ?>
 </div>
 <?php 
 

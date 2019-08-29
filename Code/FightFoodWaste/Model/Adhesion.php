@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../Model/User.php';
 
- Class Adhesion{
+ Class Adhesion implements JsonSerializable{
     private $id;
     private $date;
     private $user;
@@ -65,6 +65,10 @@ require_once __DIR__ . '/../Model/User.php';
 			return true;		
 		}
 		return false;
+	}
+
+	public function jsonSerialize(){
+		return get_object_vars($this);
 	}
  }
 
