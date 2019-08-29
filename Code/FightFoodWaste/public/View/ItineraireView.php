@@ -2,8 +2,10 @@
 
 $title = 'NouvelItineraire';
 $scripts = array();
-// array_push($scripts,"../js/map.js");
+
+array_push($scripts, 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js');
 array_push($scripts,"../js/Itineraire.js");
+
 
 ob_start();
 ?>
@@ -13,11 +15,9 @@ ob_start();
 
         <div id = "itineraire" class="col-md-12 col-lg-12 row">
             <div class="col-md-12 col-lg-12 row">
-                <label for="date" class = 'inline col-md-5 col-lg-4' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'">Date</label>
+                <label for="date" class = 'inline col-md-5 col-lg-4' style = 'padding-top : 6px !important; padding-bottom : 6px !important;'>Date</label>
                 <input class = 'form-control col-md-4 col-lg-4 inline' type="time" name="hout" id="hour">
                 <input class = 'form-control col-md-4 col-lg-4 inline' type="date" name="date" id="date">
-
-                <!-- <input class = 'form-control col-md-8 col-lg-8 inline' type="datetime-local" name="date" id="date"> -->
             </div>
                 
             <div id = "site" class="col-md-12 col-lg-12 row">
@@ -32,13 +32,13 @@ ob_start();
                 </select>
             </div>
         </div>
-        
     </form>
     <div class="col-md-12 col-lg-12 row" id='validerDelivery'></div>
-    
 </div>
-<div  class = "col-md-7 offset-md-1 col-lg-7 offset-lg-1" style= "height:100%">
-
+<div class = "col-md-7 offset-md-1 col-lg-7 offset-lg-1" style= "height:100%">
+    <div id = "stop" class = "col-md-12 col-lg-12" style= "height:100%"></div>
+    <div id = "map"  class = "col-md-12 col-lg-12"  style= "height:500px"></div> 
+    <!-- visibility:hidden -->
 </div>
 <?php
 

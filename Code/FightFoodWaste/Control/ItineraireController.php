@@ -174,17 +174,104 @@ Class ItineraireController {
         if($deliveryTypeId != 0 && $deliveryTypeId != null){
             $deliveryTypeController = new DeliveryTypeController();
             $type = $deliveryTypeController->getById($deliveryTypeId);
-
-
-            
-            // $depositeryController = new DepositeryController();
-            // $depots = $depositeryController->getBySite($site->getId());
-
-
             http_response_code(201);
-
         }
         else{
+            http_response_code(400);
+        }
+    }
+
+    private function Distribuate($products, $users, $deliveryType){
+        $res = array();
+        if(count($products) != 0 && count($users) != 0){
+            do{
+                $sizeU = count($users) - 1;
+                if($sizeU == 0){
+                    $randU = 0;
+                }else{
+                    $randU = rand(1, $sizeU); 
+                }
+                $randUser = $users[$randU];
+
+                $randNumber = rand(0, 5);
+                $resProducts = array();
+                $count = 0;
+                do{
+                    $count++;
+                    $sizeP = count($products) - 1;
+                    if($sizeP == 0){
+                        $randP = 0;
+                    }else{
+                        $randP = rand(1, $sizeP);
+                    }
+                    $randProduct = $products[$randP];
+                    array_push($resProducts, $randProduct);
+                    array_splice($products, $randP, 1);
+                }while(!($randNumber - $count > 0) && !(count($products) >= 1));
+                
+                $array = array(
+                    "Id" => $randUser->getId(),
+                    "Nom" => $randUser->getName(),
+                    "Numero" => $randUser->getNumero(), 
+                    "Rue" => $randUser->getRue(),
+                    "Postcode" => $randUser->getPostcode(),
+                    "Area" =>$randUser->getArea(),
+                    "Products" => $resProducts,
+                    "Type" => $deliveryType
+                );
+                array_push($res, $array);
+                array_splice($users, $randU, 1);
+            }while(count($users) >= 1);
+            echo(json_encode($res));
+            http_response_code(201);
+        }else{
+            http_response_code(400);
+        }
+    }
+
+    public function SearchStops(){
+        $typeId = $_POST['type'];
+        if($typeId != null){
+            $deliveryTypeController = new DeliveryTypeController();
+            $deliveryType = $deliveryTypeController->getById($typeId);
+
+            if($deliveryType != null){
+                $productC = new ProductController();
+                $products = array();
+                $name = $deliveryType->getName();
+
+                $user = array();
+                $saleman = array();
+                $donator = array();
+
+                $individualC = new IndividualController();
+                $salemanC = new SalemanController();
+                $userC = new UserController();
+
+                if($name == 'delivery'){
+                    $products = $productC->getByStatut(3);
+                    $user = $individualC->getByEligibility(1);
+                    $this->Distribuate($products, $user, $name);
+                }else if($name == 'collection'){
+                    $products = $productC->getByStatut(2);
+                    $saleman = $salemanC->getAll();
+                    foreach($products as $product){
+                        array_push($donator, $product->getDonator());
+                    }
+                    foreach($saleman as $s){
+                        array_push($user, $userC->getById($s->getId()));
+                    }
+                    foreach($donator as $d){
+                        if(!in_array($d, $user)){
+                            array_push($user, $userC->getById($d->getId()));
+                        }
+                    }
+                    $this->Distribuate($products, $user, $name);
+                }
+            }else{
+                http_response_code(400);
+            }
+        }else{
             http_response_code(400);
         }
     }
@@ -199,48 +286,54 @@ Class ItineraireController {
             $deliveryTypeController = new DeliveryTypeController();
             $deliveryType = $deliveryTypeController->getById($truckId);
 
-            $truckC = new TruckController();
-            $truck = $truckC->getById($truckId);
+            // $truckC = new TruckController();
+            // $truck = $truckC->getById($truckId);
 
-            $employeeC = new EmployeeController();
-            $employee = $employeeC->getById($employeeId);
+            // $employeeC = new EmployeeController();
+            // $employee = $employeeC->getById($employeeId);
 
-            if($employee != null && $truck != null && $deliveryType != null){
-                $deliveryController = new DeliveryController();
-                $delivery = new Delivery(null, $truck, $employee, $deliveryType, $dateHour, null);
-                $delivery->create();
-                // http_response_code(201);
+            // if($employee != null && $truck != null && $deliveryType != null){
+            if($deliveryType != null){
+
+                // $deliveryController = new DeliveryController();
+                // $delivery = new Delivery(null, $truck, $employee, $deliveryType, $dateHour, null);
+                // $delivery->create();
 
                 $productC = new ProductController();
                 $products = array();
                 $name = $deliveryType->getName();
+
+                $user = array();
+                $saleman = array();
+                $donator = array();
+
+                $individualC = new IndividualController();
+                $salemanC = new SalemanController();
+                $userC = new UserController();
+
                 if($name == 'delivery'){
                     $products = $productC->getByStatut(3);
+                    $user = $individualC->getByEligibility();
                 }else if($name == 'collection'){
                     $products = $productC->getByStatut(2);
-                }      
-                
-                $stopToCreate = array();
-                foreach($products as $product){
-
-                    $stopProduitC = new StopProductController();
-                    // if null
-
-                    $stopProduitsId = $stopProduitC->getByProductId($product->getId());
-
-                    if($stopProduitsId == null){
-                        // créer stop
-                        // $stop = new Stop(null, null, )                        
-                        // créer stop product
+                    $saleman = $salemanC->getAll();
+                    foreach($products as $product){
+                        array_push($donator, $product->getDonator());
                     }
-                    
-                    $stopC = new StopController();
-                    // $stops = $stopC->get
+                    foreach($saleman as $s){
+                        array_push($user, $userC->getById($s->getId()));
+                    }
+                    foreach($donator as $d){
+                        if(!in_array($d, $user)){
+                            array_push($user, $userC->getById($d->getId()));
+                        }
+                    }
                 }
-
-                
+                echo(json_encode(array(
+                    'products' => $products,
+                    'users' => $user
+                )));
                 http_response_code(201);
-                echo(json_encode($products));
             }else{
                 http_response_code(400);
             }
@@ -254,6 +347,7 @@ Class ItineraireController {
         if($depotId != null && $depotId != 0){
             $depositeryController = new DepositeryController();
             $depot = $depositeryController->getBySite($site->getId());
+            
             
             // Générer les stops
             http_response_code(201);

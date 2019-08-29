@@ -108,19 +108,58 @@ function Depots(datas){
     }
 }
 
+function Stops(datas){
+    if(datas != null){
+        var json = JSON.parse(datas);
+        var size = json.length;
+        for(var i = 0; i < size; i++){
+            console.log(1);
+            var div1 = document.createElement("div");
+            div1.setAttribute("class", 'col-md-12 col-lg-12 row');
+
+            for(var j = 0; j < json[i].Products.length; j++){
+                console.log(2);
+                var adresse = json[i].Numero + ' ' + json[i].Rue + ' ' + json[i].Postcode + ' ' + json[i].Area;
+                
+                var prenom = document.createElement("label");
+                prenom.setAttribute('class', 'inline col-md-4 col-lg-4');
+                prenom.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
+                prenom.innerHTML = json[i].Nom;
+                div1.append(prenom);
+                
+                var label = document.createElement("label");
+                label.setAttribute('class', 'inline col-md-5 col-lg-4');
+                label.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
+                label.innerHTML = adresse;
+                div1.append(label);
+
+                var product = json[i].Products[j]
+                var input = document.createElement("input");
+                input.setAttribute("value", product.barcode + " : " + product.name);
+                input.setAttribute("type", "text");
+                input.setAttribute('class', ' col-md-5 col-lg-4 form-control');
+                input.setAttribute("readonly", "readonly");
+                div1.append(input);
+            }
+            $("#stop").append(div1);
+        }
+        console.log(3);
+    }
+}
+
 function AddValider(){
     // Ajout du bouton
     var btn = document.createElement("button");
     btn.setAttribute('class', 'btn btn-success col-md-4 col-lg-4 offset-md-8 offset-lg-4');
     btn.setAttribute('id', 'ValiderId');
-    btn.setAttribute('onclick', 'AddDelivery()');
+    btn.setAttribute('onclick', 'PostInfo()');
     // btn.setAttribute('type', 'submit');
     // <input class='btn btn-success col-md-2 col-lg-2 offset-md-4 offset-lg-4' type="submit" value="Valider"></input>
     btn.innerHTML = "Valider";
     $('#validerDelivery').append(btn);
 }
 
-function AddDelivery(){
+function PostInfo(){
     $(document).ready(function(){
         var truck = $("#truckId").val();
         var employee = $("#employeeId").val();
@@ -151,6 +190,28 @@ function AddDelivery(){
         }
     });
 }
+
+function SearchStops(){
+    $(document).ready(function(){
+        var type = $("#deliveryType").val();
+        $.ajax({
+            url : '/itineraire/Search',
+            type : 'POST',
+            data : "type=" + type,
+    
+            success : function(datas){ 
+                Supprimer(5);
+                Stops(datas);
+                Map(datas);
+            },
+    
+            error : function(){ 
+                Supprimer(5);
+            },
+        });  
+    });
+}
+
 
 function ChoseSite(){
     $(document).ready(function(){
@@ -210,7 +271,7 @@ function ChoseEmployee(){
                 // Ajout du select pour les deliveryType
                 var div = document.createElement("div");
                 div.setAttribute('class', 'col-md-12 col-lg-12 row');
-                div.setAttribute('id', 'deliveryType');
+                div.setAttribute('id', 'delivery');
                 
                 var label = document.createElement("label");
                 label.setAttribute('for', 'deliveryTypeId');
@@ -222,7 +283,7 @@ function ChoseEmployee(){
                 var select = document.createElement("select");
                 select.setAttribute('onchange', 'ChoseDeliveryType()');
                 select.setAttribute('class', 'form-control inline col-md-8 col-lg-8 inline' );
-                select.setAttribute('id', 'deliveryTypeId');
+                select.setAttribute('id', 'deliveryType');
                 select.setAttribute('name', 'deliveryType');
 
                 var optionC = document.createElement("option");
@@ -250,7 +311,7 @@ function ChoseEmployee(){
 
 function ChoseDeliveryType(){
     $(document).ready(function(){
-        var id = $("#deliveryTypeId").val();
+        var id = $("#deliveryType").val();
         $.ajax({
         url : '/itineraire/DeliveryType',
         type : 'POST',
@@ -258,8 +319,7 @@ function ChoseDeliveryType(){
 
         success : function(datas){ 
             Supprimer(4);
-            //Depots(datas);
-            AddValider();
+            SearchStops();
         },
         error : function(){
             Supprimer(4);
@@ -287,7 +347,7 @@ function Supprimer(number){
             employee.parentNode.removeChild(employee)
             
         case(3) :
-        var delivery = document.getElementById("deliveryType");
+        var delivery = document.getElementById("delivery");
         if(delivery != null)
             delivery.parentNode.removeChild(delivery)
             
@@ -297,8 +357,87 @@ function Supprimer(number){
             depot.parentNode.removeChild(depot);
         
         case(5):
+        var stops = document.getElementById("stop")
+        if(stops != null){
+            while(stops.firstChild)
+            {
+                stops.removeChild(stops.firstChild);
+            }
+        }
+        case (6):
+            // var map = document.getElementById("map");
+            // map.setAttribute("style", "height:100%; visibility:hidden");
+
+        case (7) :
         var valider = document.getElementById("ValiderId");
         if(valider != null)
-        valider.parentNode.removeChild(valider);
+            valider.parentNode.removeChild(valider);
     }
+}
+
+function getCoordinates(data){
+    "https://api.mapbox.com/geocoding/v5/mapbox.places/123%20Main%20St%20Boston%20MA.json?&access_token=" + YOUR_MAPBOX_ACCESS_TOKEN +;
+
+}
+function Map(data){
+    var stops = JSON.parse(data);
+    var geojson;
+
+    for(var i =0; i < stops.length; i++){
+        var stop ={
+            "type" : "FeatureCollection",
+            "features" :[{
+            // stop =
+            "type": "Feature",
+            "geometry": {
+                "type" : "Point",
+                "coordinates" : [ , ]
+            },
+            "properties": {
+                "title": ''
+            }
+        }],
+    };
+    "https://api.mapbox.com/geocoding/v5/mapbox.places/123%20Main%20St%20Boston%20MA.json?&access_token=" + YOUR_MAPBOX_ACCESS_TOKEN +;
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoibmF0aGFzZW5zZWkiLCJhIjoiY2p3cWM3czRlMDFpbDQ1cDZpb2d4ZnY0NyJ9.tWZI8jmVY33ao20AauBnWA' ;
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v9',
+        center: [2.36877, 48.6102],
+        zoom: 10
+    });
+
+    // add markers to map
+    geojson.features.forEach(function(marker, i) {
+        var n = 0;
+        // create a HTML element for each feature
+        var el = document.createElement('div');
+        el.className = 'marker';
+        el.innerHTML = '<span><b>' + (i + n) + '</b></span>'
+
+        // make a marker for each feature and add it to the map
+        new mapboxgl.Marker(el)
+            .setLngLat(marker.geometry.coordinates)
+            .setPopup(new mapboxgl.Popup({
+                offset: 25
+            }) // add popups
+            .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
+            .addTo(map);
+        n++;
+    });
+}
+function $_GET(param) {
+    var vars = {};
+    window.location.href.replace( location.hash, '' ).replace( 
+        /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+        function( m, key, value ) { // callback
+            vars[key] = value !== undefined ? value : '';
+        }
+    );
+
+    if ( param ) {
+        return vars[param] ? vars[param] : null;	
+    }
+    return vars;
 }

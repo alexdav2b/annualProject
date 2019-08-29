@@ -21,7 +21,7 @@ Class IndividualController{
             if($line['Discriminator'] == 'Individual'){
                 $siteController = new SiteController();
                 $site = $siteController->getById(intval($line['SiteID']));
-                $user = new Individual($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Surname'], $site, $json['Eligbility']);
+                $user = new Individual($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Surname'], $site, $line['Eligibility']);
                 array_push($result, $user);
             }
         }

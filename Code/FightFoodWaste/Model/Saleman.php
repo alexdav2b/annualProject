@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../Model/User.php';
 
-Class Saleman extends User{
+Class Saleman extends User implements JsonSerializable{
 
     private $siret;
 
@@ -27,6 +27,9 @@ Class Saleman extends User{
     public function updateSaleman(): bool{
         return parent::update('Saleman');
     }
+    public function jsonSerialize(){
+		return get_object_vars($this);
+	}
 }
 
 ?>

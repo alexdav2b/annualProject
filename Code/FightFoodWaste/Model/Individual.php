@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../Model/User.php';
 
-Class Individual extends User{
+Class Individual extends User implements JsonSerializable{
 
     private $surname;
     private $eligibility;
@@ -31,6 +31,10 @@ Class Individual extends User{
     public function updateIndividual(): bool{
         return parent::update('Individual');
     }
+
+    public function jsonSerialize(){
+		return get_object_vars($this);
+	}
 }
 
 ?>

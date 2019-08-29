@@ -140,8 +140,9 @@ $router->post('/itineraire/Truck', 'Itineraire#ChoseTruck');
 
 $router->post('/itineraire/Employee', 'Itineraire#ChoseEmployee');
 
-$router->post('/itineraire/Delivery', 'Itineraire#ChoseDeliveryType');
+$router->post('/itineraire/DeliveryType', 'Itineraire#ChoseDeliveryType');
 
+$router->post('/itineraire/Search', 'Itineraire#SearchStops');
 // $router->post('/itineraire/Start', 'Itineraire#ChoseStart');
 
 $router->post('itineraire/CreateDelivery', 'Itineraire#CreateDelivery');
