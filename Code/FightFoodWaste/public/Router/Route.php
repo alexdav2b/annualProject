@@ -18,6 +18,7 @@ require_once __DIR__ . '/../../Control/StopController.php';
 require_once __DIR__ . '/../../Control/StopProductController.php';
 require_once __DIR__ . '/../../Control/TruckController.php';
 require_once __DIR__ . '/../../Control/UserController.php';
+require_once __DIR__ . '/../../Control/VolunteerController.php';
 
 class Route{
 

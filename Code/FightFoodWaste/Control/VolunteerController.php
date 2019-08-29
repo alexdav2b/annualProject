@@ -1,34 +1,34 @@
 <?php
 
 require_once __DIR__ . '/../Model/ApiManager.php';
-require_once __DIR__ . '/../Model/Saleman.php';
+require_once __DIR__ . '/../Model/Volunteer.php';
 
-Class SalemanController{
+Class VolunteerController{
 
     // Parse
     private function parseOne($json){
-        if($json['Discriminator'] == 'Saleman'){
-            $controller = new SiteController();
-            $site = $controller->getById(intval($json['SiteID']));
-            $user = new Saleman($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Siret'], $site);
-            return $user;    
+        if($json['Discriminator'] == 'Volunteer'){
+            $siteController = new SiteController();
+            $site = $siteController->getById(intval($json['SiteID']));
+            $user = new Volunteer($json['ID'], $json['Email'], $json['Name'], $json['Password'], $json['Numero'], $json['Rue'], $json['Postcode'], $json['Area'], $json['Surname'], $site);
+            return $user;
         }
     }
 
     private function parseAll($json) : array{
         $result = [];
         foreach($json as $line){
-            if($line['Discriminator'] == 'Saleman'){
+            if($line['Discriminator'] == 'Volunteer'){
                 $siteController = new SiteController();
                 $site = $siteController->getById(intval($line['SiteID']));
-                $user = new Saleman($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Siret'], $site);
+                $user = new Volunteer($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Surname'], $site);
                 array_push($result, $user);
             }
         }
         return $result;
     }
 
-    // GET
+    // Get
     public function getById(int $id){
         $api = new ApiManager('Usr');
         $json = $api->getById($id);
@@ -94,11 +94,36 @@ Class SalemanController{
         $json = $api->getByInt('Site', $siteId);
         return $this->parseAll($json);
     }
+    
 
-    public function getBySiret(string $siret){
-        $api = new ApiManager('Usr');
-        $json = $api->getByInt('Siret', $siret);
-        return $this->parseAll($json);
+    // Views
+
+    public function view(int $id){
+        if(!isset($_SESSION['User']) && !isset($_SESSION['ID']) && $_SESSION['User'] == null && $_SESSION['Id'] == null 
+        || $_SESSION['Id'] != $id){
+            header("Location: /404");
+        }
+
+        $user = $this->getById($id);
+        if($user == NULL || $user->getDiscriminator() != 'Volunteer'){ 
+            header('Location: /404');
+        }
+        $url = "/volontaire/update/" . $id;
+        $controller = new SiteController();
+        $sites = $controller->getAll();
+        if($sites == null){
+            header('Location: /404');
+        }
+        require_once __DIR__ . '/../public/View/userView.php';
+    }
+
+    public function New(){
+        if($_SESSION['User'] != 'Admin'){
+            header("Location: /404");
+        }
+        $controller = new SiteController();
+        $sites = $controller->getAll();
+        require_once __DIR__ . '/../public/View/newVolunteerView.php';
     }
 
     private function HashNSalt(string $salt, string $password): string{
@@ -111,14 +136,12 @@ Class SalemanController{
         return $password;
     }
     
-    // Views
-    
     public function Inscription(){
         $controller = new SiteController();
         $site = $controller->GetById($_POST['Site']);
 
         // $salt = bin2hex(random_bytes(5)); // 10 characters
-        // $password = $this->HashNSalt($salt,  $POST['Password']); // 50 characters
+        // $password = $this->HashNSalt($salt,  $_POST['Password']); // 50 characters
 
         $form = array(
             htmlspecialchars($_POST['Email']),
@@ -129,25 +152,25 @@ Class SalemanController{
             htmlspecialchars($_POST['Rue']),
             htmlspecialchars($_POST['Postcode']),
             htmlspecialchars($_POST['Area']),
-            htmlspecialchars($_POST['Siret']), 
-            $site
+            htmlspecialchars($_POST['Surname']), 
+            $site, 
+            true, 
+            true
         );
-
-        $user = new Saleman(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
-        
-        $user->createSaleman();
+        $user = new Volunteer(null, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9], $form[10]);
+        $user->createVolunteer();        
         $id = $user->getId();
-        if($id == null){
-            header('Location: /404');
-        }
         
-        session_destroy();
-        session_start();
-        $_SESSION['User'] = $user->getDiscriminator();
-        $_SESSION['Id'] = $user->getId();
+        $title = 'Création Validée';
+        
+        ob_start();
+        echo("<div class = 'col-md-6 offset-md-3'>");
+        echo("<p>L'utilisateur a été créé</p>");
+        echo("</div>");
+        $content = ob_get_clean();
 
-        $this->MailInscription($user->getEmail(), $user->getName());
-        header("Location: /commercant/$id"); 
+        $this->MailInscription($user->getEmail(), $user->getSurname());
+        require_once __DIR__ . '/../public/View/templateView.php';
     }
 
     private function MailInscription($email, $user){
@@ -155,6 +178,7 @@ Class SalemanController{
         $mail->generateBody('Inscription', $user);
         $mail->Send('Simple');
     }
+    
 
     public function Modification(int $id){
         $controller = new SiteController();
@@ -167,32 +191,16 @@ Class SalemanController{
             htmlspecialchars($_POST['Rue']),
             htmlspecialchars($_POST['Postcode']),
             htmlspecialchars($_POST['Area']),
-            htmlspecialchars($_POST['Siret']), 
-            $site
+            htmlspecialchars($_POST['Surname']), 
+            $site,
+            true,
+            true
         );
-        $user = new Saleman($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8]);
-        $user->updateSaleman();      
-        header("Location: /commercant/$id"); 
-    }
-
-    public function view(int $id){
-        if(!isset($_SESSION['User']) && !isset($_SESSION['ID']) && $_SESSION['User'] != 'Saleman' && $_SESSION['Id'] == null 
-        || $_SESSION['Id'] != $id){
-            header("Location: /404");
-        }
-
-        $user = $this->getById($id);
-        if($user == NULL || $user->getDiscriminator() != 'Saleman'){ 
-            header('Location: /404');
-        }
-        $url = "/commercant/update/" . $id;
-        $controller = new SiteController();
-        $sites = $controller->getAll();
-        if($sites == null){
-            header('Location: /404');
-        }
-        require_once __DIR__ . '/../public/View/userView.php';
+        $user = new Volunteer($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9], $form[10]);
+        $user->updateVolunteer();        
+        header("Location: /volontaire/$id"); 
     }
 }
+
 
 ?>

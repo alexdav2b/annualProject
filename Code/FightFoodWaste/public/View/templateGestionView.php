@@ -10,9 +10,6 @@ ob_start();
         <a class="nav-link active" href="/comptes" style = "color : white">Users</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/adhesions" style = "color : white">Adhesion</a>
-    </li>
-    <li class="nav-item">
         <a class="nav-link" href="/itineraire" style = "color : white">+ Nouvel Itinéraire</a>
         <!-- Collecte & Distribution -->
     </li>
@@ -20,11 +17,15 @@ ob_start();
         <a class="nav-link" href="#" style = "color : white">Stocks</a>
     </li>-->
     <li class="nav-item">
+        <a class="nav-link" href="/volontaire/new" style = "color : white">+ Nouveau Volontaire</a>
+    </li>  
+    <li class="nav-item">
         <a class="nav-link" href="/employe/new" style = "color : white">+ Nouvel Employé</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="/admin/new" style = "color : white">+ Nouvel Admin</a>
     </li>   
+ 
 </ul>
 <div class = 'col-md-10 container-fluid'>
     <!-- <?php if(isset($boolDivFilter)) { ?>

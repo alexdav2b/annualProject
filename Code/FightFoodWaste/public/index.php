@@ -27,7 +27,7 @@ $router->get('/404', "Pages#notFound");
 
 $router->get('/adhesions/:id', "Adhesion#viewUser"); // idUser => Saleman
 
-$router->get('/adhesions', "Adhesion#viewAll"); // admin
+// $router->get('/adhesions', "Adhesion#viewAll"); // admin
 
 $router->get('/adhesion', "Adhesion#New"); //
 
@@ -77,16 +77,16 @@ $router->get('/adhesion/Facture/:id', "Adhesion#Invoice"); // pdf
 $router->get('/compte/delete/:id', "User#Suppression"); 
 
 // Individual
-$router->post('/log/particulier', "Individual#Inscription"); //
+$router->post('/log/particulier', "Individual#Inscription"); 
 
-$router->post('/particulier/update/:id', "Individual#Modification");  // Verifier Admin || User
+$router->post('/particulier/update/:id', "Individual#Modification");  
 
 $router->get('/particulier/:id', "Individual#view");
 
 // Saleman
-$router->post('/log/commercant', "Saleman#Inscription"); // 
+$router->post('/log/commercant', "Saleman#Inscription"); 
 
-$router->post('/commercant/update/:id', "Saleman#Modification");   // Verifier Admin || User
+$router->post('/commercant/update/:id', "Saleman#Modification"); 
 
 $router->get('/commercant/:id', "Saleman#view"); 
 
@@ -95,9 +95,20 @@ $router->get('/employe/new', "Employee#New");
 
 $router->post('/log/employe', "Employee#Inscription");
 
-$router->post('/employe/update/:id', "Employee#Modification"); // Verifier Admin || User
+$router->post('/employe/update/:id', "Employee#Modification"); 
 
 $router->get('/employe/:id', "Employee#view"); 
+
+// Volunteer
+
+$router->get('/volontaire/new', "Volunteer#New"); 
+
+$router->post('/log/volontaire', "Volunteer#Inscription");
+
+// $router->post('/volontaire/update/:id', "Volunteer#Modification"); // Verifier Admin || User
+
+$router->get('/volontaire/:id', "Volunteer#view"); 
+
 
 // -------------------------------------------------------------------
 // Admin

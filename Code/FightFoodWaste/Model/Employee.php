@@ -5,6 +5,8 @@ require_once __DIR__ . '/../Model/User.php';
 Class Employee extends User implements JsonSerializable{
     private $salary;
     private $surname;
+    private $permis;
+    private $libre;
 
     public function __construct(?int $id, string $email, string $name, string $password, string $numero, string $rue, string $postcode, string $area, float $salary, string $surname, Site $site, bool $permis, bool $libre){
         parent::__construct($id, $email, $name, $password, $numero, $rue, $postcode, $area, $site);

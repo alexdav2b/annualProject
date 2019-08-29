@@ -164,7 +164,15 @@ Class IndividualController{
         $_SESSION['User'] = $user->getDiscriminator();
         $_SESSION['Id'] = $user->getId();
 
+        $this->MailInscription($user->getEmail(), $user->getSurname());
         header("Location: /particulier/$id"); 
+    }
+
+
+    private function MailInscription($email, $user){
+        $mail = new Mail($email, MAIL, 'Inscription FightFoodWaste');
+        $mail->generateBody('Inscription', $user);
+        $mail->Send('Simple');
     }
 
     public function Modification(int $id){

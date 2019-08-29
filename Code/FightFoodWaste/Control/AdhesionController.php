@@ -63,12 +63,12 @@ Class AdhesionController{
         }
     }
 
-    public function viewAll(){
-        $adhesions = $this->getAll();
-        if($adhesions != NULL){
-            require_once __DIR__ . '/../public/View/adhesionGestionView.php';
-        }
-    }
+    // public function viewAll(){
+    //     $adhesions = $this->getAll();
+    //     if($adhesions != NULL){
+    //         require_once __DIR__ . '/../public/View/adhesionGestionView.php';
+    //     }
+    // }
 
     public function Tri($adhesions){
         usort($adhesion, function($a, $b){

@@ -161,8 +161,8 @@ Class AdminController{
         echo("<p>L'utilisateur a été créé</p>");
         echo("</div>");
         $content = ob_get_clean();
-        header('Location: /MailInscription:' .$user->getEmail(), $user->getName());
-        MailInscription($user->getEmail(), $user->getById($id));
+
+        $this->MailInscription($user->getEmail(), $user->getSurname());
         require_once __DIR__ . '/../public/View/templateView.php';
     }
 

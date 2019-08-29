@@ -77,6 +77,7 @@ function verifName(champ){
     }
 }
 
+
 function verifSurname(champ){
     if(champ.value.length < 2){
         alert("Saisissez au moins 2 caractères");
@@ -126,11 +127,11 @@ function verifMdp(champ){
 function verifNumero(champ){
     var message = "";
     if(champ.value.length < 1){
-        message = "Saisissez au moins 1 caractères"
+        message = "Saisissez au moins 1 caractères",
         alert(message);
         return false;
     }else if(champ.value.length > 5){
-        message = "Saisissez au maximum 5 charactères"
+        message = "Saisissez au maximum 5 charactères",
         alert(message);
         return false;
     }else{
@@ -141,11 +142,11 @@ function verifNumero(champ){
 function verifRue(champ){
     var message = "";
     if(champ.value.length < 2){
-        message = "Saisissez au moins 2 caractères"
+        message = "Saisissez au moins 2 caractères";
         alert(message);
         return false;
     }else if(champ.value.length > 80){
-        message = "Saisissez au maximum 80 charactères"
+        message = "Saisissez au maximum 80 charactères";
         alert(message);
         return false;
     }else{
@@ -259,9 +260,48 @@ function InscriptionS(field){
 }
 
 function InscriptionI(field){
-    if(surname = verifSurname(field.Surname)){
+    if(verifSurname(field.Surname)){
         return Inscription(field);
     }else{
         return false;
+    }
+}
+
+function InscriptionV(field){
+    if(verifSurname(field.Surname)){
+        return Inscription(field);
+    }else{
+        return false;
+    }
+}
+
+function InscriptionA(field){
+    if(verifSurname(field.Surname)){
+        return Inscription(field);
+    }else{
+        return false;
+    }
+}
+
+function InscriptionE(field){
+    if(verifSurname(field.Surname) && verifSalary(field.Salary)){
+        return Inscription(field);
+    }else{
+        return false;
+    }
+}
+
+function verifSalary(){
+    var message = "";
+    if(champ.length = 0){
+        message = "Saisissez un nombre";
+        alert(message);
+        return false;
+    }else if(champ.value <= 0){
+        message = "Saisissez un nombre positif";
+        alert(message);
+        return false;
+    }else{
+       return true;
     }
 }

@@ -16,6 +16,9 @@
             case 'Employer' :
                 $url .= 'employe/';
                 break;
+            case 'Volunteer' :
+            $url .= 'volontaire/';
+            break;
         }
         $id = $_SESSION['Id'];
         $url .= $_SESSION['Id'];

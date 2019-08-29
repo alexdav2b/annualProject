@@ -168,7 +168,7 @@ Class EmployeeController{
             $_POST['Salary'], 
             htmlspecialchars($_POST['Surname']), 
             $site,
-            //$permis,
+            true,
             true
         );
 
@@ -186,7 +186,8 @@ Class EmployeeController{
         echo("<p>L'utilisateur a été créé</p>");
         echo("</div>");
         $content = ob_get_clean();
-        MailInscription($user->getEmail(), $user->getById($id));
+
+        $this->MailInscription($user->getEmail(), $user->getSurname());
         require_once __DIR__ . '/../public/View/templateView.php';
     }
 
@@ -209,9 +210,11 @@ Class EmployeeController{
             htmlspecialchars($_POST['Area']),
             htmlspecialchars($_POST['Salary']),
             htmlspecialchars($_POST['Surname']), 
-            $site
+            $site,
+            true,
+            true
         );
-        $user = new Employee($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9]);
+        $user = new Employee($id, $form[0], $form[1], $form[2], $form[3],  $form[4],  $form[5],  $form[6],  $form[7],  $form[8], $form[9], $form[10], $form[11]);
         $user->updateEmployee();        
         header("Location: /employe/$id"); 
     }

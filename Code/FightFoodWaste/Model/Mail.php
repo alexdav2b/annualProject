@@ -48,7 +48,7 @@ Class Mail{
                         <p>Vous venez de vous inscrire &#224 FightFoodWaste.</p>
                         <p>Vous pouvez d&#232s &#224 pr&#233sent vous connectez sur notre application pour nous notifier des produits &#224 que vous souhaitez donner.</p>
                         <a href ='#'><button id = 'ddl'>T&#233l&#233charger l'application</button></a>
-                        <p>Vous recevrez r&#233guli&#232rement des produits frais.</p>";
+                        ";
         }else if($type == 'PDF'){
             $message = '';
         }else if($type == 'mdp'){

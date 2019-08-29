@@ -225,7 +225,9 @@ Class ItineraireController {
 
                     $stopProduitC = new StopProductController();
                     // if null
+
                     $stopProduitsId = $stopProduitC->getByProductId($product->getId());
+
                     if($stopProduitsId == null){
                         // créer stop
                         // $stop = new Stop(null, null, )                        

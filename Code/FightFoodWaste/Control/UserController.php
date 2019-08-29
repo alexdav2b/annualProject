@@ -178,12 +178,6 @@ Class UserController{
         header('Location: /');
     }
 
-    public function MailInscription($email, $user){
-        $mail = new Mail($email, MAIL, 'Inscription FightFoodWaste');
-        $mail->generateBody('Inscription', $user);
-        $mail->Send('Simple');
-    }
-
     private function MailMdp($email, $mdp){
         $mail = new Mail($email, MAIL, 'Mot de passe oublie');
         $mail->generateBody('Mdp', $mdp);

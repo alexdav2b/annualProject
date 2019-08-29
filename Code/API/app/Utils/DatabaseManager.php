@@ -180,7 +180,7 @@ class DatabaseManager {
                 $col = ['IngredientID', 'ProductID'];
                 break;
             case 'justificatif':
-                $col = ['ID', 'Link', 'CompetenceID', 'UsrID'];
+                $col = ['ID', 'Verifie', 'CompetenceID', 'UsrID'];
                 break;
             case 'mission':
                 $col = ['ID', 'UsrID', 'ServiceID', 'DateStart', 'DateEnd'];
