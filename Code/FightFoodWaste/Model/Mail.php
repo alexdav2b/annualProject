@@ -42,6 +42,7 @@ Class Mail{
     }
 
     public function generateBody($type, $data){
+        $message = '';
         if($type == 'Inscription'){
             $message = "<h1>Merci pour votre inscription !</h1>
                         <b>Bonjour $data</b>
@@ -55,6 +56,12 @@ Class Mail{
             $message = "<h1 >Nouveau mot de passe</h1>
                         <b>Bonjour </b>
                         <p>Voici votre nouveau mot de passe : <b>$data</b></p>";
+        }else if($type == 'Adhesion'){
+            $message = "<h1 >Expirationde votre adhesion</h1>
+                        <b>Bonjour cher adherent</b>
+                        <p>Votre adhesion expire </p>
+                        <p>Vous pouvez la renouveler la a cette adresse :</p>
+                        <a href = 'http://fightfoodwastesite/adhesions/" . $data->getId() ."'>Renouveler son abonnement</a>";
         }
         $logo = SITE_URL.'images/Mail.png';
         $this->body ="<html>
