@@ -376,7 +376,7 @@ function Supprimer(number){
 }
 
 function getCoordinates(data){
-    "https://api.mapbox.com/geocoding/v5/mapbox.places/123%20Main%20St%20Boston%20MA.json?&access_token=" + YOUR_MAPBOX_ACCESS_TOKEN +;
+    // "https://api.mapbox.com/geocoding/v5/mapbox.places/123%20Main%20St%20Boston%20MA.json?&access_token=" + YOUR_MAPBOX_ACCESS_TOKEN +;
 
 }
 function Map(data){
@@ -396,9 +396,9 @@ function Map(data){
             "properties": {
                 "title": ''
             }
-        }],
-    };
-    "https://api.mapbox.com/geocoding/v5/mapbox.places/123%20Main%20St%20Boston%20MA.json?&access_token=" + YOUR_MAPBOX_ACCESS_TOKEN +;
+        }], };
+    }
+    // "https://api.mapbox.com/geocoding/v5/mapbox.places/123%20Main%20St%20Boston%20MA.json?&access_token=" + YOUR_MAPBOX_ACCESS_TOKEN +;
 
     mapboxgl.accessToken = 'pk.eyJ1IjoibmF0aGFzZW5zZWkiLCJhIjoiY2p3cWM3czRlMDFpbDQ1cDZpb2d4ZnY0NyJ9.tWZI8jmVY33ao20AauBnWA' ;
     var map = new mapboxgl.Map({
