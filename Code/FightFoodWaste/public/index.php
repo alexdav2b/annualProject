@@ -118,6 +118,8 @@ $router->post('/log/admin', "Admin#Inscription");
 
 $router->get('/comptes', "User#viewAll");
 
+
+
 $router->post('/admin/update/:id', "Admin#Modification");  // Verifier Admin || User
 
 $router->get('/admin/:id', "Admin#view"); 
