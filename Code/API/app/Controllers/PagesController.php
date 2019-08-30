@@ -72,6 +72,7 @@ class PagesController{
 
         $db = DatabaseManager::getManager();
         $sql = 'SELECT * FROM '. $args['table'].' WHERE ID = ?';
+        $db->writeSQL($sql);
 
         $id = array(intval($args['id']));
         $result = $db->getOne($sql, $id);
@@ -90,6 +91,7 @@ class PagesController{
 
         $db = DatabaseManager::getManager();
         $sql = 'SELECT * FROM '. $args['table'].' WHERE ' . $args['column'] .' = ?';
+        $db->writeSQL($sql);
 
         $value = array(intval($args['value']));
 
@@ -106,6 +108,7 @@ class PagesController{
 
         $db = DatabaseManager::getManager();
         $sql = 'SELECT * FROM '. $args['table'].' WHERE ' . $args['column'] .' = ?';
+        $db->writeSQL($sql);
 
         $value = array($args['value']);
         $result = $db->getAll($sql, $value);
@@ -154,6 +157,12 @@ class PagesController{
         }
         return $response->withStatus(400);
         echo json_encode($error);
+    }
+
+    public function showRequests(ReuestInterface $request, ResponseInterface $reponse, $args){
+        $file = fopen('../../public/index.php', 'r');
+        $size = filesize($file);
+        fread($file, $size);
     }
 }
 
