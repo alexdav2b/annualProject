@@ -145,11 +145,14 @@ $router->post('/itineraire/Employee', 'Itineraire#ChoseEmployee');
 $router->post('/itineraire/DeliveryType', 'Itineraire#ChoseDeliveryType');
 
 $router->post('/itineraire/Search', 'Itineraire#SearchStops');
-// $router->post('/itineraire/Start', 'Itineraire#ChoseStart');
+
+$router->post('/itineraire/Start', 'Itineraire#ChoseStart');
+
+$router->post('/itineraire/Coo', 'Itineraire#GetCoordinates');
 
 $router->post('itineraire/CreateDelivery', 'Itineraire#CreateDelivery');
 
-$router->post('/itineraire', "Itineraire#view");
+// $router->post('/itineraire', "Itineraire#view");
 
 // RUN
 // -------------------------------------------------------------------

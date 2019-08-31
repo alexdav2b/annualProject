@@ -78,17 +78,17 @@ function verifName(champ){
 }
 
 
-function verifSurname(champ){
-    if(champ.value.length < 2){
-        alert("Saisissez au moins 2 caractères");
-        return false;
-    }else if(champ.value.length > 80){
-        alert("Saisissez au maximum _0 charactères");
-        return false;
-    }else{
-        return true;
-    }
-}
+// function verifSurname(champ){
+//     if(champ.value.length < 2){
+//         alert("Saisissez au moins 2 caractères");
+//         return false;
+//     }else if(champ.value.length > 80){
+//         alert("Saisissez au maximum _0 charactères");
+//         return false;
+//     }else{
+//         return true;
+//     }
+// }
 
 function verifEmail(champ){
     var message ="";

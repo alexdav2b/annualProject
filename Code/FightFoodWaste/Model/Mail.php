@@ -27,7 +27,7 @@ Class Mail{
     }
 
     private function generateJoinFileHeader(){
-        $this->Send();
+        $this->Sed();
     }
 
     public function Send(string $type){
@@ -46,10 +46,10 @@ Class Mail{
         if($type == 'Inscription'){
             $message = "<h1>Merci pour votre inscription !</h1>
                         <b>Bonjour $data</b>
-                        <p>Vous venez de vous inscrire &#224 FightFoodWaste.</p>
-                        <p>Vous pouvez d&#232s &#224 pr&#233sent vous connectez sur notre application pour nous notifier des produits &#224 que vous souhaitez donner.</p>
-                        <a href ='#'><button id = 'ddl'>T&#233l&#233charger l'application</button></a>
-                        ";
+                        <p>Vous venez de vous inscrire a FightFoodWaste.</p>
+                        <p>Vous pouvez des a pre#233sent vous connectez sur notre application pour nous notifier des produits que vous souhaitez donner.</p>";
+                        // <a href ='#'><button id = 'ddl'>Telecharger l'application</button></a>
+                        ;
         }else if($type == 'PDF'){
             $message = '';
         }else if($type == 'mdp'){
@@ -84,7 +84,7 @@ Class Mail{
                             <div>
                                $message
                                <br>
-                               <i>L'envoi de cette email est automatique. Veuillez ne pas y r&#233pondre.</i>       
+                               <i>L'envoi de cette email est automatique. Veuillez ne pas y repondre.</i>       
                             </div>
                             <div>
                                 <a href = '".SITE_URL."' id = 'lien'>

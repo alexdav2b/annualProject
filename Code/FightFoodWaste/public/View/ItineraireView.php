@@ -1,6 +1,6 @@
 <?php
 
-$title = 'NouvelItineraire';
+$title = 'Nouvel Itineraire';
 $scripts = array();
 
 array_push($scripts, 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js');

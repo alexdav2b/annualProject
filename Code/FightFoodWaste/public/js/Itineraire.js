@@ -109,18 +109,33 @@ function Depots(datas){
 }
 
 function Stops(datas){
+    var points = [];
+    $(document).ready(function(){
     if(datas != null){
         var json = JSON.parse(datas);
         var size = json.length;
+
         for(var i = 0; i < size; i++){
-            console.log(1);
+            var adresse = json[i].Numero + ' ' + json[i].Rue + ' ' + json[i].Postcode + ' ' + json[i].Area;
+            $(document).ready(function(){
+                $.ajax({
+                    url : '/itineraire/Coo',
+                    type : 'POST',
+                    data : "address=" + adresse,
+            
+                    success : function(datas){ 
+                        var point = JSON.parse(datas);
+                        points.push(point);
+
+                    }
+                })
+            });
+
             var div1 = document.createElement("div");
             div1.setAttribute("class", 'col-md-12 col-lg-12 row');
-
             for(var j = 0; j < json[i].Products.length; j++){
-                console.log(2);
-                var adresse = json[i].Numero + ' ' + json[i].Rue + ' ' + json[i].Postcode + ' ' + json[i].Area;
-                
+
+              
                 var prenom = document.createElement("label");
                 prenom.setAttribute('class', 'inline col-md-4 col-lg-4');
                 prenom.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
@@ -142,9 +157,25 @@ function Stops(datas){
                 div1.append(input);
             }
             $("#stop").append(div1);
-        }
-        console.log(3);
+        }  
+    }});
+        // récupérer itineraire
+        GetItinerary(points);
+        // Map(points);
+}
+
+function GetItinerary(data){
+    $(document).ready(function(){
+    var url =  'https://api.mapbox.com/optimized-trips/v1/mapbox/driving/';
+    for(i = 0; i < data.length; i++){
+       url += data.lng +','+ data.lat;
+       if(i != data.length){
+           url += ";"
+       }
     }
+    var end = '?access_token=pk.eyJ1IjoibmF0aGFzZW5zZWkiLCJhIjoiY2p3cWM3czRlMDFpbDQ1cDZpb2d4ZnY0NyJ9.tWZI8jmVY33ao20AauBnWA';
+    console.log(url+end);
+});
 }
 
 function AddValider(){
@@ -202,7 +233,7 @@ function SearchStops(){
             success : function(datas){ 
                 Supprimer(5);
                 Stops(datas);
-                Map(datas);
+                // Map(datas);
             },
     
             error : function(){ 
@@ -375,31 +406,8 @@ function Supprimer(number){
     }
 }
 
-function getCoordinates(data){
-    // "https://api.mapbox.com/geocoding/v5/mapbox.places/123%20Main%20St%20Boston%20MA.json?&access_token=" + YOUR_MAPBOX_ACCESS_TOKEN +;
-
-}
-function Map(data){
-    var stops = JSON.parse(data);
-    var geojson;
-
-    for(var i =0; i < stops.length; i++){
-        var stop ={
-            "type" : "FeatureCollection",
-            "features" :[{
-            // stop =
-            "type": "Feature",
-            "geometry": {
-                "type" : "Point",
-                "coordinates" : [ , ]
-            },
-            "properties": {
-                "title": ''
-            }
-        }], };
-    }
-    // "https://api.mapbox.com/geocoding/v5/mapbox.places/123%20Main%20St%20Boston%20MA.json?&access_token=" + YOUR_MAPBOX_ACCESS_TOKEN +;
-
+function Map(geojson){
+    $(document).ready(function(){
     mapboxgl.accessToken = 'pk.eyJ1IjoibmF0aGFzZW5zZWkiLCJhIjoiY2p3cWM3czRlMDFpbDQ1cDZpb2d4ZnY0NyJ9.tWZI8jmVY33ao20AauBnWA' ;
     var map = new mapboxgl.Map({
         container: 'map',
@@ -426,6 +434,7 @@ function Map(data){
             .addTo(map);
         n++;
     });
+});
 }
 function $_GET(param) {
     var vars = {};

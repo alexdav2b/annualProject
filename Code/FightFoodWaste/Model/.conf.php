@@ -11,5 +11,6 @@ define("SITE_URL", "http://fightfoodwastesite/");
 
 define("MAIL", "fightfoodwaste@spell.ovh");
 define("PAYPAL_USERNAME", "zmknf");
+// define("MAPBOX_TOKEN", "");
 
 ?>

@@ -108,7 +108,6 @@ Class User implements JsonSerializable{
 			'Permis' => $permis,
 			'Libre' => $libre);
 		$json = json_encode($array);
-		
 		$json = $api->create($json);
 
 		if ($json != NULL){

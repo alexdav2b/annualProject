@@ -7,10 +7,13 @@ require_once __DIR__ . '/../Model/Article.php';
 require_once __DIR__ . '/../Model/Sitee.php';
 require_once __DIR__ . '/../Model/Depot.php';
 require_once __DIR__ . '/../Model/Arret.php';
-require_once __DIR__ . '/../Model/GmapApi.php';
+require_once __DIR__ . '/../Model.Tournee.php';
+
 
 
 Class ItineraireController {
+
+    private $tournee;
 
     //fonction pour trouver les temps de trajet entre chaque point
     private function findTime($data_itineraire, $nb){
@@ -40,50 +43,22 @@ Class ItineraireController {
     }
 
 
-    //fonction pour sélection un véhicule en fonction du site choisi
-    private function getTruckByIdSite($data_truck, $id){
-        foreach($data_truck as $truck){
-            if($truck->SiteID == $id){
-                return $truck;
-            }
-        }
-        return null;
-    }
-
-    //fonction pour sélection une chauffeur (salarié) en fonction du site choisi
-    private function getConducteurBySite($data_usr, $id){
-        foreach($data_usr as $usr){
-            if($usr->Discriminator == "Employer" and $usr->SiteID == $id){
-                return $usr;
-            }
-        }
-        return null;
-    }
-
-    //fonction pour trouver le dépot en fonction du site choisie
-    private function findDepot($data_depot, $id){
-        foreach($data_depot as $depot){
-            if($depot->SiteID == $id){
-                return $depot;
-            }
-        }
-        return null;
-    }
+  
 
     //fonction pour trouvé les articles donné qui n'nont pas encore été récupérés
-    private function findArticleDonne($data_product, $id){
-        $i = 0;
-        $index = [];
-        $nb = 0;
-        foreach($data_product as $product){
-            if($product->DepositeryID == $id and $product->StatutID == 2){
-                $index[$nb] = $i;
-                $nb++;
-            }
-            $i++;
-        }
-        return $index;
-    }
+    // private function findArticleDonne($data_product, $id){
+    //     $i = 0;
+    //     $index = [];
+    //     $nb = 0;
+    //     foreach($data_product as $product){
+    //         if($product->DepositeryID == $id and $product->StatutID == 2){
+    //             $index[$nb] = $i;
+    //             $nb++;
+    //         }
+    //         $i++;
+    //     }
+    //     return $index;
+    // }
 
     private function findItineraire($data_itineraire, $nbArret){
         
@@ -102,13 +77,10 @@ Class ItineraireController {
         require_once __DIR__ .  '/../public/View/ItineraireView.php';
     }
 
-
-    public function ChoseSite(){
+    public function SiteNTrucks(){
         $siteId = $_POST["siteId"];
-        if($siteId != null && $siteId != 0 ){
-            $siteController = new SiteController();
-            $site = $siteController->getById(intval($siteId));
-    
+        $this->tournee = new Tournee();
+        if($this->ChoseSite($siteId)){   
             $truckController = new TruckController();
             $trucks = $truckController->getBySite($site->getId());
             
@@ -123,17 +95,14 @@ Class ItineraireController {
         }else{
             http_response_code(400);
         }
-
 	}
 
-    public function ChoseTruck(){
+    public function TruckNEmployes(){
         $truckId = $_POST['truckId'];
-        if($truckId != null && $truckId != 0){
-            $truckController = new TruckController();
-            $truck = $truckController->getById(intval($truckId));
-    
+        if($this->tournee->ChoseTruck($truckId)){
+
             $employeeController = new EmployeeController();
-            $employees = $employeeController->getByPermis(1);
+            $employees = $employeeController->getByPermis(true);
             
             // permis et libre
             $result = array();
@@ -142,7 +111,6 @@ Class ItineraireController {
                     $new = array('id' => $employee->getId(), 'name' => $employee->getName(), 'surname' => $employee->getSurname());
                     array_push($result, $new);
                 }
-
             }
             http_response_code(201);
             echo(json_encode($result));
@@ -152,14 +120,11 @@ Class ItineraireController {
 
     }
 
-    public function ChoseEmployee(){
+    public function EmployeNTypes(){
         $userId = $_POST['id'];
-        if($userId != null && $userId != 0){
-            $employeeController = new EmployeeController();
-            $employee = $employeeController->getById(intval($userId));    
-        
-            $deliveryTypeController = new DeliveryTypeController();
-            $types = $deliveryTypeController->getAll();
+        if($this->tournee->Chose($userId)){
+            $typeC = new DeliveryTypeController();
+            $types = $typeC->getAll();
             http_response_code(201);
             echo(json_encode($types));
         }
@@ -168,12 +133,10 @@ Class ItineraireController {
         }
     }
 
-    public function ChoseDeliveryType(){
-        $deliveryTypeId = $_POST['id'];
-        $siteId = $_POST['id'];
-        if($deliveryTypeId != 0 && $deliveryTypeId != null){
-            $deliveryTypeController = new DeliveryTypeController();
-            $type = $deliveryTypeController->getById($deliveryTypeId);
+    public function Type(){
+        $id = $_POST['id'];
+        // $siteId = $_POST['id'];
+        if($this->tournee->ChoseType($id)){
             http_response_code(201);
         }
         else{
@@ -266,7 +229,7 @@ Class ItineraireController {
                             array_push($user, $userC->getById($d->getId()));
                         }
                     }
-                    $this->Distribuate($products, $user, $name);
+                    $this->Distribuate($products, $user, $name);  
                 }
             }else{
                 http_response_code(400);
@@ -329,10 +292,11 @@ Class ItineraireController {
                         }
                     }
                 }
-                echo(json_encode(array(
+                $res = array(
                     'products' => $products,
                     'users' => $user
-                )));
+                );
+                echo(json_encode($res));
                 http_response_code(201);
             }else{
                 http_response_code(400);
@@ -340,170 +304,102 @@ Class ItineraireController {
         }else{
             http_response_code(400);
         }
+
+                    // $stops = array();
+            // foreach($stops as $stop){
+                
+            //     $mapStop = GmaApi::geocodeAddress($address);
+            //     array_push($map, $mapStop);
+            // }
+            
+            // foreach(){
+    
+            // }
+            
+            // $itineraiUrl = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/2.3687413,48.6101204;2.5475181,48.6138689;2.4278819,48.6304044?access_token=pk.eyJ1IjoibmF0aGFzZW5zZWkiLCJhIjoiY2p3cWM3czRlMDFpbDQ1cDZpb2d4ZnY0NyJ9.tWZI8jmVY33ao20AauBnWA";
+    
+            // $point_json = file_get_contents($itineraiUrl);
+    
+            // $data_itineraire = json_decode($point_json);
+            // // foreach($data)
+            // $order = $this->findOrder($data_itineraire, $nbArret);
+            // $time = $this->findTime($data_itineraire, $nbArret);
+            // $itineraiUrl = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/2.3687413,48.6101204;2.5475181,48.6138689;2.4278819,48.6304044?access_token=pk.eyJ1IjoibmF0aGFzZW5zZWkiLCJhIjoiY2p3cWM3czRlMDFpbDQ1cDZpb2d4ZnY0NyJ9.tWZI8jmVY33ao20AauBnWA";
+        
     }
 
-    public function ChoseStart(){
+    public function GetCoordinates(){
+        $address = $_POST['address'];
+        $apikey = 'AIzaSyDgg-YLSCh-EyoIX31W_geAo8VYvYhnwq0';
+
+        //valeurs vide par défaut
+        $data = array('address' => '', 
+                    'lat' => '', 
+                    'lng' => '', 
+                    'city' => '', 
+                    'department' => '', 
+                    'region' => '', 
+                    'country' => '', 
+                    'postal_code' => '');
+
+        //on formate l'adresse
+        $address = str_replace(" ", "+", $address);
+        
+        //on fait l'appel à l'API google map pour géocoder cette adresse
+        $json = file_get_contents("https://maps.google.com/maps/api/geocode/json?key=" . $apikey . "&address=$address&sensor=false&region=fr");
+        $json = json_decode($json);
+
+        
+        //on enregistre les résultats recherchés
+        if ($json->status == 'OK' && count($json->results) > 0) {
+            $res = $json->results[0];
+            //adresse complète et latitude/longitude
+            $data['address'] = $res->formatted_address;
+            $data['lat'] = $res->geometry->location->lat;
+            $data['lng'] = $res->geometry->location->lng;
+            foreach ($res->address_components as $component) {
+                //ville
+                if ($component->types[0] == 'locality') {
+                    $data['city'] = $component->long_name;
+                }
+                //départment
+                if ($component->types[0] == 'administrative_area_level_2') {
+                    $data['department'] = $component->long_name;
+                }
+                //région
+                if ($component->types[0] == 'administrative_area_level_1') {
+                    $data['region'] = $component->long_name;
+                }
+                //pays
+                if ($component->types[0] == 'country') {
+                    $data['country'] = $component->long_name;
+                }
+                //code postal
+                if ($component->types[0] == 'postal_code') {
+                    $data['postal_code'] = $component->long_name;
+                }
+            }
+        }
+            echo json_encode($data);
+    }
+
+    public function Depot(){
         $depotId = $_POST['id'];
         if($depotId != null && $depotId != 0){
             $depositeryController = new DepositeryController();
             $depot = $depositeryController->getBySite($site->getId());
-            
-            
-            // Générer les stops
+
             http_response_code(201);
             echo(json_encode($depot));  
+        }else{
+            http_response_code(400);
         }
- 
     }    
 
+
     public function GererateStops(){
-        // recuperer tous les produits du type de la livraison
-        // Créer un stop
-        // Y ajouter les produits
+
     }
-
-    public function view(){
-        // Date
-        $date = $_POST['date'];
-        $siteId = $_POST['site'];
-
-        // Chercher le site posté
-        // $siteController = new SiteController();
-        // $site = $siteController->getById($siteId);
-
-        // Chercher les camions libres pour le site
-        // $truckController = new TruckController();
-        // $trucks = $truckController->getBySite($site->getId());
-        
-        // $freeTrucks = array();
-        // foreach($trucks as $truck){
-        //     if($truck->getLibre()){
-        //         array_push($freeTrucks, $truck);
-        //     }
-        // }
-
-        // Chercher les employés du site // permis
-        // $employeeController = new EmployeeController();
-        // $employees = $employeeController->getAll();
-
-        // Chercher les types de livraisons
-        // $deliveryTypeController = new DeliveryTypeController();
-        // $types = $deliveryTypeController->getAll();
-
-        // Créer la livraison
-        // Choisir truck, Choisir employee, Choisir Type
-        die();
-        $delivery = new Delivery(null, $truck, $employee, $type, $date, null);
-
-        // Chercher les entrepots du site
-        $depositeryController = new DepositeryController();
-        $depots = $depositeryController->getBySite($site->getId());
-        $itineraiUrl = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/2.3687413,48.6101204;2.5475181,48.6138689;2.4278819,48.6304044?access_token=pk.eyJ1IjoibmF0aGFzZW5zZWkiLCJhIjoiY2p3cWM3czRlMDFpbDQ1cDZpb2d4ZnY0NyJ9.tWZI8jmVY33ao20AauBnWA";
-
-        // Chercher les produits des entrepots du site 
-        $productController = new ProductController();
-        $produitsTousEntrepots = array();
-        
-        foreach($depots as $depot){
-            $produits = $productController->getByDepositery($depot->getId());
-            
-            $produitsTousEntrepots = array_merge($produitsTousEntrepots, $produits);
-        }
-
-        // Chercher les produits de statut 2 (donné)
-        $produitsDonnes = array();
-        foreach($produitsTousEntrepots as $produit){
-            if($produit->getStatut()){
-                array_push($produitsDonnes, $produit);
-            }
-        }
-
-        // créer les stops
-        // $stop = new Stop(null, $date, )
-        
-        // créer les stops produits
-
-        // passer les stops en coordonnées
-
-        $nbarticle = count($produitsDonnes);
-        
-
-        
-        $mapDepot = GmapApi::geocodeAddress($depot->getAddress);
-        $mapStops = array(); 
-        // foreach()
-        array_push($mapArray, $depot); // sélectionner le dépôt
-        // Chercher les produits
-
-        // $truck = $truckController->getById();
-
-        // $url = 'http://fightfoodwasteapi/';
-        // $json_site = file_get_contents($url.'site/'.$_POST['site']);
-        // $site_data = json_decode($json_site);
-
-        // $s = new Sitee($site_data->ID, $site_data->Name);
-
-
-        // $json_truck = file_get_contents($url.'/truck');
-        // $truck_data = json_decode($json_truck);
-
-        // $truck = $this->getTruckByIdSite($truck_data, $s->getId());
-
-        // $truck = $this->getTruckByIdSite($trucks, )
-
-        //Aller le chercher en bdd
-        // $v = new Vehicule($truck->ID, $truck->Plate, $truck->Name, $truck->Capacity);
-
-        //recherche en bdd de tous les user
-        // $json_usr = file_get_contents($url.'/usr');
-        // $usr_data = json_decode($json_usr);
-
-        //fonction qui recherche un salarié
-        // $usr = $this->getConducteurBySite($usr_data,  $s->getId());
-
-        //construction d'un salarié
-        // $c = new Conducteur ($usr->ID, $usr->Surname, $usr->Name, $usr->Email );
-
-        
-        
-        
-        
-        
-        //choix du salarié
-        // $d = $_POST['date'];
-
-        // $json_depot = file_get_contents($url.'/depositery');
-        // $depot_data = json_decode($json_depot);
-
-        // $depot_temp = $this->findDepot($depot_data, $s->getId());
-
-        // //en fonction du site, trouvé le dépot en bddd, instancier de dépot
-        // $depot = new Depot ($depot_temp->ID, $depot_temp->Numero, $depot_temp->Rue, $depot_temp->Postcode, $depot_temp->Area, $depot_temp->Capacity);
-
-        // $json_product = file_get_contents($url.'/product');
-        // $product_data = json_decode($json_product);
-
-        // $index = $this->findArticleDonne($product_data, $depot->getID());
-
-        // $nbarticle = count($index);
-
-        // $articles = [];
-
-        $tabIdDonnateur = [];
-        $nbArret = 0;
-
-        // $itineraiUrl = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/2.3687413,48.6101204;2.5475181,48.6138689;2.4278819,48.6304044?access_token=pk.eyJ1IjoibmF0aGFzZW5zZWkiLCJhIjoiY2p3cWM3czRlMDFpbDQ1cDZpb2d4ZnY0NyJ9.tWZI8jmVY33ao20AauBnWA";
-
-        // $point_json = file_get_contents($itineraiUrl);
-        // $data_itineraire = json_decode($point_json);
-
-        // $order = $this->findOrder($data_itineraire, $nbArret);
-
-        // $time = $this->findTime($data_itineraire, $nbArret);
-
-        require_once __DIR__ . '/../public/View/MapView.php';
-    }
-
 }
 
 ?>
