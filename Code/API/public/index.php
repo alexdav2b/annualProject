@@ -31,5 +31,7 @@ $app->get('/{table}/{column}/{value}/getByInt', \App\Controllers\PagesController
 
 $app->get('/{table}', \App\Controllers\PagesController::class . ':getAll');
 
+$app->get('/requests', \App\Controllers\PagesController::class . ':showRequests');
+
 
 $app->run();

@@ -68,7 +68,9 @@ class DatabaseManager {
             return $response->withStatus(400);
         }
         
-		$sql = 'SELECT * FROM '. $table;
+        $sql = 'SELECT * FROM '. $table;
+
+        $this->writeSQL($sql);
 		return $sql;
 	}
 
@@ -95,7 +97,8 @@ class DatabaseManager {
             }
         }
 
-		$sql = $sql . ' VALUES ' . $prepare;
+        $sql = $sql . ' VALUES ' . $prepare;
+        $this->writeSQL($sql);
 		return $sql;
 	}
 
@@ -131,9 +134,11 @@ class DatabaseManager {
 		$result = [];
 
 		array_push($result, $sql);
-		array_push($result, $values);
+        array_push($result, $values);
+        
+        $this->writeSQL($result);
 
-		return $result;
+        return $result;
     }
     
     public function getSQLDelete(string $table){
@@ -141,7 +146,11 @@ class DatabaseManager {
         if($model == NULL){
             return $response->withStatus(400);
         }
-        return 'DELETE FROM '. $table .' WHERE id = ?';
+        
+        $sql = 'DELETE FROM '. $table .' WHERE id = ?';
+        $this->writeSQL($sql);
+
+        return $sql;
     }
 
     private function getModel($table){
@@ -217,6 +226,21 @@ class DatabaseManager {
                 break;
         }
         return $col;
+    }
+
+    public function writeSQL($sql){
+        $now = new DateTime();
+        $now = $now->format('Y-m-d H:i:s');
+        $ligne = $now . " => " + $sql + "\n"; 
+
+        // 1 : on ouvre le fichier
+        $fichier = fopen('../../pulic/Requetes.txt', 'a+'); // si fichier n'existe pas => création + écrituree fin du fichier
+
+        // 2 : on fera ici nos opérations sur le fichier...
+        fputs($fichier, $ligne);
+
+        // 3 : quand on a fini de l'utiliser, on ferme le fichier
+        fclose($fichier);
     }
 }
 
