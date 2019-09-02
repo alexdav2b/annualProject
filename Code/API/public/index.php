@@ -17,6 +17,8 @@ $app = new \Slim\App([
 
 $container = $app->getContainer();
 
+$app->get('/showSQL', \App\Controllers\PagesController::class . ':showRequests');
+
 $app->post('/{table}/create',\App\Controllers\PagesController::class . ':create');
 
 $app->put('/{table}/update',\App\Controllers\PagesController::class . ':update');
@@ -30,8 +32,5 @@ $app->get('/{table}/{column}/{value}/getByString', \App\Controllers\PagesControl
 $app->get('/{table}/{column}/{value}/getByInt', \App\Controllers\PagesController::class . ':getByInt');
 
 $app->get('/{table}', \App\Controllers\PagesController::class . ':getAll');
-
-$app->get('/requests', \App\Controllers\PagesController::class . ':showRequests');
-
 
 $app->run();

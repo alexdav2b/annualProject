@@ -10,7 +10,7 @@ ob_start();
         <a class="nav-link active" href="/comptes" style = "color : white">Users</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/itineraire" style = "color : white">+ Nouvel Itinéraire</a>
+        <a class="nav-link" href="/livraison" style = "color : white">+ Nouvel Itinéraire</a>
         <!-- Collecte & Distribution -->
     </li>
     <!-- <li class="nav-item">

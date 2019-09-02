@@ -30,7 +30,6 @@ Class ProductController{
 
     private function parseAll($json) : array{
         $result = [];
-        var_dump($json);die();
         foreach($json as $line){
             $depositeryController = new DepositeryController();
             $depositery = $depositeryController->getById(intval($line['DepositeryID']));

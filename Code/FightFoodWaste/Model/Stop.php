@@ -8,39 +8,34 @@ Class Stop{
     private $id;
     private $date;
     private $delivery;
-    private $user;
+	private $user;
+	private $coo;
 
-    public function __construct(?int $id, $date, Delivery $delivery, User $user){
+    public function __construct(?int $id, $date, int $deliveryId, User $user){
         $this->id = $id;
         $this->date = $date;
-        $this->delivery = $delivery;
+        $this->delivery = $deliveryId;
         $this->user = $user;
     }
 
     public function getId(): ?int{ return $this->id; }
     public function getDate() { return $this->date; }
-    public function getDelivery(): Delivery { return $this->delivery; }
-    public function getUser(): User{ return $this->user; }
+    public function getDelivery(): int { return $this->delivery; }
+	public function getUser(): User{ return $this->user; }
+	public function getCoo(): string{ return $this->coo; }
 
-    public function setId(int $id){
-        if($id > 0)
-            $this->id = $id;
-    }
-
-    public function setDate($date){
-        $this->date = $date;
-    }
-
-    public function setDelivery(int $deliveryId){
-        $controller = new DeliveryController();
-        $delivery = $controller->getById($deliveryId);
-        $this->delivery = $delivery;
-    }
+    public function setId(int $id){ if($id > 0){ $this->id = $id; } }
+    public function setDate($date){ $this->date = $date; }
+    public function setDelivery(int $deliveryId){ $this->delivery = $deliveryId; }
 
     public function setUser(int $userId){
 		$controller = new UserController();
 		$user = $controller->getById($userId);
 		$this->user = $user;
+	}
+
+	public function setCoo(int $lng, int $lat){
+		$coo = "$lng , $lat";
 	}
 
     public function create(){
@@ -50,7 +45,7 @@ Class Stop{
 		}
 		$array = array(
 			'DateHour' => $this->date,
-			'DeliveryID' => $this->delivery->getId(),
+			'DeliveryID' => $this->delivery,
 			'UsrID' => $this->user->getId());
 		$json = json_encode($array);
 		$json = $api->create($json);
@@ -82,7 +77,7 @@ Class Stop{
 		$array = array(
 			'ID' => $this->id,
 			'DateHour' => $this->date,
-			'DeliveryID' => $this->delivery->getId(),
+			'DeliveryID' => $this->delivery,
 			'UsrID' => $this->user->getId());
 		$json = json_encode($array);
 		$json = $api->update($json);

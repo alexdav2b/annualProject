@@ -4,16 +4,17 @@ require_once __DIR__ . '/../Model/Adresse.php';
 require_once __DIR__ . '/../Model/Vehicule.php';
 require_once __DIR__ . '/../Model/Conducteur.php';
 require_once __DIR__ . '/../Model/Article.php';
-require_once __DIR__ . '/../Model/Sitee.php';
+require_once __DIR__ . '/../Model/Site.php';
 require_once __DIR__ . '/../Model/Depot.php';
 require_once __DIR__ . '/../Model/Arret.php';
-require_once __DIR__ . '/../Model.Tournee.php';
+// require_once __DIR__ . '/../Model/Tournee.php';
 
 
 
 Class ItineraireController {
 
     private $tournee;
+    // private $itineraire;
 
     //fonction pour trouver les temps de trajet entre chaque point
     private function findTime($data_itineraire, $nb){
@@ -76,6 +77,58 @@ Class ItineraireController {
         $sites = $controller->getAll();
         require_once __DIR__ .  '/../public/View/ItineraireView.php';
     }
+
+    // Génération itinéraire
+    // 1. Choix type de livraison
+
+    public function ChoseTypePrintSite(){
+       
+        if($this->ChoseSite($siteId)){   
+            $truckController = new TruckController();
+            $trucks = $truckController->getBySite($site->getId());
+            
+            $freeTrucks = array();
+            foreach($trucks as $truck){
+                if($truck->getLibre()){
+                   array_push($freeTrucks, $truck);
+                }
+            }
+            http_response_code(201);
+            echo(json_encode($freeTrucks));
+        }else{
+            http_response_code(400);
+        }
+    }
+
+    public function PrintSite(){
+
+    }
+
+    // 2. Choix site
+
+    public function ChoseSitePrintDepot(){
+        $siteId = $_POST["siteId"];
+        $this->tournee = new Tournee();
+
+    }
+    public function PrintDepot(){
+
+    }
+    // 3. Choix depot
+
+    public function ChoseDepot(){
+
+    }
+
+    
+    // 4. Distribution des produits/user
+    // 5. Génération des coordonnées
+    // 6. Choix de la date
+    // 7. Génération de l'itinéraire
+    // 8. Validation
+    // 9. Données dans BDD
+
+
 
     public function SiteNTrucks(){
         $siteId = $_POST["siteId"];
@@ -144,53 +197,7 @@ Class ItineraireController {
         }
     }
 
-    private function Distribuate($products, $users, $deliveryType){
-        $res = array();
-        if(count($products) != 0 && count($users) != 0){
-            do{
-                $sizeU = count($users) - 1;
-                if($sizeU == 0){
-                    $randU = 0;
-                }else{
-                    $randU = rand(1, $sizeU); 
-                }
-                $randUser = $users[$randU];
 
-                $randNumber = rand(0, 5);
-                $resProducts = array();
-                $count = 0;
-                do{
-                    $count++;
-                    $sizeP = count($products) - 1;
-                    if($sizeP == 0){
-                        $randP = 0;
-                    }else{
-                        $randP = rand(1, $sizeP);
-                    }
-                    $randProduct = $products[$randP];
-                    array_push($resProducts, $randProduct);
-                    array_splice($products, $randP, 1);
-                }while(!($randNumber - $count > 0) && !(count($products) >= 1));
-                
-                $array = array(
-                    "Id" => $randUser->getId(),
-                    "Nom" => $randUser->getName(),
-                    "Numero" => $randUser->getNumero(), 
-                    "Rue" => $randUser->getRue(),
-                    "Postcode" => $randUser->getPostcode(),
-                    "Area" =>$randUser->getArea(),
-                    "Products" => $resProducts,
-                    "Type" => $deliveryType
-                );
-                array_push($res, $array);
-                array_splice($users, $randU, 1);
-            }while(count($users) >= 1);
-            echo(json_encode($res));
-            http_response_code(201);
-        }else{
-            http_response_code(400);
-        }
-    }
 
     public function SearchStops(){
         $typeId = $_POST['type'];
@@ -380,7 +387,7 @@ Class ItineraireController {
                 }
             }
         }
-            echo json_encode($data);
+        echo json_encode($data);
     }
 
     public function Depot(){

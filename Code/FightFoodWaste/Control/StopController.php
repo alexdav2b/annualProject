@@ -9,11 +9,9 @@ Class StopController{
 
     // Parse
     private function parseOne($json) : Stop{
-        $deliveryController = new DeliveryController();
-        $delivery = $deliveryController->getById(intval($json['DeliveryID']));
         $userController = new UserController();
         $user = $userController->getById(intval($json['UsrID']));
-        return new Stop($json['ID'], $json['DateHour'], $delivery, $user);
+        return new Stop($json['ID'], $json['DateHour'], $json['DeliveryID'], $user);
     }
 
     private function parseAll($json) : array{
@@ -23,7 +21,7 @@ Class StopController{
             $delivery = $deliveryController->getById(intval($line['DeliveryID']));
             $userController = new UserController();
             $user = $userController->getById(intval($line['UsrID']));
-            $stop = new Stop($line['ID'], $line['DateHour'], $delivery, $user);
+            $stop = new Stop($line['ID'], $line['DateHour'], $line['DeliveryID'], $user);
             array_push($result, $stop);
         }
         return $result;

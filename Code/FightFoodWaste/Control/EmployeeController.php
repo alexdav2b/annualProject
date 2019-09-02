@@ -23,6 +23,7 @@ Class EmployeeController{
                 $siteController = new SiteController();
                 $site = $siteController->getById(intval($line['SiteID']));
                 $user = new Employee($line['ID'], $line['Email'], $line['Name'], $line['Password'], $line['Numero'], $line['Rue'], $line['Postcode'], $line['Area'], $line['Salary'], $line['Surname'], $site, $line['Permis'], $line['Libre']);
+                
                 array_push($result, $user);
             }
         }
@@ -92,7 +93,7 @@ Class EmployeeController{
 
     public function getBySite(int $siteId){
         $api = new ApiManager('Usr');
-        $json = $api->getByInt('Site', $siteId);
+        $json = $api->getByInt('SiteID', $siteId);
         return $this->parseAll($json);
     }
 

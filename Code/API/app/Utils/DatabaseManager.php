@@ -3,6 +3,7 @@
 namespace App\Utils;
 use PDO;
 use PDOStatement;
+use DateTime;
 
 require_once __DIR__ . '/.conf.php';
 
@@ -21,7 +22,6 @@ class DatabaseManager {
 
 	// 3.
 	public static function getManager(): DatabaseManager{ 
-		// DatabaseManager::getManager();
 		if(!isset(self::$manager)){
 			self::$manager = new DatabaseManager();
 		}
@@ -119,11 +119,11 @@ class DatabaseManager {
 		
 		for($i = 0; $i < $length; $i++){
             if($i != 0){
-                array_push($values, $array[$i]);
+                array_push($values, htmlentities($array[$i]));
                 array_push($columns, $model[$i]);
             }
         }       
-		array_push($values, $array[0]);
+		array_push($values, htmlentities($array[0])); // Where id = ?
 		
         for($i = 0; $i < $length - 1; $i += 1){
             $sql .= $columns[$i] . ' = ?';
@@ -158,23 +158,19 @@ class DatabaseManager {
         $col = [];
         switch($table){
             case 'adhesion':
-                // $col = ['ID', 'UsrID', 'DateAdhesion', 'Cb', 'Code'];
                 $col = ['ID', 'UsrID', 'DateAdhesion'];
                 break;
             case 'affectation':
                 $col = ['ServiceID', 'UsrID'];
                 break;
             case 'ask' : 
-                $col = ['ID', 'UsrMakeID', 'UsrAnwserID', 'AskTypeID', 'Subject', 'DateStart', 'DateEnd'];
-                break;
-            case 'askType' : 
-                $col = ['ID', 'Name'];
+                $col = ['ID', 'UsrMakeID', 'UsrAnwserID', 'CompetenceID', 'Subject', 'DateStart', 'DateEnd'];
                 break;
             case 'competence' : 
                 $col = ['ID', 'Name'];
                 break;
             case 'delivery' : 
-                $col = ['ID', 'TruckID', 'UsrID', 'DeliveryTypeID', 'DateStart', 'DateEnd'];
+                $col = ['ID', 'TruckID', 'UsrID', 'DeliveryTypeID', 'DateStart', 'DateEnd', 'Url'];
                 break;
             case 'deliverytype' :
                 $col = ['ID', 'Name'];
@@ -229,13 +225,15 @@ class DatabaseManager {
     }
 
     public function writeSQL($sql){
-        $now = new DateTime();
-        $now = $now->format('Y-m-d H:i:s');
-        $ligne = $now . " => " + $sql + "\n"; 
+        // $now = new \DateTime();
+        // $now = $now->format('Y-m-d H:i:s');
+        // $ligne = $now . " => " + $sql + "\n"; 
+        $ligne = "<p>$sql</p>\n"; 
+
 
         // 1 : on ouvre le fichier
-        $fichier = fopen('../../pulic/Requetes.txt', 'a+'); // si fichier n'existe pas => création + écrituree fin du fichier
-
+        $fichier = fopen(__DIR__ . '/../../public/Requetes.txt', 'a+'); // si fichier n'existe pas => création + écrituree fin du fichier
+        
         // 2 : on fera ici nos opérations sur le fichier...
         fputs($fichier, $ligne);
 

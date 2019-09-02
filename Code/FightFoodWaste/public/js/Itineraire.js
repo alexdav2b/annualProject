@@ -1,5 +1,149 @@
+/* ========================================================================
+   DOM
+*/
+
+// function Supprimer(number){
+//     /*  (- Types)
+//         - Sites
+//         - Depots
+//         - Date
+//         - BtnGenerateItenerary
+//         - Map
+//         - Trucks
+//         - Employees
+//         - BtnValidate
+//         (- Envoyer données)
+//     */
+//     switch(number){
+//         case (1) :
+//         var site = document.getElementById("site");
+//         if(site != null)
+//             site.parentNode.removeChild(site);
+
+//         case (2) :
+//         var depot = document.getElementById("depot")
+//         if(depot != null)
+//             depot.parentNode.removeChild(depot);
+
+//         case(3) :
+//         // date
+//         case(4) :
+//         // btn generate
+//         case(5) :
+//             // var map = document.getElementById("map");
+//             // map.setAttribute("style", "height:100%; visibility:hidden");
+
+//         case (6):
+//                 var truck = document.getElementById("truck");
+//                 if(truck != null)
+//                     truck.parentNode.removeChild(truck);
+        
+//         case (7) :
+//             var employee = document.getElementById("employee");
+//             if(employee != null)
+//                 employee.parentNode.removeChild(employee)
+
+//         // case
+//         // var delivery = document.getElementById("delivery");
+//         // if(delivery != null)
+//         //     delivery.parentNode.removeChild(delivery)
+            
+
+
+        
+//         // case(5):
+//         // var stops = document.getElementById("stop")
+//         // if(stops != null){
+//         //     while(stops.firstChild)
+//         //     {
+//         //         stops.removeChild(stops.firstChild);
+//         //     }
+//         // }
+        
+
+//         // var valider = document.getElementById("ValiderId");
+//         // if(valider != null)
+//         //     valider.parentNode.removeChild(valider);
+//     }
+// }
+
+// function Types(datas){
+//     Supprimer(1);
+// }
+
+function Sites(datas){
+    var div = document.createElement("div");
+    div.setAttribute('class', 'col-md-12 col-lg-12 row');
+    div.setAttribute('id', 'site');
+    
+    var label = document.createElement("label");
+    label.setAttribute('for', 'siteId');
+    label.setAttribute('style', 'padding-top')
+    label.setAttribute('class', 'inline col-md-4 col-lg-4');
+    label.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
+    label.innerHTML = "Site";
+
+    var select = document.createElement("select");
+    select.setAttribute('onchange', 'ChoseSite()');
+    select.setAttribute('class', 'form-control inline col-md-8 col-lg-8 inline' );
+    select.setAttribute('id', 'siteId');
+    select.setAttribute('name', 'site');
+
+    var optionC = document.createElement("option");
+    optionC.innerHTML = "--Choisir--";
+
+    $('#itineraire').append(div);
+    div.append(label);
+    div.append(select);
+    select.append(optionC);
+
+    var sites = JSON.parse(datas);
+    for(var i = 0; i < sites.length; i++){
+        var option = document.createElement("option");
+        option.innerHTML = sites[i].name + ' ' +  sites[i].rue + ' ' +  sites[i].postcode + ' ' +  sites[i].area;
+        option.setAttribute("value", sites[i].id);
+        select.append(option);
+    }
+}
+
+function Depots(datas){
+    var div = document.createElement("div");
+    div.setAttribute('class', 'col-md-12 col-lg-12 row');
+    div.setAttribute('id', 'depot');
+
+    var label = document.createElement("label");
+    label.setAttribute('for', 'depotId');
+    label.setAttribute('style', 'padding-top')
+    label.setAttribute('class', 'inline col-md-4 col-lg-4');
+    label.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
+    label.innerHTML = "Depot";
+
+    var select = document.createElement("select");
+    select.setAttribute('onchange', 'ChoseDate()');
+    select.setAttribute('class', 'form-control inline col-md-8 col-lg-8 inline' );
+    select.setAttribute('id', 'depotId');
+    select.setAttribute('name', 'depotId');
+
+    var optionC = document.createElement("option");
+    optionC.innerHTML = "--Choisir--";
+
+    $('#itineraire').append(div);
+    div.append(label);
+    div.append(select);
+    select.append(optionC);
+
+    var depots = JSON.parse(datas);
+    console.log(depots);
+    for(var i = 0; i < depots.length; i++){
+        console.log(depots[i]);
+        var option = document.createElement("option");
+        option.innerHTML = depots[i].nom;
+        option.setAttribute("value", depots[i].name + ' ' +  depots[i].rue + ' ' +  depots[i].postcode + ' ' +  depots[i].area);
+        select.append(option);
+    }
+}
+
 function Trucks(datas){
-    Supprimer(1);
     // Ajout du select pour les camions
     var div = document.createElement("div");
     div.setAttribute('class', 'col-md-12 col-lg-12 row');
@@ -36,7 +180,6 @@ function Trucks(datas){
 }
 
 function Employees(datas){
-    Supprimer(2);
     // ajout du select pour les conducteurs
     var div = document.createElement("div");
     div.setAttribute('class', 'col-md-12 col-lg-12 row');
@@ -72,41 +215,11 @@ function Employees(datas){
     }
 }
 
-function Depots(datas){
-    // Ajout du depot 
-    var div = document.createElement("div");
-    div.setAttribute('class', 'col-md-12 col-lg-12 row');
-    div.setAttribute('id', 'depot');
+function Dates(datas){
 
-    var label = document.createElement("label");
-    label.setAttribute('for', 'depotId');
-    label.setAttribute('style', 'padding-top')
-    label.setAttribute('class', 'inline col-md-4 col-lg-4');
-    label.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
-    label.innerHTML = "Depot";
-
-    var select = document.createElement("select");
-    select.setAttribute('onchange', 'ChoseStart()');
-    select.setAttribute('class', 'form-control inline col-md-8 col-lg-8 inline' );
-    select.setAttribute('id', 'depotId');
-    select.setAttribute('name', 'depotId');
-
-    var optionC = document.createElement("option");
-    optionC.innerHTML = "--Choisir--";
-
-    $('#itineraire').append(div);
-    div.append(label);
-    div.append(select);
-    select.append(optionC);
-
-    var objects = JSON.parse(datas);
-    for(var i = 0; i < objects.length; i++){
-        var option = document.createElement("option");
-        option.innerHTML = objects[i].nom;
-        option.setAttribute("value", objects[i].name + ' ' +  objects[i].rue + ' ' +  objects[i].postcode + ' ' +  objects[i].area);
-        select.append(option);
-    }
 }
+
+
 
 function Stops(datas){
     var points = [];
@@ -162,6 +275,152 @@ function Stops(datas){
         // récupérer itineraire
         GetItinerary(points);
         // Map(points);
+}
+
+/* ========================================================================
+   SEND DATA
+*/
+
+
+// function ChoseType(){
+//     $(document).ready(function(){
+//         var typeId = $("#typeId").val();
+//         $.ajax({
+//         url : '/livraison/printSite',
+//         type : 'POST',
+//         data : 'typeId=' + typeId,
+
+//         success : function(datas){ 
+//             Supprimer(1);
+//             Sites(datas);
+//         },
+//         error : function(){
+//             Supprimer(1);
+//         },
+//     });
+
+// });
+// }
+
+// function ChoseSite(){
+//     $(document).ready(function(){
+//             var siteId = $("#siteId").val();
+//             $.ajax({
+//             url : '/livraison/printDepot',
+//             type : 'POST',
+//             data : 'siteId=' + siteId,
+
+//             success : function(datas){
+//                 Supprimer(1);
+//                 console.log(datas);
+//                 Depots(datas);
+//             },
+
+//             error : function(){ 
+//                 Supprimer(1);
+//             },
+//         });
+
+//     });
+// }
+
+// function ChoseDepot(){
+//     // ChoseDate 2
+// }
+
+
+// function ChoseDate(){
+//     $(document).ready(function(){
+//         var depotId = $("#depotId").val();
+//         var hour = $("#depotId").val();
+//         $.ajax({
+//         url : '/livraison/printDepot',
+//         type : 'POST',
+//         data : 'depotId=' + depotId,
+
+//         success : function(datas){
+//             Supprimer(3);
+//             Trucks(datas);
+//         },
+
+//         error : function(){ 
+//             Supprimer(1);
+//         },
+//     });
+
+// });
+// }
+
+// function ChoseTruck(){
+//     $(document).ready(function(){
+//             var truckId = $("#truckId").val();
+//             $.ajax({
+//             url : '/itineraire/Truck',
+//             type : 'POST',
+//             // dataType : 'html', // On désire recevoir du HTML
+//             data : 'truckId=' + truckId,
+            
+//             success : function(datas){ 
+//                 Employees(datas);
+//             },
+//             error : function(){
+//                 Supprimer(2);
+//             },
+//         });
+
+//     });
+// }
+
+function ChoseEmployee(){
+    $(document).ready(function(){
+        var id = $("#employeeId").val();
+        $.ajax({
+            url : '/itineraire/Employee',
+            type : 'POST',
+            data : 'id=' + id,
+
+            success : function(datas){ 
+                Supprimer(3);
+                
+                // Ajout du select pour les deliveryType
+                var div = document.createElement("div");
+                div.setAttribute('class', 'col-md-12 col-lg-12 row');
+                div.setAttribute('id', 'delivery');
+                
+                var label = document.createElement("label");
+                label.setAttribute('for', 'deliveryTypeId');
+                label.setAttribute('style', 'padding-top')
+                label.setAttribute('class', 'inline col-md-4 col-lg-4');
+                label.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
+                label.innerHTML = "Livraison";
+
+                var select = document.createElement("select");
+                select.setAttribute('onchange', 'ChoseDeliveryType()');
+                select.setAttribute('class', 'form-control inline col-md-8 col-lg-8 inline' );
+                select.setAttribute('id', 'deliveryType');
+                select.setAttribute('name', 'deliveryType');
+
+                var optionC = document.createElement("option");
+                optionC.innerHTML = "--Choisir--";
+
+                $('#itineraire').append(div);
+                div.append(label);
+                div.append(select);
+                select.append(optionC);
+
+                var objects = JSON.parse(datas);
+                for(var i = 0; i < objects.length; i++){
+                    var option = document.createElement("option");
+                    option.innerHTML = objects[i].name;
+                    option.setAttribute("value", objects[i].id);
+                    select.append(option);
+                }
+            },
+            error : function(){
+                Supprimer(3)
+            },
+        });
+    }); 
 }
 
 function GetItinerary(data){
@@ -241,212 +500,4 @@ function SearchStops(){
             },
         });  
     });
-}
-
-
-function ChoseSite(){
-    $(document).ready(function(){
-            var siteId = $("#siteId").val();
-            $.ajax({
-            url : '/itineraire/Site',
-            type : 'POST',
-            // dataType : 'html', // On désire recevoir du HTML
-            data : 'siteId=' + siteId,
-
-            success : function(datas){ 
-                Trucks(datas);
-            },
-
-            error : function(){ 
-                Supprimer(1);
-            },
-        });
-
-    });
-}
-
-
-
-
-function ChoseTruck(){
-    $(document).ready(function(){
-            var truckId = $("#truckId").val();
-            $.ajax({
-            url : '/itineraire/Truck',
-            type : 'POST',
-            // dataType : 'html', // On désire recevoir du HTML
-            data : 'truckId=' + truckId,
-            
-            success : function(datas){ 
-                Employees(datas);
-            },
-            error : function(){
-                Supprimer(2);
-            },
-        });
-
-    });
-}
-
-function ChoseEmployee(){
-    $(document).ready(function(){
-        var id = $("#employeeId").val();
-        $.ajax({
-            url : '/itineraire/Employee',
-            type : 'POST',
-            data : 'id=' + id,
-
-            success : function(datas){ 
-                Supprimer(3);
-                
-                // Ajout du select pour les deliveryType
-                var div = document.createElement("div");
-                div.setAttribute('class', 'col-md-12 col-lg-12 row');
-                div.setAttribute('id', 'delivery');
-                
-                var label = document.createElement("label");
-                label.setAttribute('for', 'deliveryTypeId');
-                label.setAttribute('style', 'padding-top')
-                label.setAttribute('class', 'inline col-md-4 col-lg-4');
-                label.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
-                label.innerHTML = "Livraison";
-
-                var select = document.createElement("select");
-                select.setAttribute('onchange', 'ChoseDeliveryType()');
-                select.setAttribute('class', 'form-control inline col-md-8 col-lg-8 inline' );
-                select.setAttribute('id', 'deliveryType');
-                select.setAttribute('name', 'deliveryType');
-
-                var optionC = document.createElement("option");
-                optionC.innerHTML = "--Choisir--";
-
-                $('#itineraire').append(div);
-                div.append(label);
-                div.append(select);
-                select.append(optionC);
-
-                var objects = JSON.parse(datas);
-                for(var i = 0; i < objects.length; i++){
-                    var option = document.createElement("option");
-                    option.innerHTML = objects[i].name;
-                    option.setAttribute("value", objects[i].id);
-                    select.append(option);
-                }
-            },
-            error : function(){
-                Supprimer(3)
-            },
-        });
-    }); 
-}
-
-function ChoseDeliveryType(){
-    $(document).ready(function(){
-        var id = $("#deliveryType").val();
-        $.ajax({
-        url : '/itineraire/DeliveryType',
-        type : 'POST',
-        data : 'id=' + id,
-
-        success : function(datas){ 
-            Supprimer(4);
-            SearchStops();
-        },
-        error : function(){
-            Supprimer(4);
-        },
-    });
-
-});
-}
-
-// option.setAttribute("value", objects[i].numero + ' ' +  objects[i].rue + ' ' +  objects[i].postcode + ' ' +  objects[i].area);
-
-function ChoseStart(){}
-
-
-function Supprimer(number){
-    switch(number){
-        case (1) :
-        var truck = document.getElementById("truck");
-        if(truck != null)
-            truck.parentNode.removeChild(truck);
-
-        case (2) :
-        var employee = document.getElementById("employee");
-        if(employee != null)
-            employee.parentNode.removeChild(employee)
-            
-        case(3) :
-        var delivery = document.getElementById("delivery");
-        if(delivery != null)
-            delivery.parentNode.removeChild(delivery)
-            
-        case(4) :
-        var depot = document.getElementById("depot")
-        if(depot != null)
-            depot.parentNode.removeChild(depot);
-        
-        case(5):
-        var stops = document.getElementById("stop")
-        if(stops != null){
-            while(stops.firstChild)
-            {
-                stops.removeChild(stops.firstChild);
-            }
-        }
-        case (6):
-            // var map = document.getElementById("map");
-            // map.setAttribute("style", "height:100%; visibility:hidden");
-
-        case (7) :
-        var valider = document.getElementById("ValiderId");
-        if(valider != null)
-            valider.parentNode.removeChild(valider);
-    }
-}
-
-function Map(geojson){
-    $(document).ready(function(){
-    mapboxgl.accessToken = 'pk.eyJ1IjoibmF0aGFzZW5zZWkiLCJhIjoiY2p3cWM3czRlMDFpbDQ1cDZpb2d4ZnY0NyJ9.tWZI8jmVY33ao20AauBnWA' ;
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/light-v9',
-        center: [2.36877, 48.6102],
-        zoom: 10
-    });
-
-    // add markers to map
-    geojson.features.forEach(function(marker, i) {
-        var n = 0;
-        // create a HTML element for each feature
-        var el = document.createElement('div');
-        el.className = 'marker';
-        el.innerHTML = '<span><b>' + (i + n) + '</b></span>'
-
-        // make a marker for each feature and add it to the map
-        new mapboxgl.Marker(el)
-            .setLngLat(marker.geometry.coordinates)
-            .setPopup(new mapboxgl.Popup({
-                offset: 25
-            }) // add popups
-            .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
-            .addTo(map);
-        n++;
-    });
-});
-}
-function $_GET(param) {
-    var vars = {};
-    window.location.href.replace( location.hash, '' ).replace( 
-        /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
-        function( m, key, value ) { // callback
-            vars[key] = value !== undefined ? value : '';
-        }
-    );
-
-    if ( param ) {
-        return vars[param] ? vars[param] : null;	
-    }
-    return vars;
 }

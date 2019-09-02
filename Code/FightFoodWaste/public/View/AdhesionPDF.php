@@ -83,7 +83,7 @@ $pdf->Cell(2); // deplacement vers la droite
 $pdf->Cell(40,10,'Details', 0, 0,1); // Ecriture
   
 
-$currency = iconv("UTF-8", "ISO-8859-1//TRANSLIT", '€');
+$currency = iconv("UTF-16", "ISO-8859-1//TRANSLIT", '€');
 $pdf->SetFont('Arial','',12);
 $pdf->Ln(10); // line break  
 $pdf->Cell(2); // deplacement vers la droite

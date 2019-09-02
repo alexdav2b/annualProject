@@ -134,26 +134,50 @@ $router->post('/mdp', "User#MotDePasseOublie");
 // ITINERAIRE
 // -------------------------------------------------------------------
 
-$router->get('/itineraire', "Itineraire#new");
+// $router->get('/itineraire', "Itineraire#new");
 
-$router->post('/itineraire/Site', "Itineraire#ChoseSite");
+// $router->post('/itineraire/Site', "Itineraire#ChoseSite");
 
-$router->post('/itineraire/Truck', 'Itineraire#ChoseTruck');
+// $router->post('/itineraire/Truck', 'Itineraire#ChoseTruck');
 
-$router->post('/itineraire/Employee', 'Itineraire#ChoseEmployee');
+// $router->post('/itineraire/Employee', 'Itineraire#ChoseEmployee');
 
-$router->post('/itineraire/DeliveryType', 'Itineraire#ChoseDeliveryType');
+// $router->post('/itineraire/DeliveryType', 'Itineraire#ChoseDeliveryType');
 
-$router->post('/itineraire/Search', 'Itineraire#SearchStops');
+// $router->post('/itineraire/Search', 'Itineraire#SearchStops');
 
-$router->post('/itineraire/Start', 'Itineraire#ChoseStart');
+// $router->post('/itineraire/Start', 'Itineraire#ChoseStart');
 
-$router->post('/itineraire/Coo', 'Itineraire#GetCoordinates');
+// $router->post('/itineraire/Coo', 'Itineraire#GetCoordinates');
 
-$router->post('itineraire/CreateDelivery', 'Itineraire#CreateDelivery');
+// $router->post('itineraire/CreateDelivery', 'Itineraire#CreateDelivery');
 
 // $router->post('/itineraire', "Itineraire#view");
 
+
+
+$router->get('/livraison', "Delivery#New");
+
+$router->post('/livraison/printSite', "Delivery#PrintSite");
+
+$router->post('/livraison/printDepot', 'Delivery#PrintDepot');
+
+$router->post('/livraison/printDate', 'Delivery#PrintDate');
+
+$router->post('/livraison/printMap', 'Delivery#PrintMap');
+
+$router->post('/livraison/printTrucks', 'Delivery#PrintTrucks');
+
+$router->post('/livraison/printEmployees', 'Delivery#PrintEmployees');
+// $router->post('/livraison/Search', 'Delivery#SearchStops');
+
+// $router->post('/livraison/Start', 'Delivery#ChoseStart');
+
+// $router->post('/itineraire/Coo', 'Itineraire#GetCoordinates');
+
+// $router->post('itineraire/CreateDelivery', 'Itineraire#CreateDelivery');
+
+$router->get('/livraison/map:adresse', 'Delivery#map');
 // RUN
 // -------------------------------------------------------------------
 

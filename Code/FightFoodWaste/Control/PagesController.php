@@ -6,6 +6,7 @@ Class PagesController {
         require_once __DIR__ . '/../public/View/homeView.php';
     }
 
+
     public function about(){
         $title = "Fight Food Waste - About us";
 

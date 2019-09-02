@@ -1,6 +1,6 @@
 <?php
 
-Class Site{
+Class Site implements JsonSerializable{
 
     private $id;
     private $name;
@@ -116,6 +116,10 @@ Class Site{
 			return true;		
 		}
 		return false;
+    }
+    
+    public function jsonSerialize(){
+		return get_object_vars($this);
 	}
 
 }

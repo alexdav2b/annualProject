@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../Model/User.php';
+require_once __DIR__ . '/../Model/Statique.php';
 
 Class Employee extends User implements JsonSerializable{
     private $salary;
@@ -20,6 +21,26 @@ Class Employee extends User implements JsonSerializable{
     public function getSurname(): string { return $this->surname; }
     public function getLibre() : bool { return $this->libre; }
     public function getPermis() : bool { return $this->permis; }
+
+    public function isFreeForPeriod($dateStart, $dateEnd): bool{
+        $deliveryC = new DeliveryController();
+        $deliveries = $deliveryC->getByUser($this);
+
+        $idFree = $this::isFreeForPeriod($dateStartTest, $dateEndTest, $dateStartUsed, $dateEndUsed);
+        $beginTest = new DateTime($dateStart);
+        $endTest = new DateTime($dateEnd);
+
+        foreach($deliveries as $delivery){
+            $beginDelivery = new DateTime($delivery->getDateStart());
+            $endDelivery = new DateTime($delivery->getDateEnd());
+
+            $isFree = $this::isFreeForPeriod($dateStartTest, $dateEndTest, $dateStartUsed, $dateEndUsed);
+
+            if(!$isFree) 
+                return false;
+        }
+        return true;
+    }
 
     public function setLibre(bool $b){
         $this->libre = $b;
