@@ -15,12 +15,12 @@ Class ProductController{
         $depositery = $depositeryController->getById(intval($json['DepositeryID']));
 
         $userController = new UserController();
-        if($line['UsrID_Received'] ==! null){
+        if($json['UsrID_Received'] ==! null){
             $receiver = $receiverController->getById(intval($json['UsrID_Received']));
         }else{
             $receiver = null;
         }
-        $donator = $userController->getByInt(intval($json['UsrID_Donated']));
+        $donator = $userController->getById(intval($json['UsrID_Donated']));
 
         $statutController = new StatutController();
         $statut = $statutController->getById(intval($json['StatutID']));
@@ -106,6 +106,20 @@ Class ProductController{
         $api = new ApiManager('Product');
         $json = $api->getByInt('StatutID', $statutId);
         return $this->parseAll($json);
+    }
+
+    public function Chose(){
+        $statutId = $_POST['statutId'];
+        $productId = $_POST['productId'];
+        $product = $this->getById($productId);
+        if($product != null){
+            $product->setStatut($statutId);
+            var_dump($product);
+            $bool = $product->update();
+            if($bool){
+                echo json_encode($product);
+            }
+        }
     }
 
     // Views

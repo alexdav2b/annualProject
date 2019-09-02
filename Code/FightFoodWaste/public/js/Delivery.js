@@ -1,13 +1,15 @@
 class Delivery{
-    constructor(id, truckId, employeeId, typeId, dateStart, dateEnd, url, stops){
+    constructor(id, truckId, employeeId, typeId, dateStart, url, stops, depotId, siteId, arrets){
         this.id = id;
         this.truckId = truckId;
         this.employeeId = employeeId;
         this.typeId = typeId;
         this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
         this.url = url;
-        this.stops;
+        this.stops = stops;
+        this.depotId = depotId;
+        this.siteId = siteId;
+        this.arrets = arrets;
     }
 }
     // el.addEventListener("click", function(){modifyText("four")}, false);
@@ -55,7 +57,25 @@ function Supprimer(number){
             var btn = document.getElementById("validerbtn2");
             if(btn != null)
             btn.parentNode.removeChild(btn)
+        break;
+        
+        case(7):
+        var fin = document.getElementById("fin");
+        if(fin != null)
+            fin.parentNode.removeChild(fin);
+ 
     }
+}
+
+function printURl(){
+    var h = document.createElement("h2");
+    h.setAttribute('class', 'col-md-12 col-lg-12');
+    h.innerHTML = 'La livraison a été correctement crée';
+    $("#stop").append(h);
+}
+
+function printPDF(){
+
 }
 
 function printSites(datas){
@@ -237,6 +257,10 @@ function printEmployees(datas){
         select.append(option);
     }
 }
+
+function AddMinutes(date, minutes){
+    return new Date(date.getTime() + minutes * 60000);
+}
     
 function printStops(datas){
     var points = [];
@@ -253,11 +277,18 @@ function printStops(datas){
         var legs = json.map.routes[0].legs;
         var ordre = json.map.routes[0].waypoint_order;
 
+        var dateStart = new Date(livraison.dateStart);
+        var dateEnd = new Date(livraison.dateStart);
+
         for(var i = 0; i < ordre.length; i++){ // legs en plus
             stops[i].ordre = ordre[i];
             var date = legs[i+1].duration.value;
-            stops[i].dateHour = date;
+            var dateHour = AddMinutes(dateStart, date);
+            dateEnd = dateHour;
+            stops[i].dateHour = dateHour.toLocaleString("default",  {  year: 'numeric', month: 'numeric', day: 'numeric' , hour:'numeric', minute: 'numeric'});
+
         }
+        livraison.dateEnd = dateEnd.toLocaleString("default",  {  year: 'numeric', month: 'numeric', day: 'numeric' , hour:'numeric', minute: 'numeric'});
         livraison.stops = stops;
 
         for(var i = 0; i < size; i++){
@@ -265,35 +296,71 @@ function printStops(datas){
            
             var div1 = document.createElement("div");
             div1.setAttribute("class", 'col-md-12 col-lg-12 row');
+            var ordre = document.createElement("label");
+            ordre.setAttribute('class', 'inline col-md-1 col-lg-1');
+            ordre.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
+            ordre.innerHTML = stops[i].ordre + 1;
+            div1.append(ordre);
+
+            var date = document.createElement("label");
+            date.setAttribute('class', 'inline col-md-4 col-lg-4');
+            date.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
+            date.innerHTML = new Date(stops[i].dateHour).toLocaleString("default",  { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' , hour:'numeric', minute: 'numeric'});
+            div1.append(date);
+
+            
+            var prenom = document.createElement("label");
+            prenom.setAttribute('class', 'inline col-md-3 col-lg-3');
+            prenom.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
+            prenom.innerHTML = stops[i].Nom;
+            div1.append(prenom);
+            
+            var label = document.createElement("label");
+            label.setAttribute('class', 'inline col-md-5 col-lg-4');
+            label.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
+            label.innerHTML = adresse;
+            div1.append(label);
+
+ 
+            var div2 = document.createElement("div");
+            div2.setAttribute("class", 'col-md-10 md-offset-1 lg-offset-1 col-lg-12');
+
             for(var j = 0; j < stops[i].Products.length; j++){
-
-                
-                var prenom = document.createElement("label");
-                prenom.setAttribute('class', 'inline col-md-4 col-lg-4');
-                prenom.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
-                prenom.innerHTML = stops[i].Nom;
-                div1.append(prenom);
-                
-                var label = document.createElement("label");
-                label.setAttribute('class', 'inline col-md-5 col-lg-4');
-                label.setAttribute('style', 'padding-top : 6px !important; padding-bottom : 6px !important;');
-                label.innerHTML = adresse;
-                div1.append(label);
-
                 var product = stops[i].Products[j]
+                var div3 = document.createElement("div");
+                div3.setAttribute("class", 'col-md-12 col-lg-12 row');
+                
                 var input = document.createElement("input");
-                input.setAttribute("value", product.barcode + " : " + product.name);
+                input.setAttribute("value", "ID : " + product.id + "Name :" +product.name);
                 input.setAttribute("type", "text");
                 input.setAttribute('class', ' col-md-5 col-lg-4 form-control');
                 input.setAttribute("readonly", "readonly");
-                div1.append(input);
+                div3.append(input);
+
+                var input1 = document.createElement("input");
+                input1.setAttribute("value", "Barcode : " +product.barcode);
+                input1.setAttribute("type", "text");
+                input1.setAttribute('class', ' col-md-5 col-lg-4 form-control');
+                input1.setAttribute("readonly", "readonly");
+                div3.append(input1);
+
+                var input2 = document.createElement("input");
+                input2.setAttribute("value", "DLC : " + product.validDate );
+                input2.setAttribute("type", "text");
+                input2.setAttribute('class', ' col-md-5 col-lg-4 form-control');
+                input2.setAttribute("readonly", "readonly");
+                div3.append(input2);
+
+                div2.append(div3);
             }
+            div1.append(div2);
             $("#stop").append(div1);
         }  
 
         var btn = document.createElement("a");
         btn.setAttribute('class', 'btn btn-secondary col-md-4 col-lg-4 offset-md-8 offset-lg-4');
         btn.setAttribute('id', 'map');
+        btn.setAttribute('target', '_blank');
         btn.setAttribute('href', "livraison/map:"+livraison.url);
         btn.innerHTML = "Voir le trajet";
         $('#stop').append(btn);
@@ -323,7 +390,6 @@ function ChoseType(){
             success : function(datas){ 
                 Supprimer(1);
                 livraison.typeId = typeId;
-                console.log(livraison.typeId);
                 printSites(datas);
             },
             error : function(){ Supprimer(1); },
@@ -432,11 +498,10 @@ function ChoseEmployee(){
                 type : 'POST',
                 data : 'id=' + id,
     
-                success : function(datas){ 
+                success : function(){ 
                     Supprimer(6);
                     livraison.employeeId = id;
                     printValider();
-                    console.log(livraison);
                 },
                 error : function(){
                     Supprimer(6)
@@ -450,32 +515,86 @@ function Valider(){
     $(document).ready(function(){
         var truckId = livraison.truckId;
         var employeeId = livraison.employeeId;
-        var type = livraison.typeId;
+        var typeId = livraison.typeId;
         var dateStart = livraison.dateStart;
         var dateEnd = livraison.dateEnd;
+        var stops = livraison.stops;
         var url = livraison.url;
+        var depotId = livraison.depotId;
+        var siteId = livraison.siteId;
 
         $.ajax({
-            url : '/itineraire/CreateDelivery',
+            url : '/livraison/create',
             type : 'POST',
-            // dataType : 'html', // On désire recevoir du HTML
-            data : 'truck=' + truck + "&user=" + employee + "&dateHour=" + dateHour + "&type=" + type,
+            data : 'truckId=' + truckId + "&employeeId=" + employeeId + 
+            "&dateStart=" + dateStart + "&typeId=" + typeId + "&stops=" + stops +
+            "&url=" + url + "&depotId=" + depotId + "&siteId=" +siteId + "&dateEnd=" + dateEnd,
     
             success : function(datas){ 
-                // AddValider();
+                Supprimer(7);
+
+                var json =JSON.parse(datas);
+                livraison.id = json.id;
+
+                createStops(datas);
+
             },
     
             error : function(){ 
                 // Supprimer(1);
+                alert("erreur");
             },
             });  
-        // if(date != null && hour != null && diff > 0){
-        // }else{
-        //     alert("Veuillez saisir une futur date");
-        // }
     });
 }
     
+function createStops(datas){
+    var stops = livraison.stops;
+    $(document).ready(function(){
+        json = JSON.parse(datas);
+        for(var i = 0; i < stops.length; i++){
+            createStop(stops[i], i);
+        }
+    });
+}
+
+function createStop(stop, index){
+    var products = livraison.stops[index].Products;
+    var userId =  livraison.stops[index].Id;
+
+    $(document).ready(function(){       
+        $.ajax({
+            url : '/livraison/createStop',
+            type : 'POST',
+            data : 'dateHour=' + stop.dateHour + "&livraisonId=" + livraison.id + "&employeeId=" + livraison.employeeId ,
+            success : function(datas){
+                $(document).ready(function(){
+                    json = JSON.parse(datas);
+                    for(var i=0; i < products.length; i++){
+                        createStopProduct(json, products[i], userId);
+                    }
+            })} ,  
+        });
+    });
+}
+
+function createStopProduct(stop, product, userId){
+    $(document).ready(function(){ 
+        var id = product.id;
+        var rcv = null;
+        if(livraison.typeId == 2){
+            rcv = userId;
+        }
+
+        $.ajax({
+            url : '/livraison/createStopProduct',
+            type : 'POST',
+            data : 'productId=' + id + "&stopId=" + stop.id +"&rcv=" + rcv,
+            success : function(datas){
+            },  
+        });
+    });
+}
 
 var livraison = new Delivery();
 
@@ -563,7 +682,7 @@ var livraison = new Delivery();
 //     }
 // }
 
-// function attachInstructionText(stepDisplay, marker, text, map) {
+// function attachInstructionText(stepDi    splay, marker, text, map) {
 //     google.maps.event.addListener(marker, 'click', function() {
 //         // Open an info window when the marker is clicked on, containing the text
 //         // of the step.

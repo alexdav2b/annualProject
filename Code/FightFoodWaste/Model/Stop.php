@@ -4,7 +4,7 @@ require_once __DIR__ . '/../Model/User.php';
 require_once __DIR__ . '/../Model/Delivery.php';
 
 
-Class Stop{
+Class Stop implements JsonSerializable{
     private $id;
     private $date;
     private $delivery;
@@ -85,6 +85,10 @@ Class Stop{
 			return true;		
 		}
 		return false;
+	}
+
+	public function jsonSerialize(){
+		return get_object_vars($this);
 	}
 }
 

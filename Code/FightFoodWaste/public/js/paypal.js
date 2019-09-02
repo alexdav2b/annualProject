@@ -44,7 +44,6 @@ function CreateAdhesion(){
         url : '/adhesion',
         type : 'POST', 
         success : function(datas){
-            console.log('ok');
             var btn = document.getElementById("paypal-button-container");
             if(btn != null){
                 btn.parentNode.removeChild(btn);    

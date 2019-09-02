@@ -4,7 +4,7 @@ require_once __DIR__ . '/../Model/Employee.php';
 require_once __DIR__ . '/../Model/DeliveryType.php';
 require_once __DIR__ . '/../Model/Truck.php';
 require_once __DIR__ . '/../Model/Site.php';
-
+require_once __DIR__ . '/../Model/StopProduct.php';
 
 Class Delivery implements JsonSerializable{
 
@@ -85,7 +85,8 @@ Class Delivery implements JsonSerializable{
 			'UsrID' => $this->employee->getId(),
 			'DeliveryTypeID' => $this->type->getId(),
 			'DateStart' => $this->dateStart,
-			'DateEnd' => $this->dateEnd);
+			'DateEnd' => $this->dateEnd,
+			'Url' => $this->url);
 		$json = json_encode($array);
 		$json = $api->create($json);
 		if ($json != NULL){
@@ -109,7 +110,8 @@ Class Delivery implements JsonSerializable{
 			'UsrID' => $this->employee->getId(),
 			'DeliveryTypeID' => $this->type->getId(),
 			'DateStart' => $this->dateStart,
-			'DateEnd' => $this->dateEnd);
+			'DateEnd' => $this->dateEnd,
+			'Url' => $this->url);
 		$json = json_encode($array);
 		$json = $api->update($json);
 		if ($json != NULL){
@@ -213,13 +215,30 @@ Class Delivery implements JsonSerializable{
 			$individualC = new IndividualController();
 			$salemanC = new SalemanController();
 			$userC = new UserController();
+			$productPC = new StopProductController();
 
 			if($name == 'delivery'){
 				$products = $productC->getByStatut(3);
+				// $res = array();
+				// foreach($products as $product){
+				// 	$productP = $productPC->getByProductId($product->getId());
+				// 	if($productP == null ||count($productP) <= 1){
+				// 		array_push($res, $product);
+				// 	}
+				// }
+				// $products = $res;
 				$user = $individualC->getByEligibility(1);
 				$this->Distribuate($products, $user, $name);
 			}else if($name == 'collection'){
 				$products = $productC->getByStatut(2);
+				// $res = array();
+				// foreach($products as $product){
+				// 	$productP = $productPC->getByProductId($product->getId());
+				// 	if( $productP == null ||count($productP) == 0){
+				// 		array_push($res, $product);
+				// 	}
+				// }
+				// $products = $res;
 				$saleman = $salemanC->getAll();
 				foreach($products as $product){
 					array_push($donator, $product->getDonator());

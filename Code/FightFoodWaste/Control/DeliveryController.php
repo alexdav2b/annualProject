@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/../Model/ApiManager.php';
 require_once __DIR__ . '/../Model/Delivery.php';
+require_once __DIR__ . '/../Model/Product.php';
+
 
 Class DeliveryController{
 
@@ -194,9 +196,18 @@ Class DeliveryController{
     // 4.
     public function PrintTrucks(){
         $siteId = $_POST['siteId'];
+        // $dateStart =;
+        // $dateEnd =;
         if($siteId != null && $siteId != 0){
             $truckController = new TruckController();
             $trucks = $truckController->getBySite($siteId);
+            // $res = array();
+            // foreach($truck as $truck){
+            //     if($truck->isFreeForPeriod($dateStart, $dateEnd)){
+            //         array_push($res, $truck);
+            //     }
+            // }
+            // $truck = $res;
             if($trucks != null){
                 echo json_encode($trucks);
                 http_response_code(201);
@@ -277,6 +288,8 @@ Class DeliveryController{
     public function PrintEmployees(){
         $siteId = $_POST['siteId'];
         $truckId = $_POST['truckId'];
+        // $dateEnd = ;
+        // $dateEnd = ;
         $bool = $this->ChoseTruck($truckId);
         if($bool){
 
@@ -285,6 +298,9 @@ Class DeliveryController{
             $users = array();
         
             foreach($emps as $user){
+                // if($user->isFreeForPeriod($dateStart, $dateEnd));{
+                //     array_push($users, array("id" => $user->getId(),  "name" => $user->getName() ,"surname" =>  $user->getSurname()));
+                // }
                 array_push($users, array("id" => $user->getId(),  "name" => $user->getName() ,"surname" =>  $user->getSurname()));
             }
             http_response_code(201);
@@ -314,13 +330,109 @@ Class DeliveryController{
 
             http_response_code(201);
             echo json_encode($user);
+        }else{
+            http_response_code(400);
         }
-        http_response_code(400);
+    }
+
+    public function CreateDelivery(){
+        $truckId = $_POST['truckId']; //
+        $employeeId = $_POST['employeeId']; //
+        $dateStart =$_POST['dateStart']; //
+        $date = $_POST['dateEnd'];
+        $date = explode(" à ", $date);
+        $dateEnd = $date[0] . 'T' . $date[1];
+        $typeId = $_POST['typeId']; //
+        $url = $_POST['url']; //
+        // $depotId = $_POST['depotId']; //
+        $siteId =$_POST['siteId']; //
+
+        if($truckId != null && $truckId != 0 &&
+           $employeeId != null && $employeeId != 0 &&
+           $dateStart != null && $dateStart != 0 &&
+           $typeId != null && $typeId != 0 &&
+           $url != null && $url != 0 &&
+           $siteId != null && $siteId != 0
+        //    $depotId != null && $depotId != 0
+        ){
+            $livraison = new Delivery(null, null, null, null, $dateStart, $dateEnd, $url);
+            // $livraison->ChoseDepot($depotId);
+            $livraison->setEmployee($employeeId);
+            // $livraison->ChoseSite($siteId);
+            $livraison->setTruck($truckId);
+            $livraison->setType($typeId);
+
+            $bool = $livraison->create();
+            if($bool){
+                echo json_encode($livraison);
+                http_response_code(201); 
+            }else{
+                http_response_code(400); 
+            }
+        }else{
+            http_response_code(400); 
+        }
+    }
+
+    public function CreateStop(){
+        $dateHour = $_POST['dateHour'];
+        $livraisonId = $_POST['livraisonId'];
+        $employeeId = $_POST['employeeId'];
+
+        $userC = new UserController();
+        $user= $userC->getById($employeeId);
+
+        $stop = new Stop(null, $dateHour, $livraisonId, $user);
+        $bool = $stop->create();
+        if($bool){
+            http_response_code(201);
+            echo json_encode($stop);
+        }else{
+            http_response_code(400);
+        }
 
     }
 
+    public function CreateStopProduct(){
+        $productId = $_POST['productId'];
+        $stopId = $_POST['stopId'];
+        $rcv = $_POST['rcv'];
+
+        if($productId != null && $productId != 0 &&
+           $stopId != null && $stopId != 0 
+        ){
+            $productC = new ProductController();
+            $product = $productC->getById($productId);
+            if($product != null){
+
+                $stopPro = new StopProduct(null, $stopId , $productId);
+                $bool = $stopPro->create();
+                if($bool){
+
+                    $product->setStatut(5);
+                    if(intval($rcv) != null ){
+                        var_dump($rcv);
+                        $product->setReceiver(intval($rcv));
+                    }
+
+                    $bool = $product->update();
+
+                    if($bool){
+                        http_response_code(201);
+                        echo json_encode($stopPro);
+                    }else{
+                        http_response_code(400);
+                    }
+                }else{
+                    http_response_code(400);
+                }
+            }
 
 
+        }else{
+            http_response_code(400);
+        }
+    }
 
 }
 

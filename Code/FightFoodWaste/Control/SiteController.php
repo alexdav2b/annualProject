@@ -54,8 +54,22 @@ Class SiteController{
 
     public function view(int $id){
         $site = $this->getById($id);
+        $productC = new ProductController();
+        $depotC = new DepositeryController();
+        $depots = $depotC->getBySite($id);
+        $res = array();
+
+        $statutC = new StatutController();
+        $statuts = $statutC->getAll();
+        foreach($depots as $depot){
+            $products = $productC->getByDepositery($depot->getId());
+            foreach($products as $product){
+                array_push($res, $product);
+            }
+        }
         if($site != NULL){
-            require_once __DIR__ . '/../public/View/siteGestionView.php';
+            require_once __DIR__ . '/../public/View/productsView.php';
+            // require_once __DIR__ . '/../public/View/siteGestionView.php';
         }
     }
 }

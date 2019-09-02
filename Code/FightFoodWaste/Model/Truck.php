@@ -94,7 +94,24 @@ Class Truck implements JsonSerializable{
 		}
 		return false;
     }
-    
+
+    public function isFreeForPeriod($dateStart, $dateEnd): bool{
+        $deliveryC = new DeliveryController();
+        $deliveries = $deliveryC->getByTruck($this);
+
+        $beginTest = new DateTime($dateStart);
+        $endTest = new DateTime($dateEnd);
+
+        foreach($deliveries as $delivery){
+            $beginDelivery = new DateTime($delivery->getDateStart());
+            $endDelivery = new DateTime($delivery->getDateEnd());
+
+            $isFree = Statique::isFreeForPeriod($beginTest, $endTest, $beginDelivery, $endDelivery);
+            return $isFree;
+        }
+        return true;
+    }
+
     public function jsonSerialize(){
 		return get_object_vars($this);
 	}

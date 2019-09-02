@@ -36,7 +36,7 @@
                 <h5 class = 'menu'>A propos</h5>
             </a>
         </li>
-        <?php if((isset($_SESSION['User'])) && $_SESSION['User'] == 'Admin'){ ?>
+        <?php if((isset($_SESSION['User'])) && $_SESSION['User'] == 'Admin' || $_SESSION['User'] == 'Employer'){ ?>
             <li class="nav-item col-md-2 col-lg-2">
                 <a href = "/comptes" style = 'text-transform : uppercase' class= 'nav-link'>
                 <h5 class = 'menu'>Admin</h5>

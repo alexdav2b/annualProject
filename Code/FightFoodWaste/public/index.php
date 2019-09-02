@@ -55,7 +55,7 @@ $router->get('/adhesion/Facture/:id', "Adhesion#Invoice"); // pdf
 
 // PRODUCT
 // -------------------------------------------------------------------
-
+$router->post('/livraison/products', "Product#chose"); 
 
 // STOP
 // -------------------------------------------------------------------
@@ -65,9 +65,9 @@ $router->get('/adhesion/Facture/:id', "Adhesion#Invoice"); // pdf
 // SITES
 // -------------------------------------------------------------------
 
-// $router->get('/sites', "Site#viewAll");
+$router->get('/sites', "Site#viewAll");
 
-// $router->get('/site/:id', "Site#view");
+$router->get('/site/:id', "Site#view");
 
 
 // USERS
@@ -134,28 +134,6 @@ $router->post('/mdp', "User#MotDePasseOublie");
 // ITINERAIRE
 // -------------------------------------------------------------------
 
-// $router->get('/itineraire', "Itineraire#new");
-
-// $router->post('/itineraire/Site', "Itineraire#ChoseSite");
-
-// $router->post('/itineraire/Truck', 'Itineraire#ChoseTruck');
-
-// $router->post('/itineraire/Employee', 'Itineraire#ChoseEmployee');
-
-// $router->post('/itineraire/DeliveryType', 'Itineraire#ChoseDeliveryType');
-
-// $router->post('/itineraire/Search', 'Itineraire#SearchStops');
-
-// $router->post('/itineraire/Start', 'Itineraire#ChoseStart');
-
-// $router->post('/itineraire/Coo', 'Itineraire#GetCoordinates');
-
-// $router->post('itineraire/CreateDelivery', 'Itineraire#CreateDelivery');
-
-// $router->post('/itineraire', "Itineraire#view");
-
-
-
 $router->get('/livraison', "Delivery#New");
 
 $router->post('/livraison/printSite', "Delivery#PrintSite");
@@ -169,13 +147,18 @@ $router->post('/livraison/printMap', 'Delivery#PrintMap');
 $router->post('/livraison/printTrucks', 'Delivery#PrintTrucks');
 
 $router->post('/livraison/printEmployees', 'Delivery#PrintEmployees');
+
 // $router->post('/livraison/Search', 'Delivery#SearchStops');
 
 // $router->post('/livraison/Start', 'Delivery#ChoseStart');
 
 // $router->post('/itineraire/Coo', 'Itineraire#GetCoordinates');
 
-// $router->post('itineraire/CreateDelivery', 'Itineraire#CreateDelivery');
+$router->post('/livraison/create', 'Delivery#CreateDelivery');
+
+$router->post('/livraison/createStop', 'Delivery#CreateStop');
+
+$router->post('/livraison/createStopProduct', 'Delivery#CreateStopProduct');
 
 $router->get('/livraison/map:adresse', 'Delivery#map');
 // RUN

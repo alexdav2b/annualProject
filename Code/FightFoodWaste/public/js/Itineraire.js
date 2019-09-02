@@ -133,9 +133,8 @@ function Depots(datas){
     select.append(optionC);
 
     var depots = JSON.parse(datas);
-    console.log(depots);
     for(var i = 0; i < depots.length; i++){
-        console.log(depots[i]);
+
         var option = document.createElement("option");
         option.innerHTML = depots[i].nom;
         option.setAttribute("value", depots[i].name + ' ' +  depots[i].rue + ' ' +  depots[i].postcode + ' ' +  depots[i].area);
@@ -433,7 +432,7 @@ function GetItinerary(data){
        }
     }
     var end = '?access_token=pk.eyJ1IjoibmF0aGFzZW5zZWkiLCJhIjoiY2p3cWM3czRlMDFpbDQ1cDZpb2d4ZnY0NyJ9.tWZI8jmVY33ao20AauBnWA';
-    console.log(url+end);
+
 });
 }
 

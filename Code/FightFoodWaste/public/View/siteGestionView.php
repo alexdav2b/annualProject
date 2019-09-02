@@ -1,11 +1,9 @@
 <?php
 
-require_once __DIR__ . '/../../Model/User.php';
-require_once __DIR__ . '/../../Control/Form.php';
+require_once __DIR__ . '/../../Model/Site.php';
 
-$title = "FightFoodWaste - Login";
 $scripts = array();
-array_push($scripts,"../js/connexionView.js");
+
 
 ob_start();
 ?>
@@ -24,15 +22,15 @@ ob_start();
 
     <?php
     if(isset($sites)){
-        foreach ($sites as $site){
-            ?>
+        foreach ($sites as $site){ ?>
         <tr>
-            <th> <?= $site->getName(); ?></th>
+            <th><a href= '<?= "/site/".$site->getId() ?>'> <?= $site->getName(); ?></a></th>
             <th> <?= $site->getNumero(); ?></th>
             <th> <?= $site->getRue(); ?></th>
             <th> <?= $site->getPostcode(); ?></th>
             <th> <?= $site->getArea(); ?></th>
             <th> <?= $site->getCapacity(); ?> </th>
+        
         </tr>
         <?php }
     }else{ ?>

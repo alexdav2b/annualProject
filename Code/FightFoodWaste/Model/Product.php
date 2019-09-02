@@ -28,11 +28,11 @@ Class Product implements JsonSerializable{
     public function getId(): ?int{ return $this->id; }
     public function getName(): string{ return $this->name; }
     public function getBarcode(): string { return $this->barcode; }
-    public function getValidDate() { return $this->date; }
+    public function getValidDate() { return $this->validDate; }
     public function getDepositery() : Depositery { return $this->depositery; }
     public function getDonator(): User { return $this->donator; }
     public function getReceiver(): ?User {return $this->receiver; }
-    public function getStatut(): Statut { return $this->statut; }
+    public function getStatut(): ?Statut { return $this->statut; }
 
     public function setId(int $id){
         if($id > 0)
@@ -73,7 +73,7 @@ Class Product implements JsonSerializable{
     
     public function setStatut(int $statutId){
         $controller = new StatutController();
-		$statut = $controller->getById($statutId);
+        $statut = $controller->getById($statutId);
 		$this->statut = $statut;
     }
 
@@ -109,13 +109,14 @@ Class Product implements JsonSerializable{
     }
 
 	public function delete(): bool{
-		$api = new ApiManager('Stop');
+		$api = new ApiManager('Product');
 		$json = $api->delete($this->id);
 		return $json['Success'];
     }
     
-	public function update(string $discriminator): bool{
-		$api = new ApiManager('Stop');
+	public function update(): bool{
+        $usr = $this->getReceiver() == null ? null : $this->getReceiver()->getId();
+		$api = new ApiManager('Product');
 		$array = array(
 			'ID' => $this->id,
             'Name' => $this->name,
@@ -123,14 +124,47 @@ Class Product implements JsonSerializable{
             'ValidDate' => $this->validDate,
             'DepositeryID' => $this->depositery->getId(),
             'UsrID_Donated' => $this->donator->getId(),
-            'UsrID_Received' => $this->receiver->getId(),
+            'UsrID_Received' => $usr,
             'StatutID' => $this->statut->getId());
-		$json = json_encode($array);
+        $json = json_encode($array);
+        echo $json;
 		$json = $api->update($json);
 		if ($json != NULL){
 			return true;		
 		}
 		return false;
+    }
+    public function updateItiC($statut) {
+        $conn = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PWD);
+
+        // var_dump("ok");
+        $statut = $this->getStatut();
+        $id = $this->getId();
+        $sql = "UPDATE Product SET StatutID = ? WHERE ID = ?";
+        // Prepare statement
+        $stmt = $conn->prepare($sql);
+    
+        // execute the query
+        $stmt->execute([$statut,$id]);
+        var_dump('execute');
+        return $stmt->rowCount() > 0;
+    }
+    public function updateItiL($statut, $rcv) {
+
+        $conn = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PWD);
+
+        // var_dump("ok");
+        $statut = $this->getStatut();
+        $id = $this->getId();
+        $sql = "UPDATE Product SET StatutID = ?, UsrID_Received = ? WHERE ID = ?";
+        // Prepare statement
+        $stmt = $conn->prepare($sql);
+    
+        var_dump("prepare");
+        // execute the query
+        $stmt->execute([$statut, $rcv, $id]);
+        var_dump('execute');
+        return $stmt->rowCount() > 0;
     }
     
     public function jsonSerialize(){

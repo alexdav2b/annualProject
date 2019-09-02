@@ -124,7 +124,7 @@ Class UserController{
     }
 
     public function Connexion(){
-        var_dump($_POST);
+
         if(isset($_SESSION['User'])){
             header('Location: 404');
         }
@@ -140,7 +140,7 @@ Class UserController{
 
             // if($user->PasswordIsValid($_POST['Password'], $user->getPassword())){
             if($_POST['Password'] == $user->getPassword()){
-                var_dump('ok');
+
                 session_destroy();
                 session_start();
                 $_SESSION['User'] = $user->getDiscriminator();

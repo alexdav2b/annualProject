@@ -12,7 +12,7 @@ array_push($scripts, "../js/Delivery.js");
 
 ob_start();
 ?>
-<div  class = "col-md-4 col-lg-4" style= "height:100%">
+<div id ="fin" class = "col-md-4 col-lg-4" style= "height:100%">
     <h2 class= "col-lg-6 offset-lg-4 col-md-6 offset-md-4">Itineraire</h2>
     <!-- <form  class = 'row form-group container' > -->
 

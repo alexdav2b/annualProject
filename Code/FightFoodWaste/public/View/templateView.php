@@ -26,6 +26,7 @@
 	</body>
 	<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 	<script src = '../js/bootstrap.min.js' ></script>
+	<script src = '../js/products.js' ></script>
 	<!-- <script src="https://www.paypal.com/sdk/js?client-id=sb"></script> -->
 	<!-- <script src = "<?= 'https://maps.googleapis.com/maps/api/js?key=' . GOOGLE . '&callback=initMap' ?>" async defer></script> -->
 

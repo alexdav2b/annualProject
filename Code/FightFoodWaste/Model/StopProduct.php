@@ -1,6 +1,6 @@
 <?php
 
-Class StopProduct{
+Class StopProduct implements JsonSerializable{
     private $id;
     private $stopId;
     private $productId;
@@ -65,5 +65,9 @@ Class StopProduct{
 			return true;		
 		}
 		return false;
+    }
+    
+    public function jsonSerialize(){
+		return get_object_vars($this);
 	}
 }

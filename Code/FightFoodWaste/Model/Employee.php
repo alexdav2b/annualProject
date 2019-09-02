@@ -26,7 +26,6 @@ Class Employee extends User implements JsonSerializable{
         $deliveryC = new DeliveryController();
         $deliveries = $deliveryC->getByUser($this);
 
-        $idFree = $this::isFreeForPeriod($dateStartTest, $dateEndTest, $dateStartUsed, $dateEndUsed);
         $beginTest = new DateTime($dateStart);
         $endTest = new DateTime($dateEnd);
 
@@ -34,10 +33,8 @@ Class Employee extends User implements JsonSerializable{
             $beginDelivery = new DateTime($delivery->getDateStart());
             $endDelivery = new DateTime($delivery->getDateEnd());
 
-            $isFree = $this::isFreeForPeriod($dateStartTest, $dateEndTest, $dateStartUsed, $dateEndUsed);
-
-            if(!$isFree) 
-                return false;
+            $isFree = Statique::isFreeForPeriod($beginTest, $endTest, $beginDelivery, $endDelivery);
+            return $isFree;
         }
         return true;
     }
